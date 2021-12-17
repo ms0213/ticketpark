@@ -17,10 +17,7 @@ $(function(){
 });
 </script>
 <style>
-.col-lg-6 {
 
-	width: 100%;
-}
 
 @media (min-width: 768px)
 .col-md-6 {

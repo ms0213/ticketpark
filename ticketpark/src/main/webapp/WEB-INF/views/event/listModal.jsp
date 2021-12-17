@@ -11,7 +11,7 @@
 		<td>${dto.startDate}</td>
 		<td>${dto.endDate}</td>
 		<td>
-			<button type="button" class="btn btn-light">선택</button>
+			<button type="button" class="btn btn-light couponPick" value="${dto.couponNum}">선택</button>
 		</td>
 	</tr>
 </c:forEach>

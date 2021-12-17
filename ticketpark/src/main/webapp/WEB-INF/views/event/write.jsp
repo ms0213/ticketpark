@@ -214,7 +214,14 @@ $(function() {
 		ajaxFun(url, "get", null, "html", fn)
 	});
 	
+	$(document).on("click", ".couponPick", function() {
+		console.log(this.value);
+		$("#couponModal").modal("hide");
+	});
+	
 });
+
+
 
 </script>
 
