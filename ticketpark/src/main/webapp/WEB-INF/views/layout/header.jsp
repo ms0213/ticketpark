@@ -62,7 +62,6 @@
                                             	카테고리
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        	<a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=all">전체</a>
                                             <a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=musical">뮤지컬</a>
                                             <a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=drama">연극</a>
                                             <a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=concert">콘서트</a>

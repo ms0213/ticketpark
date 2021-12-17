@@ -3,14 +3,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="performance">
 
-	<select id="seq" resultType="Integer">
+	<select id="performanceSeq" resultType="Integer">
 		SELECT performance_seq.NEXTVAL FROM dual
+	</select>
+	
+	<select id="scheduleSeq" resultType="Integer">
+		SELECT schedule_seq.NEXTVAL FROM dual
 	</select>
 	
 	<!-- 공연 등록 -->
 	<insert id="insertPerformance" parameterType="com.sp.tp.performance.Performance">
 		INSERT INTO performance (perfNum, subject, content, gmnum, tnum, rnum, rating, price, time, startDate, endDate)
-			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum}, #{rating}, #{price}, #{time}, #{startDate}, #{endDate})
+			VALUES (#{sdNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum}, #{rating}, #{price}, #{time}, #{startDate}, #{endDate})
+	</insert>
+	
+	<insert id="insertSchedule" parameterType="com.sp.tp.performance.Performance">
+		INSERT INTO schedule (sdNum,perf_time, perf_date, perfNum)
+			VALUES (#{sdNum}, #{perfTime}, #{perfDate}, #{perfNum})
+	</insert>
+	 
+	<insert id="insertCast" parameterType="com.sp.tp.performance.Performance">
+		INSERT INTO cast (castNum, sdNum, name, roleName, imageFileName)
+			VALUES(cast_seq.NEXTVAL, #{sdNum}, #{roleName} #{castFileName})
 	</insert>
 	
 	<sql id="where-list">
@@ -22,11 +36,22 @@
 		</if>
 	</sql>
 	
+	<sql id="category-list">
+		<if test="category == 'musical'">
+			cNum = 1
+		</if>
+		<if test="category == 'drama'">
+			cNum = 2
+		</if>
+		<if test="category == 'concert'">
+			cNum = 3
+		</if>
+	</sql>
+	
 	<!-- 공연 개수 -->
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM performance p
-		<!-- WHERE p.gmNum = g.gNum AND cNum = #{categoryNum}; -->
 		<where>
 			<if test="keyword!=null and keyword!='' ">
 				<include refid="where-list"/>
@@ -38,14 +63,15 @@
 	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.performance.Performance">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT p.perfNum, subject, po.saveFilename,
+		        SELECT p.perfNum, subject, po.saveFilename postFileName,
 		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
 		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, hallName
 		        FROM performance p, theater th, hall h, genre g, poster po
 		        WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum
-		            AND p.perfNum = po.perfNum AND poster_main = 1
+		            AND p.perfNum = po.perfNum AND poster_main = 1 
+		            AND <include refid="category-list"/>
 		           	<if test="keyword != null and keyword != ''">
-						AND <include refid="where-list"/>
+						AND <include refid="where-list"/>	
 					</if>
 	        	ORDER BY perfNum DESC
 			)  tb WHERE ROWNUM &lt;= #{end}
@@ -59,8 +85,21 @@
 	</insert>
 	
 	<select id="listPoster" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
-		SELECT postNum, perfNum, saveFilename
+		SELECT postNum, perfNum, saveFilename postFileName
 		FROM poster
 		WHERE perfNum = #{perfNum} AND poster_main = 1
+	</select>
+	
+	<!-- 카테고리 -->
+	<select id="listCategory" resultType="com.sp.tp.performance.Performance">
+		SELECT cNum categoryNum, category
+		FROM category
+	</select>
+	
+	
+	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+		SELECT gNum, genre
+		FROM genre
+		WHERE cNum = ${categoryNum}
 	</select>
 </mapper>

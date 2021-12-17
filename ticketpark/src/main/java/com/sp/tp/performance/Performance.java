@@ -14,8 +14,11 @@ public class Performance {
 	private int price;
 	private int time;
 	
+	private int sdNum;
 	private String perfDate;
 	private String perfTime;
+	private List<String> perfsDate;
+	private List<String> perfsTime;
 	
 	private int genreNum;
 	private String genre;
@@ -32,26 +35,18 @@ public class Performance {
 	private int rateNum;
 	private String rate;
 	
-	private String castNum;
+	private int castNum;
 	private String castName;
 	private String roleName;
+	private String castFileName;
+	private List<String> castsName;
+	private List<String> rolesName;
+	private List<MultipartFile> castsFileName;
 	
-	private String postNum;
-	private String saveFilename;
-	private List<MultipartFile> selectFile;
+	private int postNum;
+	private String postFileName;
+	private MultipartFile postFile;
 	
-	public String getPerfDate() {
-		return perfDate;
-	}
-	public void setPerfDate(String perfDate) {
-		this.perfDate = perfDate;
-	}
-	public String getPerfTime() {
-		return perfTime;
-	}
-	public void setPerfTime(String perfTime) {
-		this.perfTime = perfTime;
-	}
 	public int getPerfNum() {
 		return perfNum;
 	}
@@ -160,10 +155,52 @@ public class Performance {
 	public void setRate(String rate) {
 		this.rate = rate;
 	}
-	public String getCastNum() {
+	public int getPostNum() {
+		return postNum;
+	}
+	public void setPostNum(int postNum) {
+		this.postNum = postNum;
+	}
+	public String getPostFileName() {
+		return postFileName;
+	}
+	public void setPostFileName(String postFileName) {
+		this.postFileName = postFileName;
+	}
+	public int getSdNum() {
+		return sdNum;
+	}
+	public void setSdNum(int seq) {
+		this.sdNum = seq;
+	}
+	public String getPerfDate() {
+		return perfDate;
+	}
+	public void setPerfDate(String perfDate) {
+		this.perfDate = perfDate;
+	}
+	public String getPerfTime() {
+		return perfTime;
+	}
+	public void setPerfTime(String perfTime) {
+		this.perfTime = perfTime;
+	}
+	public List<String> getPerfsDate() {
+		return perfsDate;
+	}
+	public void setPerfsDate(List<String> perfsDate) {
+		this.perfsDate = perfsDate;
+	}
+	public List<String> getPerfsTime() {
+		return perfsTime;
+	}
+	public void setPerfsTime(List<String> perfsTime) {
+		this.perfsTime = perfsTime;
+	}
+	public int getCastNum() {
 		return castNum;
 	}
-	public void setCastNum(String castNum) {
+	public void setCastNum(int castNum) {
 		this.castNum = castNum;
 	}
 	public String getCastName() {
@@ -178,22 +215,34 @@ public class Performance {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	public String getPostNum() {
-		return postNum;
+	public String getCastFileName() {
+		return castFileName;
 	}
-	public void setPostNum(String postNum) {
-		this.postNum = postNum;
+	public void setCastFileName(String castFileName) {
+		this.castFileName = castFileName;
 	}
-	public String getSaveFilename() {
-		return saveFilename;
+	public List<String> getCastsName() {
+		return castsName;
 	}
-	public void setSaveFilename(String saveFilename) {
-		this.saveFilename = saveFilename;
+	public void setCastsName(List<String> castsName) {
+		this.castsName = castsName;
 	}
-	public List<MultipartFile> getSelectFile() {
-		return selectFile;
+	public List<String> getRolesName() {
+		return rolesName;
 	}
-	public void setSelectFile(List<MultipartFile> selectFile) {
-		this.selectFile = selectFile;
+	public void setRolesName(List<String> rolesName) {
+		this.rolesName = rolesName;
+	}
+	public List<MultipartFile> getCastsFileName() {
+		return castsFileName;
+	}
+	public void setCastsFileName(List<MultipartFile> castsFileName) {
+		this.castsFileName = castsFileName;
+	}
+	public MultipartFile getPostFile() {
+		return postFile;
+	}
+	public void setPostFile(MultipartFile postFile) {
+		this.postFile = postFile;
 	}
 }

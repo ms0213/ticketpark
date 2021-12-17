@@ -103,7 +103,11 @@ function searchList() {
 <div class="performance-container">
 	<div class="body-container">
 		<div class="body-title">
-			<h3><i class="bi bi-image"></i> 전체 </h3>
+			<h3><i class="bi bi-image"></i> 
+				${category=="musical" ? "뮤지컬" : ""}
+				${category=="drama" ? "연극" : ""}
+				${category=="concert" ? "콘서트" : ""}
+			</h3>
 		</div>
 		
 		<div class="body-main">
@@ -126,7 +130,7 @@ function searchList() {
 				</div>
 				<c:if test="${sessionScope.member.membership>50}">
 					<div class="col" style="text-align: right; margin-right: 40px;" >
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/performance/write';">글올리기</button>
+						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/performance/add';">글올리기</button>
 					</div>
 				</c:if>
 			</div>
@@ -135,7 +139,7 @@ function searchList() {
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
 			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}" title="${dto.subject}">
-			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.saveFilename}">
+			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
 			 			</a>
 			 			<div class="box_info">

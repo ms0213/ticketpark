@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.tp.common.FileManager;
 import com.sp.tp.common.MyUtil;
@@ -38,7 +39,7 @@ public class PerformanceController {
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
-			// @RequestParam int categoryNum,
+			@RequestParam String category,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -68,7 +69,7 @@ public class PerformanceController {
 		int end = current_page * rows;
 		map.put("start", start);
 		map.put("end", end);
-		// map.put("categoryNum", categoryNum);
+		map.put("category", category);
 
 		List<Performance> list = service.listPerformance(map);
 
@@ -92,6 +93,7 @@ public class PerformanceController {
 		model.addAttribute("articleUrl", articleUrl);
 		model.addAttribute("page", current_page);
 		model.addAttribute("paging", paging);
+		model.addAttribute("category", category);
 
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
@@ -104,13 +106,16 @@ public class PerformanceController {
 		
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
+		List<Performance> groupList = service.listCategory();
+		
 		if (info.getMembership() < 51) {
 			return "redirect:/performance/list";
 		}
 
 		model.addAttribute("mode", "add");
+		model.addAttribute("groupList", groupList);
 
-		return ".performance.add";
+		return ".performance.perfAdd";
 	}
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
@@ -130,5 +135,22 @@ public class PerformanceController {
 		}
 
 		return "redirect:/performance/list";
+	}
+	
+	@RequestMapping(value = "genre", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> genreList(
+			@RequestParam int categoryNum) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("categoryNum", categoryNum);
+		
+		List<Performance> genreList = service.listGenre(map);
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("genreList", genreList);
+		
+		return model;
+		
 	}
 }
