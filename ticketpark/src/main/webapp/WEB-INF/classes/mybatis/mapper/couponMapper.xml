@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="coupon">
+	<select id="listCoupon" resultType="com.sp.tp.event.Coupon">
+		SELECT couponNum, coupon, TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate
+		FROM coupon
+        WHERE ( TO_DATE(startDate) >= SYSDATE + 1)
+		ORDER BY couponNum DESC
+	</select>
+	
+	<insert id="insertMycoupon" parameterType="com.sp.tp.event.myCoupon">
+		INSERT INTO myCoupon (userId, couponNum, useCoupon)
+		VALUES (#{userId}, #{couponNum}, #{useCoupon})
+	</insert>
+</mapper>

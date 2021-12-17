@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="couponManage">
+	<select id="seq" resultType="String">
+		SELECT coupon_seq.NEXTVAL FROM dual
+	</select>
+	
+	<insert id="insertCoupon" parameterType="com.sp.tp.admin.couponManage.Coupon">
+		INSERT INTO coupon (couponNum, coupon, startDate, endDate)
+		VALUES (#{couponNum}, #{coupon}, #{startDate}, #{endDate})
+	</insert>
+	
+	<select id="readCoupon" parameterType="String" resultType="com.sp.tp.admin.couponManage.Coupon">
+		SELECT couponNum, coupon, startDate, endDate
+		FROM coupon
+		WHERE couponNum = #{couponNum}
+	</select>
+	
+	<update id="updateCoupon" parameterType="com.sp.tp.admin.couponManage.Coupon">
+		UPDATE coupon SET coupon=#{coupon}, startDate=#{startDate}, endDate=#{endDate}
+		WHERE couponNum=#{couponNum}
+	</update>
+	
+	<delete id="deleteCoupon" parameterType="String">
+		DELETE FROM coupon WHERE couponNum=#{couponNum}
+	</delete>
+	
+	<select id="listCoupon" resultType="com.sp.tp.admin.couponManage.Coupon">
+		SELECT couponNum, coupon, TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate
+		FROM coupon
+		ORDER BY couponNum DESC
+	</select>
+</mapper>

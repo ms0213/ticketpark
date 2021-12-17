@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="theaterManage">
+	<insert id="insertTheater" parameterType="com.sp.tp.admin.theaterManage.Theater">
+		INSERT INTO theater(tNum, hallNo, sCount, name, location, seats, "rows", cols, generalSeat, vipSeat) 
+			VALUES(theater_seq.NEXTVAL, #{hallNo}, #{sCount}, #{name}, #{location}, #{seats}, #{rows}, #{cols}
+				, #{generalSeat}, #{vipSeat})
+	</insert>
+	
+	<update id="insertTheaterFile" parameterType="map">
+		UPDATE theater SET saveFilename = #{saveFilename}
+		WHERE tNum = #{tNum} 
+	</update>
+	
+	<update id="updateTheater" parameterType="com.sp.tp.admin.theaterManage.Theater">
+		UPDATE theater SET hallNo = #{hallNo}, sCount = #{sCount}, 
+			name = #{name}, location = #{location}, seats = #{seats}, "rows" = #{rows}, cols = #{cols},
+				generalSeat = #{generalSeat}, vipSeat = #{vipSeat}
+		WHERE tNum = #{tNum}	
+	</update>
+	
+	<delete id="deleteTheater" parameterType="Integer">
+		DELETE FROM theater WHERE tNum = #{tNum}
+	</delete>
+	
+	<select id="dataCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM theater
+	</select>
+	
+	<select id="readTheater" parameterType="Integer" resultType="com.sp.tp.admin.theaterManage.Theater">
+		SELECT tNum, hallNo, sCount, name, location, seats, saveFilename, "rows", cols, generalSeat, vipSeat
+		FROM theater
+		WHERE tNum = #{tNum}
+	</select>
+	
+	<select id="listTheater" parameterType="map" resultType="com.sp.tp.admin.theaterManage.Theater">
+				SELECT tNum, t.hallNo, sCount, name, location, seats, t.saveFilename, "rows", cols, 
+					generalSeat, vipSeat, hallName, f.saveFilename hallFile
+				FROM theater t
+				JOIN hall h ON t.hallNo = h.hNum
+				JOIN hallFile f ON h.hNum = f.hNum
+				WHERE t.hallNo = #{hallNo}
+				ORDER BY tNum DESC
+	</select>
+	
+	<select id="listHallNo" resultType="com.sp.tp.admin.theaterManage.Theater">
+		SELECT hNum hallNo, hallName
+		FROM hall
+		ORDER BY hallNo
+	</select>
+</mapper>

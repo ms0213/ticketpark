@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="performance">
+
+	<select id="seq" resultType="Integer">
+		SELECT performance_seq.NEXTVAL FROM dual
+	</select>
+	
+	<!-- 공연 등록 -->
+	<insert id="insertPerformance" parameterType="com.sp.tp.performance.Performance">
+		INSERT INTO performance (perfNum, subject, content, gmnum, tnum, rnum, rating, price, time, startDate, endDate)
+			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum}, #{rating}, #{price}, #{time}, #{startDate}, #{endDate})
+	</insert>
+	
+	<sql id="where-list">
+		<if test="condition=='subject'">
+			INSTR(subject, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='date'">
+			startDate &lt;= #{keyword} AND #{keyword} &lt;= endDate
+		</if>
+	</sql>
+	
+	<!-- 공연 개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM performance p
+		<!-- WHERE p.gmNum = g.gNum AND cNum = #{categoryNum}; -->
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>	
+		</where>
+	</select>
+	
+	<!-- 공연리스트 -->
+	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.performance.Performance">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT p.perfNum, subject, po.saveFilename,
+		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, hallName
+		        FROM performance p, theater th, hall h, genre g, poster po
+		        WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum
+		            AND p.perfNum = po.perfNum AND poster_main = 1
+		           	<if test="keyword != null and keyword != ''">
+						AND <include refid="where-list"/>
+					</if>
+	        	ORDER BY perfNum DESC
+			)  tb WHERE ROWNUM &lt;= #{end}
+	    ) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<!-- 파일 -->
+	<insert id="insertPoster" parameterType="com.sp.tp.performance.Performance">
+		INSERT INTO poster(postNum, perfNum, saveFilename, poster_main) 
+			VALUES (poster_seq.NEXTVAL, #{perfNum}, #{saveFilename}, 1)
+	</insert>
+	
+	<select id="listPoster" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+		SELECT postNum, perfNum, saveFilename
+		FROM poster
+		WHERE perfNum = #{perfNum} AND poster_main = 1
+	</select>
+</mapper>

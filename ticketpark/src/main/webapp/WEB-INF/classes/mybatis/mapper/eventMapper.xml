@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="event">
+
+	<select id="seq" resultType="Integer">
+		SELECT event_seq.NEXTVAL FROM dual
+	</select>
+
+	<!-- 이벤트 등록 -->
+	<insert id="insertEvent" parameterType="com.sp.tp.event.Event">
+		INSERT INTO event(eventNum, eventName, startDate, endDate, content, coupon)
+			VALUES (#{eventNum}, #{eventName}, #{startDate}, #{endDate}, #{content}, #{coupon})
+	</insert>
+	
+	<sql id="where-list">
+		<if test="condition=='all'">
+			( INSTR(eventName, #{keyword}) &gt; 0
+				OR INSTR(content, #{keyword}) &gt; 0 )
+		</if>
+		<if test="condition=='eventName'">
+			INSTR(eventName, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='content'">
+			INSTR(content, #{keyword}) &gt; 0 
+		</if>
+		<if test="condition=='date'">
+			startDate &lt;= #{keyword} AND #{keyword} &lt;= endDate
+		</if>
+	</sql>
+	
+	<!-- 이벤트 개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM event e
+	</select>
+	
+	<!-- 이벤트 리스트 -->
+	<select id="listEvent" parameterType="map" resultType="com.sp.tp.event.Event">
+		SELECT * FROM (
+			SELECT ROWNUM rnum, tb.* FROM (
+				SELECT e.eventNum, eventName, saveFilename, coupon, 
+					TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+					TO_CHAR(endDate, 'YYYY-MM-DD') endDate
+				FROM event e
+				LEFT OUTER JOIN (
+					SELECT fileNum, eventNum, saveFilename FROM (
+						SELECT fileNum, eventNum, saveFilename, 
+							ROW_NUMBER() OVER(PARTITION BY eventNum ORDER BY fileNum ASC) rank
+						 FROM eventFile
+					) WHERE rank = 1
+				) i ON e.eventNum = i.eventNum
+				<where>
+					<if test="keyword != null and keyword != ''">
+						<include refid="where-list"/>
+					</if>
+				</where>
+				ORDER BY eventNum DESC			
+			) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<!-- 이벤트 보기 -->
+	<select id="readEvent" parameterType="Integer" resultType="com.sp.tp.event.Event">
+		SELECT event.eventNum, eventName, TO_CHAR(startDate, 'YYYY-MM-DD') startDate,
+            		TO_CHAR(endDate, 'YYYY-MM-DD') endDate, content, coupon
+        FROM event
+       	WHERE eventNum = #{eventNum}
+	</select>
+	
+	<!-- 이벤트 수정 -->
+	<update id="updateEvent" parameterType="com.sp.tp.event.Event">
+		UPDATE event SET eventName = #{eventName}, content = #{content}, 
+			startDate = #{startDate}, endDate = #{endDate}, coupon = #{coupon}
+		WHERE eventNum = #{eventNum}
+	</update>
+	
+	<!-- 이벤트 삭제 -->
+	<delete id="deleteEvent" parameterType="Integer">
+		DELETE FROM event WHERE eventNum = #{eventNum}
+	</delete>
+	
+	<!-- 파일 -->
+	<insert id="insertFile" parameterType="com.sp.tp.event.Event">
+		INSERT INTO eventFile(fileNum, eventNum, saveFilename) 
+			VALUES (eventFile_seq.NEXTVAL, #{eventNum}, #{saveFilename})
+	</insert>
+	
+	<select id="listFile" parameterType="Integer" resultType="com.sp.tp.event.Event">
+		SELECT fileNum, eventNum, saveFilename
+		FROM eventFile
+		WHERE eventNum = #{eventNum}
+	</select>
+	
+	<select id="readFile" parameterType="Integer" resultType="com.sp.tp.event.Event">
+		SELECT fileNum, eventNum, saveFilename
+		FROM eventFile
+	    WHERE fileNum = #{fileNum}
+	</select>
+	
+	<delete id="deleteFile" parameterType="map">
+		DELETE FROM eventFile WHERE ${field} = #{eventNum}
+	</delete>
+
+</mapper>

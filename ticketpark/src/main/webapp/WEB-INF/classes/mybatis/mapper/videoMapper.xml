@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="video">
+	<select id="seq" resultType="Integer">
+		SELECT video_seq.NEXTVAL FROM dual
+	</select>
+	
+	<insert id="insertVideo" parameterType="com.sp.tp.video.Video">
+		INSERT INTO video (vNum,link,subject,content)
+		VALUES (#{vNum}, #{link}, #{subject}, #{content})
+	</insert>
+
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM video
+	</select>
+	
+	<select id="readVideo" parameterType="Integer" resultType="com.sp.tp.video.Video">
+		SELECT vNum, subject, link, content
+		FROM video
+		WHERE vNum=#{vNum}
+	</select>
+	
+	<select id="listVideo" parameterType="map" resultType="com.sp.tp.video.Video">
+		SELECT * FROM (
+			SELECT ROWNUM rnum, tb.* FROM (
+				SELECT vNum, link, subject, content
+				FROM video
+				ORDER BY vNum DESC
+			) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<update id="updateVideo" parameterType="com.sp.tp.video.Video">
+		UPDATE video SET subject=#{subject},
+			content=#{content}, link=#{link}
+		WHERE vNum=#{vNum} 
+	</update>
+	
+	<delete id="deleteVideo" parameterType="Integer">
+		DELETE FROM video WHERE vNum=#{vNum}
+	</delete>
+
+</mapper>

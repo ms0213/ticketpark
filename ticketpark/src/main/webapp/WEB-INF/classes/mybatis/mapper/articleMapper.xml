@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="article">
+	<select id="seq" resultType="Integer">
+		SELECT article_seq.NEXTVAL FROM dual
+	</select>
+	
+	<insert id="insertArticle" parameterType="com.sp.tp.article.Article">
+		INSERT INTO article (artiNum, admin, subject, content, 
+			hitCount, reg_date, atNum)
+		VALUES (#{artiNum}, #{admin}, #{subject}, #{content},
+			0, SYSDATE, #{atNum})
+	</insert>
+	
+	<sql id="where-list">
+		<if test="condition=='all' ">
+			( INSTR(subject, #{keyword}) &gt; 0
+				OR INSTR(content, #{keyword}) &gt; 0 )
+		</if>
+		<if test="condition=='subject' ">
+			INSTR(subject, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='content' ">
+			INSTR(content, #{keyword}) &gt; 0 
+		</if>
+		<if test="condition=='reg_date' ">
+			( TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword}
+				OR TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
+		</if>
+	</sql>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM article
+		<where>
+			<if test="keyword != null and keyword!=''  ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+	</select>
+	
+	<select id="listArticle" parameterType="map" resultType="com.sp.tp.article.Article">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb. * FROM (
+		        SELECT a.artiNum, a.admin, subject, 
+		            TO_CHAR(a.reg_date, 'YYYY-MM-DD') reg_date, content, atName, saveFilename, m.userName,
+		            NVL(fileCount, 0) fileCount
+		        FROM article a
+		        JOIN member1 m ON a.admin=m.userId
+		        JOIN articleType at ON at.atNum = a.atNum
+		        LEFT OUTER JOIN (
+		            SELECT artiNum, COUNT(*) fileCount 
+		            FROM articleFile 
+		            GROUP BY artiNum
+		        ) f ON a.artiNum=f.artiNum
+		        LEFT OUTER JOIN (
+					SELECT fileNum, artiNum, saveFilename FROM (
+						SELECT fileNum, artiNum, saveFilename, 
+							ROW_NUMBER() OVER(PARTITION BY artiNum ORDER BY fileNum ASC) rank
+						 FROM articleFile
+					) WHERE rank = 1
+				) i ON a.artiNum = i.artiNum
+				<where>
+					<if test="keyword != null and keyword != ''">
+						<include refid="where-list"/>
+					</if>
+				</where>
+		        ORDER BY artiNum DESC
+		    )tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<select id="readArticle" parameterType="Integer" resultType="com.sp.tp.article.Article">
+		SELECT artiNum, admin, subject, content, reg_date, atName
+		FROM article a
+		JOIN articleType at ON at.atNum = a.atNum
+		WHERE artiNum = #{artiNum}
+	</select>
+	
+	<update id="updateHitCount" parameterType="Integer">
+		UPDATE article SET hitCount=hitCount+1 WHERE artiNum = #{artiNum}
+	</update>
+	
+	<update id="updateArticle" parameterType="com.sp.tp.article.Article">
+		UPDATE article SET subject=#{subject}, content=#{content}, atNum=#{atNum}
+		WHERE artiNum = #{artiNum}
+	</update>
+    
+	
+	<delete id="deleteArticle" parameterType="Integer">
+		DELETE FROM article WHERE artiNum = #{artiNum}
+	</delete>
+	
+	<!-- 댓글 -->
+	<insert id="insertReply" parameterType="com.sp.tp.article.ArticleReply">
+		INSERT INTO articleReply (replyNum, artiNum, userId, content, reg_date, answer)
+		VALUES (articleReply_seq.NEXTVAL, #{artiNum}, #{userId}, #{content}, SYSDATE, #{answer})	
+	</insert>
+	
+	<!-- 댓글 개수 -->
+	<select id="replyCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0) FROM articleReply
+		WHERE artiNum=#{artiNum} AND answer=0
+	</select>
+	
+	<!-- 댓글 리스트 -->
+	<select id="listReply" parameterType="map" resultType="com.sp.tp.article.ArticleReply">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT r.replyNum, r.userId, m.userName, r.artiNum, r.content, r.reg_date, r.answer,
+		               NVL(answerCount, 0) answerCount
+		        FROM articleReply r
+		        JOIN member1 m ON r.userId = m.userId
+		        LEFT OUTER JOIN (
+		            SELECT answer, COUNT(*) answerCount
+		            FROM articleReply WHERE answer!=0 GROUP BY answer
+		        ) a ON r.replyNum = a.answer
+		        WHERE artiNum=#{artiNum}  AND r.answer=0
+		        ORDER BY r.replyNum DESC
+		    ) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<!-- 대댓글 리스트 -->
+	<select id="listReplyAnswer" parameterType="Integer" resultType="com.sp.tp.article.ArticleReply">
+		SELECT replyNum, artiNum, r.userId, userName, content, r.reg_date, answer
+		FROM articleReply r
+		JOIN member1 m ON r.userId = m.userId
+		WHERE answer = #{answer} 
+		ORDER BY replyNum DESC
+	</select>
+	
+	<!-- 대댓글 개수 -->
+	<select id="replyAnswerCount" parameterType="Integer" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM articleReply WHERE answer = #{answer}
+	</select>
+	
+	<delete id="deleteReply" parameterType="map">
+		DELETE FROM articleReply
+		WHERE replyNum=#{replyNum}
+		<if test="mode=='reply'">
+			OR answer=#{replyNum}
+		</if>
+	</delete>
+	
+	<!-- 파일 -->
+	<insert id="insertFile" parameterType="com.sp.tp.article.Article">
+		INSERT INTO articleFile (fileNum, artiNum, saveFilename)
+		VALUES (articleFile_seq.NEXTVAL, #{artiNum}, #{saveFilename})
+	</insert>
+	
+	<select id="listFile" parameterType="Integer" resultType="com.sp.tp.article.Article">
+		SELECT fileNum, artiNum, saveFilename
+		FROM articleFile
+		WHERE artiNum = #{artiNum}
+	</select>
+	
+	<select id="readFile" parameterType="Integer" resultType="com.sp.tp.article.Article">
+		SELECT fileNum, artiNum, saveFilename
+		FROM articleFile
+	    WHERE fileNum = #{fileNum}      
+	</select>
+	
+	<delete id="deleteFile" parameterType="map">
+		DELETE FROM articleFile WHERE ${field} = #{num}
+	</delete>
+
+
+</mapper>
