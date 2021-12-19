@@ -23,15 +23,15 @@
                         <div class="sub_menu_right_content" style="float: right;">
                         	<c:choose>
 	                        	<c:when test="${empty sessionScope.member}">
-		                            <a href="javascript:dialogLogin();" title="로그인">로그인</a>
+		                            <a href="javascript:dialogLogin();" title="로그인" style="text-decoration: none;"><i class="bi bi-door-open-fill"></i></a>
 									
-									<a href="${pageContext.request.contextPath}/member/member">회원가입</a>
+									<a href="${pageContext.request.contextPath}/member/member" style="text-decoration: none;" title="회원가입"><i class="bi bi-person-check-fill"></i></a>
 	                        	</c:when>
 	                        	<c:otherwise>
-	                        		<a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
-	                        		<a href="${pageContext.request.contextPath}/member/pwd">정보수정</a>
+	                        		<a href="${pageContext.request.contextPath}/member/logout" style="text-decoration: none;" title="로그아웃"><i class="bi bi-door-closed-fill"></i></a>
+	                        		<a href="${pageContext.request.contextPath}/member/mypage" style="text-decoration: none;" title="마이페이지"><i class="bi bi-person-lines-fill"></i></a>
 	                        		<c:if test="${sessionScope.member.membership>50}">
-										<a href="${pageContext.request.contextPath}/admin" title="관리자">관리자 메뉴</a>
+										<a href="${pageContext.request.contextPath}/admin" title="관리자" style="text-decoration: none;"><i class="bi bi-bar-chart-line-fill"></i></a>
 									</c:if>
 	                        	</c:otherwise>
                         	</c:choose>
@@ -62,6 +62,7 @@
                                             	카테고리
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        	<a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=all">전체</a>
                                             <a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=musical">뮤지컬</a>
                                             <a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=drama">연극</a>
                                             <a class="dropdown-item" href="${pageContext.request.contextPath}/performance/list?category=concert">콘서트</a>
@@ -80,7 +81,7 @@
                                         <a class="nav-link" href="">랭킹</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">공연일정</a>
+                                        <a class="nav-link" href="pageContext.request.contextPath}/schedule/main">공연일정</a>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown"

@@ -7,6 +7,7 @@ public class ArticleReply {
 	private String content;
 	private String reg_date;
 	private int answer;
+	private String userName;
 	
 	private int answerCount;
 
@@ -65,4 +66,14 @@ public class ArticleReply {
 	public void setAnswerCount(int answerCount) {
 		this.answerCount = answerCount;
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	
 }

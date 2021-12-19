@@ -271,4 +271,23 @@ public class MemberController {
 		return ".member.noAuthorized";
 	}
 	
+	@RequestMapping(value = "mypage")
+	public String myPage() {
+		return ".member.mypage";
+	}
+	
+	@RequestMapping(value = "choice")
+	public String choiceList() {
+		return ".member.choice";
+	}
+	
+	@RequestMapping(value = "booklist")
+	public String bookList() {
+		return ".member.booklist";
+	}
+	
+	@RequestMapping(value = "coupon")
+	public String couponList() {
+		return ".member.coupon";
+	}
 }

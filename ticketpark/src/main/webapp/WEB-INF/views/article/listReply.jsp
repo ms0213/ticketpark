@@ -13,7 +13,7 @@
 	<c:forEach var="vo" items="${listReply}">
 		<tr class='list-header'>
 			<td width='50%'>
-				<span class='bold'>${vo.userId}</span>
+				<span class='bold'>${vo.userName}</span>
 			</td>
 			<td width='50%' align="right">
 				<span style="font-size: 14px; color: #a2a2a2;">${vo.reg_date} |</span>
@@ -33,7 +33,7 @@
 
 		<tr>
 			<td>
-				<button type='button' class='btn btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
+				<button type='button' class='btn btn-light btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
 			</td>
 		</tr>
 	
@@ -45,7 +45,7 @@
 	                <div class='answer-right'><textarea class='boxTA' style="width: 500px; min-height: 70px;"></textarea></div>
 	            </div>
 	             <div class='answer-footer'>
-	                <button type='button' class='btn btnSendReplyAnswer' data-replyNum='${vo.replyNum}'>답글 등록</button>
+	                <button type='button' class='btn btn-light btnSendReplyAnswer' data-replyNum='${vo.replyNum}'>답글 등록</button>
 	            </div>
 			</td>
 	    </tr>

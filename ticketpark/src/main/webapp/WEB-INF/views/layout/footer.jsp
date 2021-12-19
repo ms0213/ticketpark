@@ -49,6 +49,29 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="p-t-40">
+				<div class="flex-c-m flex-w p-b-18" style="text-align: center;">
+					<a href="#" class="m-all-1">
+						<img src="${pageContext.request.contextPath}/resources/images1/icon/icon-pay-01.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="${pageContext.request.contextPath}/resources/images1/icon/icon-pay-02.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="${pageContext.request.contextPath}/resources/images1/icon/icon-pay-03.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="${pageContext.request.contextPath}/resources/images1/icon/icon-pay-04.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="${pageContext.request.contextPath}/resources/images1/icon/icon-pay-05.png" alt="ICON-PAY">
+					</a>
+				</div>
             </div>
         </div>
     </footer>
