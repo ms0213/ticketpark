@@ -37,11 +37,13 @@
 	
 	<select id="listTheater" parameterType="map" resultType="com.sp.tp.admin.theaterManage.Theater">
 				SELECT tNum, t.hallNo, sCount, name, location, seats, t.saveFilename, "rows", cols, 
-					generalSeat, vipSeat, hallName, f.saveFilename hallFile
+					generalSeat, vipSeat, hallName, MIN(f.saveFilename) hallFile
 				FROM theater t
 				JOIN hall h ON t.hallNo = h.hNum
 				JOIN hallFile f ON h.hNum = f.hNum
 				WHERE t.hallNo = #{hallNo}
+				GROUP BY tNum, t.hallNo, sCount, name, location, seats, t.saveFilename, "rows", cols, 
+					generalSeat, vipSeat, hallName
 				ORDER BY tNum DESC
 	</select>
 	
@@ -49,5 +51,12 @@
 		SELECT hNum hallNo, hallName
 		FROM hall
 		ORDER BY hallNo
+	</select>
+	
+	<select id="readHallFile" resultType="com.sp.tp.admin.theaterManage.Theater" parameterType="map">
+		SELECT MIN(f.saveFilename) hallFile 
+		FROM hallFile f
+		JOIN hall h ON h.hNum = f.hNum
+		WHERE h.hNum = #{hallNo}
 	</select>
 </mapper>

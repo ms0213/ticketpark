@@ -12,4 +12,5 @@ public interface TheaterService {
 	public void deleteTheater(int tNum) throws Exception;
 	public void insertTheaterFile(Map<String, Object> map) throws Exception;
 	public List<Theater> listHallNo();
+	public List<Theater> readHallFile(Map<String, Object> map);
 }
