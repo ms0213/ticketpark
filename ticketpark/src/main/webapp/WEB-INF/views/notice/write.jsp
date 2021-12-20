@@ -21,6 +21,20 @@
 			</td>
 		</tr>
 		
+		
+		<tr>
+			<td class="table-light col-sm-2" scope="row">분 류</td>
+			<td>
+				<select name="category" class="form-select">
+					<option value="안내" ${dto.category=="안내"?"selected='selected'":"" }>안내</option>
+					<option value="서비스 점검" ${dto.category=="서비스 점검"?"selected='selected'":"" }>서비스 점검</option>
+					<option value="변경/취소" ${dto.category=="변경/취소"?"selected='selected'":"" }>변경/취소</option>
+					<option value="티켓오픈" ${dto.category=="티켓오픈"?"selected='selected'":"" }>티켓오픈</option>
+				</select>
+			</td>
+		</tr>
+		 
+		 
 		<tr>
 			<td class="table-light col-sm-2" scope="row">공지여부</td>
 			<td class="py-3">

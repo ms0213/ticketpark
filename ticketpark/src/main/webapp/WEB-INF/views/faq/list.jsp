@@ -39,7 +39,7 @@
 
 				<div id="collapse${status.index}" class="collapse" aria-labelledby="heading${status.index}" data-parent="#accordionExample">
 					<div class="card-body">
-						<div class="row border-bottom pb-1"> &nbsp; 분류 : ${dto.category}</div>
+						<div class="row border-bottom pb-1"> &nbsp; [ ${dto.category} ]</div>
 						<div class="row p-2">
       						${dto.content}
       					</div>
