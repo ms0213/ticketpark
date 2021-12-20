@@ -69,7 +69,9 @@
 		        FROM performance p, theater th, hall h, genre g, poster po
 		        WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum
 		            AND p.perfNum = po.perfNum AND poster_main = 1 
-		            AND <include refid="category-list"/>
+		            <if test="category != null">
+			            AND <include refid="category-list"/>
+		            </if>
 		           	<if test="keyword != null and keyword != ''">
 						AND <include refid="where-list"/>	
 					</if>

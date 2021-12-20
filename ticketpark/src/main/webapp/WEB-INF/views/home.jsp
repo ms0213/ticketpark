@@ -40,7 +40,7 @@ $(function(){
 					<div class="owl-carousel" >
 						<c:forEach var="vo" items="${listPerformance}" varStatus="status">
 	                        <div class="single_event_slider">
-	                            <img src="${pageContext.request.contextPath}/uploads/performance/${vo.saveFilename}" class="d-block w-100" alt="${vo.subject}" style="height: 300px; width: 200px;">
+	                            <img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}" class="d-block w-100" alt="${vo.subject}" style="height: 300px; width: 200px;">
 	                            <p>${vo.subject}</p>
 	                        </div>
                         </c:forEach>
