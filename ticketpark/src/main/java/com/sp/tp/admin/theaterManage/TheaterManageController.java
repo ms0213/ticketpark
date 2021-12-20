@@ -40,8 +40,9 @@ public class TheaterManageController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("hallNo", hallNo);
 		List<Theater> list = service.listTheater(map);
-		
+		List<Theater> list2 = service.readHallFile(map);
 		model.addAttribute("list", list);
+		model.addAttribute("list2", list2);
 		
 		return "admin/theaterManage/list";
 	}

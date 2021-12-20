@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style type="text/css">
+.table {
+    line-height: 35px;
+}
+
 
 </style>
 
@@ -16,12 +20,12 @@
 <table class="table table-hover board-list">
 	<thead class="table-light">
 		<tr>
-			<th class="bw-80">NO.</th>
-			
+			<th class="bw-100">NO.</th>
+			<th class="bw-100">분류</th>
 			<th class="bw-auto">제목</th>
-			<th class="bw-100">작성일</th>
-			<th class="bw-70">조회수</th>
-			<th class="bw-50">파일</th>
+			<th class="bw-130">등록일</th>
+			<th class="bw-100">조회수</th>
+			<th class="bw-60">파일</th>
 		</tr>
 	</thead>
 
@@ -29,6 +33,7 @@
 		<c:forEach var="dto" items="${noticeList}">
 			<tr>
 				<td><span class="badge bg-primary">공지</span></td>
+				<td>${dto.category}</td>
 				<td class="left">
 					<a href="javascript:articleBoard('${dto.num}', '${pageNo}');" class="text-reset">${dto.subject}</a>
 				</td>
@@ -46,6 +51,7 @@
 		<c:forEach var="dto" items="${list}">
 			<tr>
 				<td>${dto.listNum}</td>
+				<td>${dto.category}</td>
 				<td class="left">
 					<a href="javascript:articleBoard('${dto.num}', '${pageNo}');" class="text-reset">${dto.subject}</a>
 				</td>

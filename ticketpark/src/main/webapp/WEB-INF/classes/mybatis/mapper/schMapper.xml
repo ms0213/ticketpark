@@ -24,15 +24,15 @@
 		FROM calendar c
 		LEFT OUTER JOIN calendarCategory cc ON c.categoryNum = cc.categoryNum
 		<where>
-			c.userId = #{userId}
 			<if test="categoryList != null">
-				AND 
 				c.categoryNum IN
 				<foreach collection="categoryList" item="categoryNum" open="(" separator="," close=")">
 					#{categoryNum}
 				</foreach>
+				
+				AND 
 			</if>
-			AND
+
 			( 
 				( 
 					 ( TO_DATE(sday, 'YYYY-MM-DD') &gt;= TO_DATE(#{start}, 'YYYY-MM-DD')

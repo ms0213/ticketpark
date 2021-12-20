@@ -100,4 +100,14 @@ public class TheaterManageServiceImpl implements TheaterService {
 		return listHallNo;
 	}
 
+	@Override
+	public List<Theater> readHallFile(Map<String, Object> map) {
+		List<Theater> list = null;
+		try {
+			list = dao.selectList("theaterManage.readHallFile", map);
+		} catch (Exception e) {
+		}
+		return list;
+	}
+
 }

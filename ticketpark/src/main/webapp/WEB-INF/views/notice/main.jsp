@@ -5,7 +5,7 @@
 
 <style type="text/css">
 .body-container {
-	max-width: 800px;
+	max-width: 900px;
 }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">

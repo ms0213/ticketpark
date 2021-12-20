@@ -22,7 +22,7 @@
 				</c:choose>							
 			</td>
 			<td align="right">
-				${dto.reg_date} | 조회 ${dto.hitCount}
+				등록일 : ${dto.reg_date} | 조회 : ${dto.hitCount}
 			</td>
 		</tr>
 		

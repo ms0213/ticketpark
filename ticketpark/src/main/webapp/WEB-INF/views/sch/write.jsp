@@ -241,6 +241,7 @@ $(function(){
 						</td>
 					</tr>
 					
+					
 					<tr>
 						<td class="table-light col-2" scope="row">일정반복</td>
 						<td>
@@ -260,6 +261,7 @@ $(function(){
 							</div>
 						</td>
 					</tr>
+					
 
 					<tr>
 						<td class="table-light col-2" scope="row">메 모</td>

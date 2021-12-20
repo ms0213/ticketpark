@@ -4,8 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-
 	<div class="accordion" id="accordionExample"> 
+		<c:forEach var="vo" items="${list2}">
+			<img src="${pageContext.request.contextPath}/uploads/hall/${vo.hallFile}">
+		</c:forEach>
 		<c:forEach var="dto" items="${list}" varStatus="status">
 			 <div class="card">
 				<div class="card-header" id="heading${status.index}">
