@@ -51,7 +51,11 @@
 	<!-- 공연 개수 -->
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
-		FROM performance p
+		FROM performance p, genre g, category c
+		WHERE p.gmNum = g.gNum AND c.cNum = g.cNum
+		<if test="category != null">
+            AND c.<include refid="category-list"/>
+        </if>
 		<where>
 			<if test="keyword!=null and keyword!='' ">
 				<include refid="where-list"/>
@@ -101,7 +105,7 @@
 	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
 		SELECT gNum genreNum, genre
 		FROM genre
-		WHERE cNum = ${categoryNum}
+		WHERE cNum = #{categoryNum}
 	</select>
 	
 	<select id="listRate" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
@@ -117,6 +121,22 @@
 	<select id="listTheater" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
 		SELECT tNum theaterNum, Name theater
 		FROM theater
-		WHERE hallNo = ${hallNum}
+		WHERE hallNo = #{hallNum}
+	</select>
+	
+	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+	    SELECT p.perfNum, subject, po.saveFilename postFileName,
+	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
+	        hallName, genre, category, time, rate, th.name as theater, p.content, rating
+	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r
+	    WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum AND c.cNum = g.cNum
+	        AND r.rNum = p.rNum
+	        AND p.perfNum = po.perfNum AND poster_main = 1 
+	        AND p.perfNum = ${perfNum}
+	</select>
+	
+	<select id="listFile" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+		SELECT postNum, perfNum, saveFileName FROM poster
+		WHERE poster_main = 1 AND perfNum = #{perfNum}
 	</select>
 </mapper>

@@ -15,6 +15,7 @@ public interface PerformanceService {
 	public List<Performance> listGenre(Map<String, Object> map);
 	public List<Performance> listHall();
 	public List<Performance> listTheater(Map<String, Object> map);
+	public List<Performance> listFile(int perfNum);
 	
 	public void insertPoster(Performance dto) throws Exception;
 	public void insertCast(Performance dto) throws Exception;
@@ -23,5 +24,6 @@ public interface PerformanceService {
 	public Performance readPoster(int postNum);
 	public void deletePoster(int postNum, String pathname) throws Exception;
 	public void deleteCast(Map<String, Object> map) throws Exception;
+	
 }
 

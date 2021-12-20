@@ -138,7 +138,7 @@ function searchList() {
 	         <div class="row">
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
-			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}" title="${dto.subject}">
+			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}" title="${dto.subject}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
 			 			</a>

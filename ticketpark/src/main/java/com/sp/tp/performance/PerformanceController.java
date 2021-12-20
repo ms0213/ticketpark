@@ -39,7 +39,7 @@ public class PerformanceController {
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
-			@RequestParam(defaultValue = "musical") String category,
+			@RequestParam String category,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -57,6 +57,7 @@ public class PerformanceController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
+		map.put("category", category);
 
 		dataCount = service.dataCount(map);
 		total_page = myUtil.pageCount(rows, dataCount);
@@ -77,7 +78,8 @@ public class PerformanceController {
 		String listUrl = cp + "/performance/list";
 		String articleUrl = cp + "/performance/article?page=" + current_page;
 		if (keyword.length() != 0) {
-			query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+			query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8") 
+					+ "&category=" + category;
 		}
 
 		if (query.length() != 0) {
@@ -111,7 +113,7 @@ public class PerformanceController {
 		List<Performance> hallList = service.listHall();
 		
 		if (info.getMembership() < 51) {
-			return "redirect:/performance/list";
+			return "redirect:/";
 		}
 
 		model.addAttribute("mode", "add");
@@ -130,7 +132,7 @@ public class PerformanceController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		if (info.getMembership() < 51) {
-			return "redirect:/performance/list";
+			return "redirect:/";
 		}
 
 		try {
@@ -138,7 +140,7 @@ public class PerformanceController {
 		} catch (Exception e) {
 		}
 
-		return "redirect:/performance/list";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "genre", method = RequestMethod.GET)
@@ -173,5 +175,39 @@ public class PerformanceController {
 		
 		return model;
 		
+	}
+	
+	@RequestMapping(value = "article", method = RequestMethod.GET)
+	public String article(@RequestParam int perfNum,
+			@RequestParam String page,
+			@RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam String category,
+			Model model) throws Exception {		
+
+		keyword = URLDecoder.decode(keyword, "utf-8");
+
+		String query = "page=" + page;
+		query += "&category=" + category;
+		
+		if (keyword.length() != 0) {
+			query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
+		}
+
+		Performance dto = service.readPerformance(perfNum);
+		if (dto == null) {
+			return "redirect:/performance/list?" + query;
+		}
+		
+		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+
+		List<Performance> listFile = service.listFile(perfNum);
+
+		model.addAttribute("dto", dto);
+		model.addAttribute("listFile", listFile);
+		model.addAttribute("page", page);
+		model.addAttribute("query", query);
+
+		return ".performance.article";
 	}
 }

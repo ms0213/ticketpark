@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sp.tp.common.FileManager;
 import com.sp.tp.common.dao.CommonDAO;
@@ -112,8 +111,15 @@ public class PerformanceServiceImpl implements PerformanceService {
 
 	@Override
 	public Performance readPerformance(int perfNum) {
-		// TODO Auto-generated method stub
-		return null;
+		Performance dto = null;
+		
+		try {
+			dto = dao.selectOne("performance.readPerformance", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
 	}
 
 	@Override
@@ -264,5 +270,17 @@ public class PerformanceServiceImpl implements PerformanceService {
 			e.printStackTrace();
 		}
 		return listTheater;
+	}
+
+	@Override
+	public List<Performance> listFile(int perfNum) {
+		List<Performance> listFile = null;
+		
+		try {
+			listFile = dao.selectList("performance.listFile", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listFile;
 	}
 }
