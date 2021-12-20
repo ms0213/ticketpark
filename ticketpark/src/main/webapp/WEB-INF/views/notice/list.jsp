@@ -20,12 +20,12 @@
 <table class="table table-hover board-list">
 	<thead class="table-light">
 		<tr>
-			<th class="bw-100">NO.</th>
-			<th class="bw-100">분류</th>
+			<th class="bw-80">NO.</th>
+			<th class="bw-130">분류</th>
 			<th class="bw-auto">제목</th>
 			<th class="bw-130">등록일</th>
-			<th class="bw-100">조회수</th>
-			<th class="bw-60">파일</th>
+			<th class="bw-80">조회수</th>
+			<th class="bw-50">파일</th>
 		</tr>
 	</thead>
 
