@@ -3,7 +3,7 @@ package com.sp.tp.member;
 import java.util.Map;
 
 public interface MemberService {
-public Member loginMember(String userId);
+	public Member loginMember(String userId);
 	
 	public void insertMember(Member dto) throws Exception;
 	

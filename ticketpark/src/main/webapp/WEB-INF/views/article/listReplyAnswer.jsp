@@ -9,7 +9,7 @@
 		<div class='answer-article-header'>
 			<div class='answer-left'>└</div>
 			<div class='answer-right'>
-				<div style='float: left;'><span class='bold'>작성자 : ${vo.userId}</span></div>
+				<div style='float: left;'><span class='bold'>작성자 : ${vo.userName}</span></div>
 				<div style='float: right;'>
 					<span style="font-size: 14px; color: #a2a2a2;">${vo.reg_date}</span> |
 					<c:choose>

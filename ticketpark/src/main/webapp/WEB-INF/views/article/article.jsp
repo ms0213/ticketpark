@@ -240,7 +240,7 @@ $(function(){
 			<tbody>
 				<tr>
 					<td width="50%" align="left">
-						이름 : ${dto.admin}
+						이름 : ${dto.userName}
 					</td>
 					<td width="50%" align="right">
 						${dto.reg_date} | 조회 ${dto.hitCount}
@@ -270,25 +270,25 @@ $(function(){
 				<td width="50%">
 					<c:choose>
 						<c:when test="${sessionScope.member.userId==dto.admin}">
-			    			<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/article/update?num=${dto.artiNum}&page=${page}';">수정</button>
+			    			<button type="button" class="btn btn-light" onclick="javascript:location.href='${pageContext.request.contextPath}/article/update?num=${dto.artiNum}&page=${page}';">수정</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btn" disabled="disabled">수정</button>
+			    			<button type="button" class="btn btn-light" disabled="disabled">수정</button>
 			    		</c:otherwise>
 			    	</c:choose>
 			    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userId==dto.admin || sessionScope.member.membership>50}">
-			    			<button type="button" class="btn" onclick="deleteBoard();">삭제</button>
+			    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btn" disabled="disabled">삭제</button>
+			    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
 			    		</c:otherwise>
 			    	</c:choose>
 				</td>
 			
 				<td align="right">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/article/list?${query}';">리스트</button>
+					<button type="button" class="btn btn-light" onclick="javascript:location.href='${pageContext.request.contextPath}/article/list?${query}';">리스트</button>
 				</td>
 			</tr>
 		</table>
@@ -307,7 +307,7 @@ $(function(){
 					</tr>
 					<tr>
 					   <td align='right'  style="border-top: none;">
-					        <button type='button' class='btn btnSendReply'>댓글 등록</button>
+					        <button type='button' class='btn btn-light btnSendReply'>댓글 등록</button>
 					    </td>
 					 </tr>
 				</table>

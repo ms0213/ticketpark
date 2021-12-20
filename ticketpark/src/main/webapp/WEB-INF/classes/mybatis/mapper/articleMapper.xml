@@ -72,9 +72,10 @@
 	</select>
 	
 	<select id="readArticle" parameterType="Integer" resultType="com.sp.tp.article.Article">
-		SELECT artiNum, admin, subject, content, reg_date, atName
+		SELECT artiNum, admin, subject, content, a.reg_date, atName, m.userName
 		FROM article a
 		JOIN articleType at ON at.atNum = a.atNum
+		JOIN member1 m ON m.userId = a.admin
 		WHERE artiNum = #{artiNum}
 	</select>
 	

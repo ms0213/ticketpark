@@ -2,14 +2,16 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="icon" href="data:;base64,iVORw0KGgo=">
-</head>
-<body>
 
-</body>
-</html>
+
+<div class="container">
+	<div class="body-container">
+		<div class="body-title">
+			<h3> 찜목록  </h3>
+		</div>
+		
+		<div class="body-main">
+			내용 입니다.
+		</div>
+	</div>
+</div>
