@@ -7,8 +7,8 @@
 	</select>
 	
 	<insert id="insertNotice" parameterType="com.sp.tp.notice.Notice">
-		INSERT INTO notice(num, userId, subject, content, notice, hitCount, reg_date)
-		VALUES(#{num}, #{userId}, #{subject}, #{content}, #{notice}, 0, SYSDATE)
+		INSERT INTO notice(num, userId, subject, content, notice, hitCount, reg_date, category)
+		VALUES(#{num}, #{userId}, #{subject}, #{content}, #{notice}, 0, SYSDATE, #{category})
 	</insert>
 
 	<sql id="where-list">
@@ -35,7 +35,7 @@
 	<select id="listNoticeTop" resultType="com.sp.tp.notice.Notice">
 		SELECT n.num, notice, n.userId, userName, subject, hitCount, 
 				TO_CHAR(n.reg_date, 'YYYY-MM-DD') reg_date,
-				NVL(fileCount, 0) fileCount
+				NVL(fileCount, 0) fileCount, category
 		FROM notice n
 		JOIN member1 m ON n.userId=m.userId
 		LEFT OUTER JOIN (
@@ -63,7 +63,7 @@
 		SELECT * FROM (
 			SELECT ROWNUM rnum, tb.* FROM (
 				SELECT n.num, notice, n.userId, userName, subject, hitCount, 
-				       n.reg_date, NVL(fileCount, 0) fileCount
+				       n.reg_date, NVL(fileCount, 0) fileCount, category
 				FROM notice n
 				JOIN member1 m ON n.userId=m.userId
 				LEFT OUTER JOIN (
@@ -82,7 +82,8 @@
 
     <!-- 글보기 -->
     <select id="readNotice" parameterType="Integer" resultType="com.sp.tp.notice.Notice">
-		SELECT num, n.userId, userName, subject, content, n.reg_date, hitCount, notice
+		SELECT num, n.userId, userName, subject, content, TO_CHAR(n.reg_date, 'YYYY-MM-DD') reg_date, hitCount, notice, category
+		
 		FROM notice n
 		JOIN member1 m ON n.userId=m.userId 
 		WHERE num = #{num}
