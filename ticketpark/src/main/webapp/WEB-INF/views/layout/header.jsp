@@ -81,7 +81,7 @@
                                         <a class="nav-link" href="">랭킹</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="pageContext.request.contextPath}/schedule/main">공연일정</a>
+                                        <a class="nav-link" href="${pageContext.request.contextPath}/schedule/main">공연일정</a>
                                     </li>
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown"

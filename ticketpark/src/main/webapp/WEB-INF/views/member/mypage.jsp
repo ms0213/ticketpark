@@ -6,6 +6,7 @@
 <style>
 #list-example {
 	position: absolute;
+	max-height: 100%;
 }
 
 .selected { 
