@@ -20,6 +20,7 @@ public class Notice {
 	private String saveFilename;
 	private long fileSize;
 	private int fileCount;
+	private String category;
 	
 	// 스프링에서 파일 받기
 	private List<MultipartFile> selectFile; // <input type="file" name="selectFile"
@@ -120,5 +121,11 @@ public class Notice {
 	}
 	public void setGap(long gap) {
 		this.gap = gap;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }

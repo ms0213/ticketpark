@@ -32,11 +32,10 @@ textarea:focus, input:focus {
 
 /* Navigation */
 .navbar {
-	background-color: #fcfafb;
 	font-weight: 500;
 	font-size: 0.875rem;
 	line-height: 0.2rem;
-	box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.05);
+	
 }
 
 .navbar .navbar-nav {
@@ -45,7 +44,7 @@ textarea:focus, input:focus {
 }
 
 .navbar .nav-item .nav-link {
-	color: #5e6576;
+	color: #black;
 	transition: all 0.2s ease;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
@@ -53,7 +52,6 @@ textarea:focus, input:focus {
 
 .navbar .nav-item .nav-link:hover,
 .navbar .nav-item .nav-link.active {
-	color: #0092ff;
 	text-decoration: none;
 }
 
@@ -100,7 +98,11 @@ textarea:focus, input:focus {
     margin: 0 0 -5px 0;
     padding-bottom: 5px;
     display: inline-block;
-    border-bottom: 3px solid #424951;
+    color: #0B7903;
+}
+
+.main_menu_iner {
+	background-color: white;
 }
 
 /* 페이징 */

@@ -7,3 +7,16 @@
 .body-title h3 {
 	font-weight: bold;
 }
+
+@font-face {
+    font-family: 'tp';
+    src: url('../fonts/NotoSansKR-Medium.otf') format('truetype');
+}
+
+body {
+	font-family: 'tp';
+}
+
+.nav-link {
+	color: black;
+}
