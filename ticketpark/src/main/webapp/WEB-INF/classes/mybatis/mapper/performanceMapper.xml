@@ -14,17 +14,17 @@
 	<!-- 공연 등록 -->
 	<insert id="insertPerformance" parameterType="com.sp.tp.performance.Performance">
 		INSERT INTO performance (perfNum, subject, content, gmnum, tnum, rnum, rating, price, time, startDate, endDate)
-			VALUES (#{sdNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum}, #{rating}, #{price}, #{time}, #{startDate}, #{endDate})
+			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum},#{rateNum}, #{rating}, #{price}, #{showTime}, #{startDate}, #{endDate})
 	</insert>
 	
 	<insert id="insertSchedule" parameterType="com.sp.tp.performance.Performance">
 		INSERT INTO schedule (sdNum,perf_time, perf_date, perfNum)
-			VALUES (#{sdNum}, #{perfTime}, #{perfDate}, #{perfNum})
+			VALUES (schedule_seq.NEXTVAL, #{perfTime}, #{perfDate}, #{perfNum})
 	</insert>
 	 
 	<insert id="insertCast" parameterType="com.sp.tp.performance.Performance">
 		INSERT INTO cast (castNum, sdNum, name, roleName, imageFileName)
-			VALUES(cast_seq.NEXTVAL, #{sdNum}, #{roleName} #{castFileName})
+			VALUES(cast_seq.NEXTVAL, #{sdNum}, #{castName}, #{roleName}, #{castFileName})
 	</insert>
 	
 	<sql id="where-list">
@@ -81,7 +81,7 @@
 	<!-- 파일 -->
 	<insert id="insertPoster" parameterType="com.sp.tp.performance.Performance">
 		INSERT INTO poster(postNum, perfNum, saveFilename, poster_main) 
-			VALUES (poster_seq.NEXTVAL, #{perfNum}, #{saveFilename}, 1)
+			VALUES (poster_seq.NEXTVAL, #{perfNum}, #{postFileName}, 1)
 	</insert>
 	
 	<select id="listPoster" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
@@ -96,10 +96,25 @@
 		FROM category
 	</select>
 	
-	
 	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
-		SELECT gNum, genre
+		SELECT gNum genreNum, genre
 		FROM genre
 		WHERE cNum = ${categoryNum}
+	</select>
+	
+	<select id="listRate" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+		SELECT rNum rateNum, rate
+		FROM rate
+	</select>
+	
+	<select id="listHall" resultType="com.sp.tp.performance.Performance">
+		SELECT hNum hallNum, hallName
+		FROM hall
+	</select>
+	
+	<select id="listTheater" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+		SELECT tNum theaterNum, Name theater
+		FROM theater
+		WHERE hallNo = ${hallNum}
 	</select>
 </mapper>

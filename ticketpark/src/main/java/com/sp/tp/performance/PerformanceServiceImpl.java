@@ -22,37 +22,61 @@ public class PerformanceServiceImpl implements PerformanceService {
 	@Override
 	public void insertPerformance(Performance dto, String pathname) throws Exception {
 		try {
-			int seq = dao.selectOne("performance.performanceSeq");
-			dto.setPerfNum(seq);
+			int performanceSeq = dao.selectOne("performance.performanceSeq");
+			dto.setPerfNum(performanceSeq);
+			
+			int scheduleSeq = dao.selectOne("performance.scheduleSeq");
+			dto.setSdNum(scheduleSeq);
 			
 			dao.insertData("performance.insertPerformance", dto);
 			
 			// 포스트 업로드
 			String postFileName = fileManager.doFileUpload(dto.getPostFile(), pathname);
 			
-			if (postFileName != null) {
-				dto.setPostFileName(postFileName);
-				dao.insertData("performance.insertPost", dto);
-			}
-			
+			// 출연진 사진 업로드
+			/*
 			if(!dto.getCastsFileName().isEmpty()) {
 				for(MultipartFile mf : dto.getCastsFileName()) {
 					String castFileName = fileManager.doFileUpload(mf, pathname);
 					if(castFileName == null) {
 						continue;
 					}
-					
 					dto.setCastFileName(castFileName);
 					
 					insertCast(dto);
 				}
 			}
+			*/
 			
-			System.out.println(dto.getPerfsDate());
-			for(int i=0; i < dto.getPerfsDate().size(); i++) {
-				List<String> perfDate = dto.getPerfsDate();
+			// 공연일정 insert
+			for(int i = 0; i < dto.getPerfsDate().size(); i++) {
+				
+				dto.setPerfDate(dto.getPerfsDate().get(i));
+				dto.setPerfTime(dto.getPerfsTime().get(i));
 				
 				insertSchedule(dto);
+			}
+			/*
+			// 출연진 insert
+			for(int i = 0; i < dto.getCastsName().size(); i++) {
+				Performance vo = new Performance();
+				vo.setCastName(dto.getCastsName().get(i));
+				vo.setRoleName(dto.getRolesName().get(i));
+				for(MultipartFile mf : dto.getCastsFile()) {
+					String castFileName = fileManager.doFileUpload(mf, pathname);
+					if(castFileName == null) {
+						continue;
+					}
+					vo.setCastFileName(castFileName);
+				}
+				
+				insertCast(vo);
+			}
+			*/
+			
+			if (postFileName != null) {
+				dto.setPostFileName(postFileName);
+				dao.insertData("performance.insertPoster", dto);
 			}
 			
 		} catch (Exception e) {
@@ -161,11 +185,28 @@ public class PerformanceServiceImpl implements PerformanceService {
 		}
 		return listGenre;
 	}
+	
+	@Override
+	public List<Performance> listRate() {
+		List<Performance> listRate = null;
+		
+		try {
+			listRate = dao.selectList("performance.listRate");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listRate;
+	}
 
 	@Override
 	public void insertCast(Performance dto) throws Exception {
+		
 		try {
-			dao.insertData("performance.inserCast", dto);
+			int seq = dao.selectOne("performance.scheduleSeq");
+			dto.setSdNum(seq);
+			
+			dao.insertData("performance.insertCast", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -199,5 +240,29 @@ public class PerformanceServiceImpl implements PerformanceService {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	@Override
+	public List<Performance> listHall() {
+		List<Performance> listHall = null;
+		
+		try {
+			listHall = dao.selectList("performance.listHall");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listHall;
+	}
+	
+	@Override
+	public List<Performance> listTheater(Map<String, Object> map) {
+		List<Performance> listTheater = null;
+		
+		try {
+			listTheater = dao.selectList("performance.listTheater", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listTheater;
 	}
 }

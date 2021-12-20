@@ -12,7 +12,7 @@ public class Performance {
 	private String endDate;
 	private Double rating;
 	private int price;
-	private int time;
+	private int showTime;
 	
 	private int sdNum;
 	private String perfDate;
@@ -39,9 +39,10 @@ public class Performance {
 	private String castName;
 	private String roleName;
 	private String castFileName;
+	private MultipartFile castFile;
 	private List<String> castsName;
 	private List<String> rolesName;
-	private List<MultipartFile> castsFileName;
+	private List<MultipartFile> castsFile;
 	
 	private int postNum;
 	private String postFileName;
@@ -89,11 +90,11 @@ public class Performance {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getTime() {
-		return time;
+	public int getShowTime() {
+		return showTime;
 	}
-	public void setTime(int time) {
-		this.time = time;
+	public void setShowTime(int showTime) {
+		this.showTime = showTime;
 	}
 	public int getGenreNum() {
 		return genreNum;
@@ -233,11 +234,17 @@ public class Performance {
 	public void setRolesName(List<String> rolesName) {
 		this.rolesName = rolesName;
 	}
-	public List<MultipartFile> getCastsFileName() {
-		return castsFileName;
+	public MultipartFile getCastFile() {
+		return castFile;
 	}
-	public void setCastsFileName(List<MultipartFile> castsFileName) {
-		this.castsFileName = castsFileName;
+	public void setCastFile(MultipartFile castFile) {
+		this.castFile = castFile;
+	}
+	public List<MultipartFile> getCastsFile() {
+		return castsFile;
+	}
+	public void setCastsFile(List<MultipartFile> castsFile) {
+		this.castsFile = castsFile;
 	}
 	public MultipartFile getPostFile() {
 		return postFile;

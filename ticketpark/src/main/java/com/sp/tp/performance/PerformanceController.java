@@ -39,7 +39,7 @@ public class PerformanceController {
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
-			@RequestParam String category,
+			@RequestParam(defaultValue = "musical") String category,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -107,6 +107,8 @@ public class PerformanceController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		List<Performance> groupList = service.listCategory();
+		List<Performance> rateList = service.listRate();
+		List<Performance> hallList = service.listHall();
 		
 		if (info.getMembership() < 51) {
 			return "redirect:/performance/list";
@@ -114,7 +116,9 @@ public class PerformanceController {
 
 		model.addAttribute("mode", "add");
 		model.addAttribute("groupList", groupList);
-
+		model.addAttribute("rateList", rateList);
+		model.addAttribute("hallList", hallList);
+		
 		return ".performance.perfAdd";
 	}
 	
@@ -149,6 +153,23 @@ public class PerformanceController {
 		
 		Map<String, Object> model = new HashMap<>();
 		model.put("genreList", genreList);
+		
+		return model;
+		
+	}
+	
+	@RequestMapping(value = "theater", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> theaterList(
+			@RequestParam int hallNum) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("hallNum", hallNum);
+		
+		List<Performance> theaterList = service.listTheater(map);
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("theaterList", theaterList);
 		
 		return model;
 		

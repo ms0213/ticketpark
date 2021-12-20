@@ -111,24 +111,145 @@ function sendOk() {
     var f = document.performanceForm;
 	var str;
 	
+    str = f.categoryNum.value.trim();
+    if(!str) {
+        alert("카테고리를 입력하세요. ");
+        f.categoryNum.focus();
+        return;
+    }
+    
+    str = f.genreNum.value.trim();
+    if(!str) {
+        alert("장르를 입력하세요. ");
+        f.genre.focus();
+        return;
+    }
+    
+    str = f.rating.value.trim();
+    if(!str) {
+        alert("평점을 입력하세요. ");
+        f.rating.focus();
+        return;
+    }
+    if(str > 5 || str < 0) {
+    	alert("평점은 0~5 사이로 입력해주세요 ");
+    	f.rating.focus();
+    	return;
+    }
+    
     str = f.subject.value.trim();
     if(!str) {
         alert("공연이름을 입력하세요. ");
         f.subject.focus();
         return;
     }
-
+    
+    str = f.startDate.value.trim();
+    if(!str) {
+        alert("공연시작날짜를 입력하세요. ");
+        f.startDate.focus();
+        return;
+    }
+    
+    str = f.endDate.value.trim();
+    if(!str) {
+        alert("공연종료날짜를 입력하세요. ");
+        f.endDate.focus();
+        return;
+    }
+    
+    str = f.showTime.value.trim();
+    if(!str) {
+        alert("공연관람시간을 입력하세요. ");
+        f.showTime.focus();
+        return;
+    }
+    
+    str = f.hallNum.value.trim();
+    if(!str) {
+        alert("공연장을 선택하세요. ");
+        f.hallNum.focus();
+        return;
+    }
+    
+    str = f.theaterNum.value.trim();
+    if(!str) {
+        alert("상영관을 선택하세요. ");
+        f.theaterNum.focus();
+        return;
+    }
+    
+    str = f.rateNum.value.trim();
+    if(!str) {
+        alert("관람연령을 선택하세요. ");
+        f.rateNum.focus();
+        return;
+    }
+    
+    str = f.rating.value.trim();
+    if(!str) {
+        alert("평점을 입력하세요. ");
+        f.rating.focus();
+        return;
+    }
+    
+    str = f.price.value.trim();
+    if(!str) {
+        alert("가격을 입력하세요. ");
+        f.price.focus();
+        return;
+    }
+    
+    var b = true;
+    $("input[name=perfsDate]").each(function(index) {
+    	if(! $(this).val()) {
+			b = false;
+    	}
+    	if(! b) return false;
+    	
+    	if(! $("input[name=perfsTime]").eq(index).val()) {
+    		b = false;
+    	}
+    	if(! b) return false;
+    });
+	
+	if(! b) {
+		alert("공연일정을 정확히 입력 하세요");
+	}
+	
+    /*
+    str = f.castsName.value.trim();
+    if(!str) {
+        alert("출연진이름을 입력하세요. ");
+        f.castName.focus();
+        return;
+    }
+    
+    str = f.rolesName.value.trim();
+    if(!str) {
+        alert("배역이름을 입력하세요. ");
+        f.roleName.focus();
+        return;
+    }
+    
+    var mode = "${mode}";
+    if( (mode === "add") && (!f.castsFile.value) ) {
+        alert("출연진사진을 추가 하세요. ");
+        f.castsFile.focus();
+        return;
+    }
+    */
     str = f.content.value.trim();
     if(!str) {
         alert("내용을 입력하세요. ");
         f.content.focus();
         return;
     }
-
+    
     var mode = "${mode}";
-    if( (mode === "write") && (!f.selectFile.value) ) {
-        alert("이미지 파일을 추가 하세요. ");
-        f.selectFile.focus();
+    if( (mode === "add") && (!f.postFile.value) ) {
+        alert("포스터 파일을 추가 하세요. ");
+        f.postFile.focus();
         return;
     }
     
@@ -187,6 +308,31 @@ $(function(){
 	});
 });
 
+$(function(){
+	$("form select[name=hallNum]").change(function(){
+		var hallNum = $(this).val();
+		$("form select[name=theaterNum]").find('option').remove().end()
+				.append("<option value=''>:: 상영관 선택 ::</option>");
+		
+		if(! hallNum) {
+			return false;
+		}
+		
+		var url="${pageContext.request.contextPath}/performance/theater";
+		var query="hallNum=" + hallNum;
+		
+		var fn=function(data) {
+			$.each(data.theaterList, function(index, item){
+				var theaterNum = item.theaterNum;
+				var theater = item.theater;
+				var s = "<option value='"+theaterNum+"'>"+theater+"</option>";
+				$("form select[name=theaterNum]").append(s);
+			});
+		};
+		ajaxFun(url, "get", query, "json", fn);
+	});
+});
+
 <c:if test="${mode=='update'}">
 $(function(){
 	$(".delete-img").click(function(){
@@ -202,44 +348,100 @@ $(function(){
 	});
 });
 </c:if>
-
-$(function() {
-	var img = "${dto.castFileName}";
-	if( img ) { // 수정인 경우
-		img = "${pageContext.request.contextPath}/uploads/performance/" + img;
-		$(".write-form .cast-img").empty();
-		$(".write-form .cast-img").css("background-image", "url("+img+")");
-	}
+/*
+$(function(){
+	var sel_files = [];
 	
-	$(".write-form .cast-img").click(function(){
-		$("form[name=performanceForm] input[name=castImage]").trigger("click"); 
+	$("body").on("click", ".write-form .cast-img", function(cast){
+		$("form[name=performanceForm] input[name=castsFile]").trigger("click"); 
 	});
 	
-	$("form[name=performanceForm] input[name=castImage]").change(function(){
-		var file=this.files[0];
-		if(! file) {
-			$(".write-form .cast-img").empty();
-			if( img ) {
-				img = "${pageContext.request.contextPath}/uploads/performance/" + img;
-				$(".write-form .cast-img").css("background-image", "url("+img+")");
+	$("form[name=performanceForm] input[name=castsFile]").change(function(){
+		if(! this.files) {
+			var dt = new DataTransfer();
+			for(file of sel_files) {
+				dt.items.add(file);
+			}
+			document.performanceForm.castsFile.files = dt.files;
+			
+	    	return false;
+	    }
+	    
+		var dt = new DataTransfer();
+		for(file of sel_files) {
+			dt.items.add(file);
+		}
+		document.perFormanceForm.castsFile.files = dt.files;		
+	    
+	});
+	
+	$("body").on("click", ".write-form .img-item", function(cast) {
+		if(! confirm("선택한 파일을 삭제 하시겠습니까 ?")) {
+			return false;
+		}
+		
+		var filename = $(this).attr("data-filename");
+		
+	    for(var i = 0; i < sel_files.length; i++) {
+	    	if(filename === sel_files[i].name){
+	    		sel_files.splice(i, 1);
+	    		break;
+			}
+	    }
+	
+		var dt = new DataTransfer();
+		for(file of sel_files) {
+			dt.items.add(file);
+		}
+		document.performanceForm.castsFile.files = dt.files;
+		
+		$(this).remove();
+	});
+});
+*/
+
+
+$(function() {
+	var castImg = "${dto.castFileName}";
+	if( castImg ) {
+		castImg = "${pageContext.request.contextPath}/uploads/performance/" + castImg;
+		$(".write-form .cast-img").empty();
+		$(".write-form .cast-img").css("background-image", "url("+castImg+")");
+	}
+	
+	$("body").on("click", ".write-form .cast-img", function(cast){
+		$("form[name=performanceForm] input[name=castsFile]").trigger("click"); 
+	});
+	
+	$("form[name=performanceForm] input[name=castsFile]").change(function(){
+		var $p = $(this).closest("p");
+		var castFile=this.files[0];
+		if(! castFile) {
+			$p.find(".cast-img").empty();
+			if( castImg ) {
+				castImg = "${pageContext.request.contextPath}/uploads/performance/" + castImg;
+				$p.find(".cast-img").css("background-image", "url("+castImg+")");
 			} else {
-				img = "${pageContext.request.contextPath}/resources/images1/add_photo.png";
-				$(".write-form .cast-img").css("background-image", "url("+img+")");
+				castImg = "${pageContext.request.contextPath}/resources/images1/add_photo.png";
+				$p.find(".cast-img").css("background-image", "url("+castImg+")");
 			}
 			return false;
 		}
 		
-		if(! file.type.match("image.*")) {
+		if(! castFile.type.match("image.*")) {
 			this.focus();
 			return false;
 		}
 		
 		var reader = new FileReader();
 		reader.onload = function(e) {
-			$(".write-form .cast-img").empty();
-			$(".write-form .cast-img").css("background-image", "url("+e.target.result+")");
+			$p.find(".cast-img").empty();
+			$p.find(".cast-img").css("background-image", "url("+e.target.result+")");
+			
+			//$(".write-form .cast-img").empty();
+			//$(".write-form .cast-img").css("background-image", "url("+e.target.result+")");
 		}
-		reader.readAsDataURL(file);
+		reader.readAsDataURL(castFile);
 	});
 });
 
@@ -252,13 +454,12 @@ $(function() {
 	}
 	
 	$(".write-form .post-img").click(function(){
-		$("form[name=performanceForm] input[name=selectFile]").trigger("click"); 
+		$("form[name=performanceForm] input[name=postFile]").trigger("click"); 
 	});
 	
-	$("form[name=performanceForm] input[name=selectFile]").change(function(){
+	$("form[name=performanceForm] input[name=postFile]").change(function(){
 		var postFile=this.files[0];
 		if(! postFile) {
-			$(".write-form .post-img").empty();
 			if( postImg ) {
 				postImg = "${pageContext.request.contextPath}/uploads/performance/" + postImg;
 				$(".write-form .post-img").css("background-image", "url("+postImg+")");
@@ -273,7 +474,6 @@ $(function() {
 			this.focus();
 			return false;
 		}
-		
 		var reader = new FileReader();
 		reader.onload = function(e) {
 			$(".write-form .post-img").empty();
@@ -318,19 +518,20 @@ $(function(){
 		var p=$(this).parent().parent().find("p:first").clone();
 		$(p).find("input").each(function(){
 			$(this).val("");
+			$(p).find(".cast-img").css("background-image", "url(/tp/resources/images1/add_photo.png)");
 		});
-		
-		$(p).find("input")
 		
 		$(this).parent().parent().find(".cast").append(p);
 	});
 	
 	$("body").on("click", ".castRemoveBtn", function(){
+		var $p = $(this).closest("p");
+		
 		if($(this).closest(".cast").find("p").length<=1) {
 			return;
 		}
 		
-		$(this).closest("p").remove();
+		$p.remove();
 		
 		if($(".castRemoveBtn").closest("p").length<=1) {
             $(".castRemoveBtn").hide();
@@ -356,7 +557,7 @@ $(function(){
 									<select name="categoryNum" class="form-select">
 										<option value="">:: 카테고리 선택 ::</option>
 										<c:forEach var="vo" items="${groupList}">
-											<option value="${vo.categoryNum}" ${dto.categoryNum==vo.genreNum?"selected='selected'":""}>${vo.category}</option>
+											<option value="${vo.categoryNum}">${vo.category}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -378,9 +579,52 @@ $(function(){
 					<tr>
 						<td class="table-light col-sm-2" scope="row">공연기간</td>
 						<td>
-							<input type="date" name="perfDate" id="form-perfTime" class="boxTF" style="width: 35%;" value="${dto.startDate}"> ~ 
-							<input type="date" name="perfTime" id="form-perfTime" class="boxTF" style="width: 35%;" value="${dto.endDate}">
-							<input type="number" name="showtime" id="showtime" class="boxTF" style="width: 15%;" placeholder="관람시간" value="${dto.time}">
+							<input type="date" name="startDate" id="startDate" class="boxTF" style="width: 35%;" value="${dto.startDate}"> ~ 
+							<input type="date" name="endDate" id="endDate" class="boxTF" style="width: 35%;" value="${dto.endDate}">
+							<input type="number" name="showTime" id="showTime" class="boxTF" style="width: 15%;" placeholder="관람시간" value="${dto.showTime}">
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="table-light col-sm-2" scope="row">공연 장소</td>
+						<td>
+							<div class="row">
+								<div class="col-sm-4 pe-1">
+									<select name="hallNum" class="form-select">
+										<option value="">:: 공연장 선택 ::</option>
+										<c:forEach var="vo" items="${hallList}">
+											<option value="${vo.hallNum}">${vo.hallName}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="col-sm-4 ps-1">
+									<select name="theaterNum" class="form-select">
+										<option value="">:: 상영관 선택 ::</option>
+									</select>
+								</div>
+							</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="table-light col-sm-2" scope="row">공연정보</td>
+						<td>
+							<div class="row">
+								<div class="col-sm-4 pe-1">
+									<select name="rateNum" class="form-select">
+										<option value="">:: 관람연령 선택 ::</option>
+										<c:forEach var="vo" items="${rateList}">
+											<option value="${vo.rateNum}">${vo.rate}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="col-sm-4 ps-1">
+									<input type="number" name="price" id="price" class="boxTF" placeholder="가격" value="${dto.price}">
+								</div>
+								<div class="col-sm-4 ps-1">
+									<input type="number" name="rating" id="rating" class="boxTF" placeholder="평점" value="${dto.rating}">
+								</div>
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -391,10 +635,10 @@ $(function(){
 						<td class="schedule">
 							<div class="row" style="margin-bottom: 10px; padding-top: 4px;">
 								<div class="col-5 pe-0">
-									<input type="date" name="perfDate" id="form-perfDate" class="form-control" value="${dto.perfDate}">
+									<input type="date" name="perfsDate" id="form-perfDate" class="form-control" value="${dto.perfDate}">
 								</div>
 								<div class="col-4">
-									<input type="time" name="perfTime" id="form-perfTime" class="form-control" value="${dto.perfTime}">
+									<input type="time" name="perfsTime" id="form-perfTime" class="form-control" value="${dto.perfTime}">
 								</div>
 								<div class="col-3">
 									<span class="scheduleRemoveBtn" style="float: center; line-height: 38px;"><i class="far fa-minus-square"></i></span>
@@ -406,16 +650,16 @@ $(function(){
 						</td>
 					</tr>
 				</table>
-				
+				<!-- 
 				<table class="table write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">출연진 정보</td>
 						<td class="cast" style="width: 70%;">
 							<p style="margin: 12px;">
-								<input type="text" name="castName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${dto.castName}">
-								<input type="text" name="roleName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${dto.roleName}">
+								<input type="text" name="castsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${dto.castName}">
+								<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${dto.roleName}">
 								<img class="cast-img">
-								<input type="file" name="castImage" accept="image/*" style="display: none;" class="form-control">
+								<input type="file" name="castsFile" accept="image/*" style="display: none;" class="form-control">
 								
 								<span class="castRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
 							</p>
@@ -425,8 +669,8 @@ $(function(){
 							<button type="button" class="boxTF btn castAddBtn" style="text-align: center;">추가</button>
 						</td>
 					</tr>
-					
 				</table>
+				 -->
 				<table class="table write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">내 용</td>
@@ -439,7 +683,7 @@ $(function(){
 						<td class="table-light col-sm-2" scope="row">포스터</td>
 						<td>
 							<div class="post-img"></div>
-							<input type="file" name="selectFile" accept="image/*" style="display: none;" class="form-control">
+							<input type="file" name="postFile" accept="image/*" style="display: none;" class="form-control">
 						</td>
 					</tr>
 				</table>

@@ -10,8 +10,11 @@ public interface PerformanceService {
 	public Performance readPerformance(int perfNum);
 	public void updatePerformance(Performance dto, String pathname) throws Exception;
 	public void deletePerformance(int perfNum, String pathname) throws Exception;
+	public List<Performance> listRate();
 	public List<Performance> listCategory();
 	public List<Performance> listGenre(Map<String, Object> map);
+	public List<Performance> listHall();
+	public List<Performance> listTheater(Map<String, Object> map);
 	
 	public void insertPoster(Performance dto) throws Exception;
 	public void insertCast(Performance dto) throws Exception;
