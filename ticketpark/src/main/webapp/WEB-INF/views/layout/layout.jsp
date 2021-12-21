@@ -37,8 +37,6 @@
 	<link rel="stylesheet" href="/tp/resources/icons/icofont/icofont.min.css" type="text/css">
     <!-- 우리 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css1/ticketpark.css">
-    
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/bootstrap.min.css" type="text/css">
 	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/core.css" type="text/css">
 	
@@ -118,51 +116,34 @@
 	    f.submit();
 	}
 </script>
-<div class="modal fade" id="loginModal" tabindex="-1"
-		data-bs-backdrop="static" data-bs-keyboard="false" 
-		aria-labelledby="loginModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-sm">
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="loginViewerModalLabel">Login</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<h5 class="modal-title text-center" style="font-family: 나눔고딕, 맑은 고딕, sans-serif;">회원 로그인</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="modal-body">
-                <div class="p-3">
-                    <form name="modelLoginForm" action="" method="post" class="row g-3">
-                    	<div class="mt-0">
-                    		 <p class="form-control-plaintext">계정으로 로그인 하세요</p>
-                    	</div>
-                        <div class="mt-0">
-                            <input type="text" name="userId" class="form-control" placeholder="아이디">
-                        </div>
-                        <div>
-                            <input type="password" name="userPwd" class="form-control" placeholder="패스워드">
-                        </div>
-                        <div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="rememberMeModel">
-                                <label class="form-check-label" for="rememberMeModel"> 아이디 저장</label>
-                            </div>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-primary w-100" onclick="sendModelLogin();">Login</button>
-                        </div>
-                        <div>
-                    		 <p class="form-control-plaintext text-center">
-                    		 	<a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
-                    		 </p>
-                    	</div>
-                    </form>
-                    <hr class="mt-3">
-                    <div>
-                        <p class="form-control-plaintext mb-0">
-                        	아직 회원이 아니세요 ?
-                        	<a href="${pageContext.request.contextPath}/member/member" class="text-decoration-none">회원가입</a>
-                        </p>
-                    </div>
-                </div>
-        
+				<form name="modalLoginForm" method="post">
+					<div class="form-group">
+						<label for="modalUserId">아이디</label>
+						<input class="form-control" id="modalUserId" name="userId" type="text" placeholder="아이디">
+					</div>
+					<div class="form-group">
+						<label for="modalUserPwd">패스워드</label>
+						<input class="form-control" id="modalUserPwd" name="userPwd" type="password" placeholder="패스워드">
+					</div>
+			        
+					<div class="form-group">
+						<button class="btn btn-lg btn-primary btn-block" type="button" onclick="modalSendLogin();">로그인 <i class="bi bi-check2"></i></button>
+					</div>
+                    
+					<div class="text-center">
+						<button type="button" class="btn btn-link" onclick="location.href='${pageContext.request.contextPath}/member/member';">회원가입</button>
+						<button type="button" class="btn btn-link">아이디찾기</button>
+						<button type="button" class="btn btn-link">패스워드찾기</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
