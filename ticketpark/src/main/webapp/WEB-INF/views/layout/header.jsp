@@ -23,15 +23,15 @@
                         <div class="sub_menu_right_content" style="float: right;">
                         	<c:choose>
 	                        	<c:when test="${empty sessionScope.member}">
-		                            <a href="javascript:dialogLogin();" title="로그인" style="text-decoration: none;"><i class="bi bi-door-open-fill"></i></a>
+		                            <a href="javascript:dialogLogin();" title="로그인" style="text-decoration: none;"><i class="icofont-login"></i></a>
 									
 									<a href="${pageContext.request.contextPath}/member/member" style="text-decoration: none;" title="회원가입"><i class="bi bi-person-check-fill"></i></a>
 	                        	</c:when>
 	                        	<c:otherwise>
-	                        		<a href="${pageContext.request.contextPath}/member/logout" style="text-decoration: none;" title="로그아웃"><i class="bi bi-door-closed-fill"></i></a>
-	                        		<a href="${pageContext.request.contextPath}/member/mypage" style="text-decoration: none;" title="마이페이지"><i class="bi bi-person-lines-fill"></i></a>
+	                        		<a href="${pageContext.request.contextPath}/member/logout" style="text-decoration: none;" title="로그아웃"><i class="icofont-logout"></i></a>
+	                        		<a href="${pageContext.request.contextPath}/member/mypage" style="text-decoration: none;" title="마이페이지"><i class="icofont-user"></i></a>
 	                        		<c:if test="${sessionScope.member.membership>50}">
-										<a href="${pageContext.request.contextPath}/admin" title="관리자" style="text-decoration: none;"><i class="bi bi-bar-chart-line-fill"></i></a>
+										<a href="${pageContext.request.contextPath}/admin" title="관리자" style="text-decoration: none;"><i class="icofont-gear"></i></a>
 									</c:if>
 	                        	</c:otherwise>
                         	</c:choose>
