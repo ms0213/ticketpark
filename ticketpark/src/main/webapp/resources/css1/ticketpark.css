@@ -20,3 +20,7 @@ body, h1, h2, h3, h4, h5, h6, p, span {
 .nav-link {
 	color: black;
 }
+
+.page-item.active .page-link {
+    background-color: #0c3e72;
+    border-color: #0c3e72;

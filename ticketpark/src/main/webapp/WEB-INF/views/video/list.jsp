@@ -97,7 +97,7 @@ $(function() {
 <div class="container">
 	<div class="body-container">
 		<div class="body-title">
-			<h3><i class="bi bi-camera-video"></i> 비디오</h3>
+			<h3>비디오</h3>
 		</div>
 
 		<div class="body-main">
@@ -134,12 +134,12 @@ $(function() {
 			<div class="row board-list-footer mt-3 mb-3">
 				<div class="col text-left">
 					<c:if test="${sessionScope.member.membership>50}">
-						<button type="button" class="btn btn-light btnModal">관리</button>
+						<button type="button" class="btn btn-outline-secondary btnModal">관리</button>
 					</c:if>
 				</div>
 				<div class="col text-right">
 					<c:if test="${sessionScope.member.membership>50}">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/video/write';">업로드</button>
+						<button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/video/write';">업로드</button>
 					</c:if>
 				</div>
 			</div>
