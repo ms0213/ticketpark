@@ -120,11 +120,11 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title text-center" style="font-family: 나눔고딕, 맑은 고딕, sans-serif;">회원 로그인</h5>
+				<h5 class="modal-title text-center">회원 로그인</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="modal-body">
-				<form name="modalLoginForm" method="post">
+				<form name="modelLoginForm" method="post">
 					<div class="form-group">
 						<label for="modalUserId">아이디</label>
 						<input class="form-control" id="modalUserId" name="userId" type="text" placeholder="아이디">
@@ -133,17 +133,29 @@
 						<label for="modalUserPwd">패스워드</label>
 						<input class="form-control" id="modalUserPwd" name="userPwd" type="password" placeholder="패스워드">
 					</div>
-			        
+			        <div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMeModel">
+                            <label class="form-check-label" for="rememberMeModel"> 아이디 저장</label>
+                        </div>
+                    </div>
 					<div class="form-group">
-						<button class="btn btn-lg btn-primary btn-block" type="button" onclick="modalSendLogin();">로그인 <i class="bi bi-check2"></i></button>
+						<button class="btn btn-lg btn-success btn-block" type="button" onclick="sendModelLogin();">로그인 </button>
 					</div>
                     
 					<div class="text-center">
-						<button type="button" class="btn btn-link" onclick="location.href='${pageContext.request.contextPath}/member/member';">회원가입</button>
-						<button type="button" class="btn btn-link">아이디찾기</button>
-						<button type="button" class="btn btn-link">패스워드찾기</button>
+						<p class="form-control-plaintext text-center">
+                    		<a href="${pageContext.request.contextPath}/member/pwdFind" class="text-decoration-none me-2">패스워드를 잊으셨나요 ?</a>
+                        </p>
 					</div>
 				</form>
+				<hr class="mt-3">
+                <div>
+                    <p class="form-control-plaintext mb-0">
+                                              아직 회원이 아니세요 ?
+                        <a href="${pageContext.request.contextPath}/member/member" class="text-decoration-none">회원가입</a>
+                    </p>
+                </div>
 			</div>
 		</div>
 	</div>
