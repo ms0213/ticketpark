@@ -9,8 +9,8 @@
 
 	<!-- 이벤트 등록 -->
 	<insert id="insertEvent" parameterType="com.sp.tp.event.Event">
-		INSERT INTO event(eventNum, eventName, startDate, endDate, content, coupon)
-			VALUES (#{eventNum}, #{eventName}, #{startDate}, #{endDate}, #{content}, #{coupon})
+		INSERT INTO event(eventNum, eventName, startDate, endDate, content, coupon, couponNum)
+			VALUES (#{eventNum}, #{eventName}, #{startDate}, #{endDate}, #{content}, #{coupon}, #{couponNum, jdbcType=VARCHAR})
 	</insert>
 	
 	<sql id="where-list">
@@ -63,7 +63,7 @@
 	<!-- 이벤트 보기 -->
 	<select id="readEvent" parameterType="Integer" resultType="com.sp.tp.event.Event">
 		SELECT event.eventNum, eventName, TO_CHAR(startDate, 'YYYY-MM-DD') startDate,
-            		TO_CHAR(endDate, 'YYYY-MM-DD') endDate, content, coupon
+            		TO_CHAR(endDate, 'YYYY-MM-DD') endDate, content, coupon, couponNum
         FROM event
        	WHERE eventNum = #{eventNum}
 	</select>
@@ -71,7 +71,7 @@
 	<!-- 이벤트 수정 -->
 	<update id="updateEvent" parameterType="com.sp.tp.event.Event">
 		UPDATE event SET eventName = #{eventName}, content = #{content}, 
-			startDate = #{startDate}, endDate = #{endDate}, coupon = #{coupon}
+			startDate = #{startDate}, endDate = #{endDate}, coupon = #{coupon}, couponNum = #{couponNum, jdbcType=VARCHAR}
 		WHERE eventNum = #{eventNum}
 	</update>
 	

@@ -205,7 +205,7 @@ $(function() {
 	$("body").on("click", ".couponBtn", function(event){
 		$("#couponModal").modal("show");
 		
-	var url="${pageContext.request.contextPath}/event/listModal";
+		var url="${pageContext.request.contextPath}/event/listModal";
 		
 		var query = "tmp="+new Date().getTime();
 		var fn = function(data){
@@ -216,12 +216,24 @@ $(function() {
 	
 	$(document).on("click", ".couponPick", function() {
 		console.log(this.value);
+		$("#modal-data").val(this.value);
 		$("#couponModal").modal("hide");
 	});
 	
 });
 
-
+$(function() {
+	$("#modal-data").change(function(){
+		var data = document.getElementById("modal-data");
+		
+		if(!$("#modal-data").value){
+			data.setAttribute("hidden", "hidden");
+		}else{
+			data.removeAttribute("hidden");
+		}
+	});
+	
+});
 
 </script>
 
@@ -249,6 +261,7 @@ $(function() {
 						<td>
 							<input type="checkbox" name="coupon" id="coupon" value="1"> &nbsp;&nbsp;
 							<button type='button' class='btn couponBtn' id = "couponBtn" hidden="hidden">쿠폰 리스트</button>
+							<input type="text" id="modal-data" name="couponNum" value="" readonly="readonly" >
 						</td>
 					</tr>
 					
@@ -305,6 +318,7 @@ $(function() {
 							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/event/list';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 							<c:if test="${mode=='update'}">
 								<input type="hidden" name="eventNum" value="${dto.eventNum}">
+								<input type="hidden" name="eventNum" value="${dto.couponNum}">
 								<input type="hidden" name="page" value="${page}">
 							</c:if>
 						</td>

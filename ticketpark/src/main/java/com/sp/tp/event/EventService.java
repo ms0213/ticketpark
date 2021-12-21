@@ -17,5 +17,7 @@ public interface EventService {
 	public void deleteFile(Map<String, Object> map) throws Exception;
 	
 	public List<Coupon> listCoupon();
-	public void insertMyCoupon(Coupon dto) throws Exception;
+	public Coupon readCoupon(String couponNum);
+	public void insertMyCoupon(Map<String, Object> map) throws Exception;
+	public int couponExist(Map<String, Object> map);
 }

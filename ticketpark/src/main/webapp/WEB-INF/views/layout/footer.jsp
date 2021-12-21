@@ -27,13 +27,13 @@
             	</div>
                 <div>
                     <div class="single-footer-widget" style="margin-bottom: 25px;">
-                        <img src="${pageContext.request.contextPath}/resources/images1/logo2.png" alt="logo">
+                        <img src="${pageContext.request.contextPath}/resources/images1/logo3.png" alt="logo">
 	
                     </div>
                 </div>
                 <div class="col">
                     <div class="single-footer-widget footer_icon">
-                        <h6 style="color: #fff;">Contact Us</h6>
+                        <h6>Contact Us</h6>
                         <p style="margin-bottom: 0px;">4156, Hongdae, Seoul, Republic of Korea</p>
                          <p style="margin-bottom: 0px;">       +82 4752 8700 </p>
                         <span>rlrkrn@naver.com</span>

@@ -5,12 +5,28 @@
 	<select id="listCoupon" resultType="com.sp.tp.event.Coupon">
 		SELECT couponNum, coupon, TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate
 		FROM coupon
-        WHERE ( TO_DATE(startDate) >= SYSDATE + 1)
+        WHERE ( TO_DATE(startDate) >= SYSDATE)
 		ORDER BY couponNum DESC
 	</select>
 	
-	<insert id="insertMycoupon" parameterType="com.sp.tp.event.myCoupon">
+	<insert id="insertMycoupon" parameterType="map">
 		INSERT INTO myCoupon (userId, couponNum, useCoupon)
 		VALUES (#{userId}, #{couponNum}, #{useCoupon})
 	</insert>
+	
+	<select id="readCoupon" parameterType="String" resultType="com.sp.tp.event.Coupon">
+		SELECT couponNum, coupon, TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate
+		FROM coupon
+		WHERE couponNum=#{couponNum}
+	</select>
+	
+	<select id="couponExist" parameterType="map" resultType="Integer">
+		SELECT NVL(count(*), 0) from (
+			SELECT userId, mc.couponNum, useCoupon from myCoupon mc
+			LEFT OUTER JOIN coupon c 
+			ON c.couponNum = mc.couponNum
+			WHERE userId = #{userId}
+			AND mc.couponNum = #{couponNum}
+		)
+	</select>
 </mapper>

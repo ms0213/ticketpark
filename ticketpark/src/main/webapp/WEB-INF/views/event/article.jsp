@@ -5,6 +5,15 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
+<style type="text/css">
+.coupon-div{
+	text-align: center;
+}
+.coupon-message{
+	color: blue;
+}
+</style>
+
 <script type="text/javascript">
 function deleteOk() {
 
@@ -48,6 +57,14 @@ function deleteOk() {
 					<tr>
 						<td colspan="2">
 							${dto.content}
+							<div class="coupon-div">
+								<c:if test="${dto.coupon == 1}">
+									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/event/couponCheck?couponNum=${dto.couponNum}&page=${page}&eventNum=${dto.eventNum}';">쿠폰번호 [ ${dto.couponNum} ] 등록</button>
+				    			</c:if>
+							</div>
+							<div class="coupon-message coupon-div">
+								${message}
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -76,9 +93,6 @@ function deleteOk() {
 					</td>
 					<td class="text-end">
 						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/event/list?${query}';">리스트</button>
-						<c:if test="${dto.coupon == 1}">
-							<button type="button" class="btn btn-light" onclick="">쿠폰등록</button>
-				    	</c:if>
 					</td>
 				</tr>
 			</table>

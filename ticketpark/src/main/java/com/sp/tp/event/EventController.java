@@ -3,6 +3,8 @@ package com.sp.tp.event;
 import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +138,7 @@ public class EventController {
 			@RequestParam String page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam(defaultValue = "") String message,
 			Model model) throws Exception {		
 
 		keyword = URLDecoder.decode(keyword, "utf-8");
@@ -163,6 +166,7 @@ public class EventController {
 		model.addAttribute("dto", dto);
 		model.addAttribute("listFile", listFile);
 		model.addAttribute("page", page);
+		model.addAttribute("message", message);
 		model.addAttribute("query", query);
 
 		return ".event.article";
@@ -264,4 +268,49 @@ public class EventController {
 		model.addAttribute("couponList", couponList);
 		return "event/listModal";
 	}
+	
+	@RequestMapping(value = "couponCheck", method=RequestMethod.GET)
+	public String couponCheck(
+			@RequestParam String couponNum,
+			@RequestParam String page,
+			@RequestParam String eventNum,
+			HttpSession session,
+			Model model) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		if(info == null) {
+			return "redirect:/";
+		}
+		Coupon dto = service.readCoupon(couponNum);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		String sysdate = sdf.format(cal.getTime());
+		
+		// 등록기간으로 거르기
+		if(dto.getEndDate().compareTo(sysdate) == -1) {
+			model.addAttribute("message", "이미 등록기간이 지난 쿠폰입니다.");
+		} else {
+			// 사용자 소유쿠폰인지 거르기
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("userId", info.getUserId());
+			map.put("couponNum", couponNum);
+			int count = service.couponExist(map);
+			if(count == 0) {
+				// 마이쿠폰 인서트
+				Map<String, Object> map1 = new HashMap<String, Object>();
+				map1.put("userId", info.getUserId());
+				map1.put("couponNum", couponNum);
+				map1.put("useCoupon", 0);
+				service.insertMyCoupon(map1);
+				
+				model.addAttribute("message", "쿠폰지급이 완료되었습니다.");
+			} else {
+				model.addAttribute("message", "이미 등록된 쿠폰입니다");
+			}
+			
+		}
+		model.addAttribute("page", page);
+		model.addAttribute("eventNum", eventNum);
+		return "redirect:/event/article";
+	}
+	
 }

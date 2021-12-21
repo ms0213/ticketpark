@@ -189,15 +189,41 @@ public class EventServiceImpl implements EventService{
 		}
 		return listCoupon;
 	}
+	
+	
+	@Override
+	public Coupon readCoupon(String couponNum) {
+		Coupon dto = null;
+		
+		try {
+			dto = dao.selectOne("coupon.readCoupon", couponNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
 
 	@Override
-	public void insertMyCoupon(Coupon dto) throws Exception {
+	public void insertMyCoupon(Map<String, Object> map) throws Exception {
 		try {
-			
+			dao.insertData("coupon.insertMycoupon", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+
+	@Override
+	public int couponExist(Map<String, Object> map) {
+		int result = 0;
+		try {
+			result = dao.selectOne("coupon.couponExist", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 

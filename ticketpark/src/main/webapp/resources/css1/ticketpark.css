@@ -10,11 +10,11 @@
 
 @font-face {
     font-family: 'tp';
-    src: url('../fonts/NotoSansKR-Medium.otf') format('truetype');
+    src: url('../fonts/NotoSansKR-Regular.otf') format('opentype');
 }
 
-body {
-	font-family: 'tp';
+body, h1, h2, h3, h4, h5, h6, p, span {
+	font-family: 'tp' !important;
 }
 
 .nav-link {
