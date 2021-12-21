@@ -5,8 +5,9 @@
 <style type="text/css">
 .table {
     line-height: 35px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
-
 
 </style>
 
@@ -77,7 +78,7 @@
 		<button type="button" class="btn btn-light" onclick="reloadBoard();">새로고침</button>
 	</div>
 	<div class="col-6 text-center">
-		<div class="row">
+		<div class="row justify-content-md-center">
 			<div class="col-auto p-1">
 				<select name="condition" id="condition" class="form-select">
 					<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>

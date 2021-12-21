@@ -4,12 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
-.body-container {
-	max-width: 800px;
+
+.body-main {
+	max-width: 1000px;
+	margin: 0 auto;
 }
 
 .form-control {
 	text-align: center;
+	
 }
 
 </style>
@@ -119,9 +122,9 @@ function deleteFaq(num, page) {
 		</div>
 		
 	<br>
-	<div class="container">
+	<div class="body-top">
 		<form class="row" name="searchForm" method="post">
-			<div class="col">
+			<div class="col-2">
 				<select name="condition" id="condition" class="form-select" hidden="hidden">
 					
 				</select>
