@@ -217,28 +217,28 @@ function sendOk() {
 		alert("공연일정을 정확히 입력 하세요");
 	}
 	
-    /*
-    str = f.castsName.value.trim();
-    if(!str) {
-        alert("출연진이름을 입력하세요. ");
-        f.castName.focus();
-        return;
-    }
-    
-    str = f.rolesName.value.trim();
-    if(!str) {
-        alert("배역이름을 입력하세요. ");
-        f.roleName.focus();
-        return;
-    }
-    
-    var mode = "${mode}";
-    if( (mode === "add") && (!f.castsFile.value) ) {
-        alert("출연진사진을 추가 하세요. ");
-        f.castsFile.focus();
-        return;
-    }
-    */
+	var b = true;
+    $("input[name=castsName]").each(function(index) {
+    	if(! $(this).val()) {
+			b = false;
+    	}
+    	if(! b) return false;
+    	
+    	if(! $("input[name=rolesName]").eq(index).val()) {
+    		b = false;
+    	}
+    	if(! b) return false;
+    	
+    	if(! $("input[name=castsFile]").eq(index).val()) {
+    		b = false;
+    	}
+    	if(! b) return false;
+    });
+	
+	if(! b) {
+		alert("출연진정보를 정확히 입력 하세요");
+	}
+	
     str = f.content.value.trim();
     if(!str) {
         alert("내용을 입력하세요. ");
@@ -410,10 +410,10 @@ $(function() {
 	}
 	
 	$("body").on("click", ".write-form .cast-img", function(cast){
-		$("form[name=performanceForm] input[name=castsFile]").trigger("click"); 
+		$(this).next("input[name=castsFile]").trigger("click"); 
 	});
 	
-	$("form[name=performanceForm] input[name=castsFile]").change(function(){
+	$("body").on("change", "form[name=performanceForm] input[name=castsFile]", function() {
 		var $p = $(this).closest("p");
 		var castFile=this.files[0];
 		if(! castFile) {
@@ -437,9 +437,6 @@ $(function() {
 		reader.onload = function(e) {
 			$p.find(".cast-img").empty();
 			$p.find(".cast-img").css("background-image", "url("+e.target.result+")");
-			
-			//$(".write-form .cast-img").empty();
-			//$(".write-form .cast-img").css("background-image", "url("+e.target.result+")");
 		}
 		reader.readAsDataURL(castFile);
 	});
@@ -650,7 +647,6 @@ $(function(){
 						</td>
 					</tr>
 				</table>
-				<!-- 
 				<table class="table write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">출연진 정보</td>
@@ -670,7 +666,6 @@ $(function(){
 						</td>
 					</tr>
 				</table>
-				 -->
 				<table class="table write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">내 용</td>

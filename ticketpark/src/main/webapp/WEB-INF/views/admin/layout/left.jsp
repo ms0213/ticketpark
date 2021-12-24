@@ -14,7 +14,7 @@
 								<li><a class="gn-icon gn-icon-photoshop" href="${pageContext.request.contextPath}/admin/theaterManage/main">상영관 관리
 										</a></li>
 							</ul></li>
-						<li><a class="gn-icon gn-icon-help" href="">공연관리</a></li>
+						<li><a class="gn-icon gn-icon-help" href="${pageContext.request.contextPath}/admin/performanceManage/perfList">공연관리</a></li>
 						<li><ul class="gn-menu">
 								<li><a class="gn-icon gn-icon-article" href="">매출관리</a></li>
 								<li><a class="gn-icon gn-icon-pictures" href="${pageContext.request.contextPath}/admin/couponManage/list">쿠폰관리</a></li>

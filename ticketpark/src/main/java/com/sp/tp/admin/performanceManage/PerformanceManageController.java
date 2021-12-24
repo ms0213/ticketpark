@@ -1,4 +1,4 @@
-package com.sp.tp.performance;
+package com.sp.tp.admin.performanceManage;
 
 import java.io.File;
 import java.net.URLDecoder;
@@ -21,30 +21,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sp.tp.common.MyUtil;
 import com.sp.tp.member.SessionInfo;
 
-@Controller("performance.performanceController")
-@RequestMapping("/performance/*")
-public class PerformanceController {
-	
+@Controller("performanceManage.performanceManageController")
+@RequestMapping("/admin/performanceManage/*")
+public class PerformanceManageController {
+
 	@Autowired
-	private PerformanceService service;
-	
+	private PerformanceManageSerive service;
+
 	@Autowired
 	private MyUtil myUtil;
 	
-	@RequestMapping(value = "list")
+	@RequestMapping(value = "perfList")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
-			@RequestParam(defaultValue = "all") String category,
+			@RequestParam(defaultValue = "") String category,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
 		String cp = req.getContextPath();
 
-		int rows = 12;
-		// int rows = 4;
-		int total_page;
-		int dataCount;
+		int rows = 8;
+		int total_page = 0;
+		int dataCount = 0;
 
 		if (req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
 			keyword = URLDecoder.decode(keyword, "utf-8");
@@ -57,7 +56,9 @@ public class PerformanceController {
 		map.put("category", category);
 
 		dataCount = service.dataCount(map);
-		total_page = myUtil.pageCount(rows, dataCount);
+		if(dataCount != 0) {
+			total_page = myUtil.pageCount(rows, dataCount);
+		}
 
 		if (total_page < current_page) {
 			current_page = total_page;
@@ -67,61 +68,83 @@ public class PerformanceController {
 		int end = current_page * rows;
 		map.put("start", start);
 		map.put("end", end);
-		map.put("category", category);
 
-		List<Performance> list = service.listPerformance(map);
+		List<PerformanceManage> list = service.listPerformance(map);
+		
+		// 글번호
+		int listNum, n = 0;
+		for(PerformanceManage dto : list) {
+			listNum = dataCount - (start + n - 1);
+			dto.setListNum(listNum);
+			n++;
+		}
 
-		String query = "category=" + category;
-		String listUrl = cp + "/performance/list";
-		String articleUrl = cp + "/performance/article?page=" + current_page;
+		String query = "";
+		String listUrl = cp + "/admin/performanceManage/perfList";
+		
+		if(keyword.length() != 0) {
+			query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
+		}
+		if(category.length() != 0 ) {
+			if(query.length() != 0)
+				query = query + "&category=" + category;
+			else
+				query = "category=" + category;
+		}
+		
+		if(query.length() != 0) {
+			listUrl = listUrl + "?" + query;
+		}
+		
+		String articleUrl = cp + "/admin/performanceManage/article?page=" + current_page;
 		if (keyword.length() != 0) {
 			query = "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8"); 
 		}
 
 		if (query.length() != 0) {
-			listUrl = cp + "/performance/list?" + query;
-			articleUrl = cp + "/performance/article?page=" + current_page + "&" + query;
+			listUrl = cp + "/admin/performanceManage/perfList?" + query;
+			articleUrl = cp + "/admin/performanceManage/article?page=" + current_page + "&" + query;
 		}
 
 		String paging = myUtil.paging(current_page, total_page, listUrl);
 
 		model.addAttribute("list", list);
+		model.addAttribute("category", category);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("articleUrl", articleUrl);
 		model.addAttribute("page", current_page);
 		model.addAttribute("paging", paging);
-		model.addAttribute("category", category);
 
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
 		
-		return ".performance.list";
+		return ".admin.performanceManage.perfList";
 	}
 	
-	@RequestMapping(value = "add", method = RequestMethod.GET)
+	@RequestMapping(value = "perfAdd", method = RequestMethod.GET)
 	public String writeForm(Model model, HttpSession session) throws Exception {
 		
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
-		List<Performance> groupList = service.listCategory();
-		List<Performance> rateList = service.listRate();
-		List<Performance> hallList = service.listHall();
+		List<PerformanceManage> groupList = service.listCategory();
+		List<PerformanceManage> rateList = service.listRate();
+		List<PerformanceManage> hallList = service.listHall();
 		
 		if (info.getMembership() < 51) {
 			return "redirect:/";
 		}
 
-		model.addAttribute("mode", "add");
+		model.addAttribute("mode", "perfAdd");
 		model.addAttribute("groupList", groupList);
 		model.addAttribute("rateList", rateList);
 		model.addAttribute("hallList", hallList);
 		
-		return ".performance.perfAdd";
+		return ".admin.performanceManage.perfAdd";
 	}
 	
-	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public String writeSubmit(Performance dto, HttpSession session) throws Exception {
+	@RequestMapping(value = "perfAdd", method = RequestMethod.POST)
+	public String writeSubmit(PerformanceManage dto, HttpSession session) throws Exception {
 		String root = session.getServletContext().getRealPath("/");
 		String path = root + "uploads" + File.separator + "performance";
 
@@ -147,7 +170,7 @@ public class PerformanceController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("categoryNum", categoryNum);
 		
-		List<Performance> genreList = service.listGenre(map);
+		List<PerformanceManage> genreList = service.listGenre(map);
 		
 		Map<String, Object> model = new HashMap<>();
 		model.put("genreList", genreList);
@@ -164,7 +187,7 @@ public class PerformanceController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("hallNum", hallNum);
 		
-		List<Performance> theaterList = service.listTheater(map);
+		List<PerformanceManage> theaterList = service.listTheater(map);
 		
 		Map<String, Object> model = new HashMap<>();
 		model.put("theaterList", theaterList);
@@ -173,37 +196,15 @@ public class PerformanceController {
 		
 	}
 	
-	@RequestMapping(value = "article", method = RequestMethod.GET)
-	public String article(@RequestParam int perfNum,
-			@RequestParam String page,
-			@RequestParam(defaultValue = "all") String condition,
-			@RequestParam(defaultValue = "") String keyword,
-			@RequestParam String category,
-			Model model) throws Exception {		
-
-		keyword = URLDecoder.decode(keyword, "utf-8");
-
-		String query = "page=" + page;
-		query += "&category=" + category;
+	@RequestMapping(value="detaile")
+	public String detailePerformance(
+			@RequestParam int perfNum,
+			Model model) throws Exception {
 		
-		if (keyword.length() != 0) {
-			query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
-		}
-
-		Performance dto = service.readPerformance(perfNum);
-		if (dto == null) {
-			return "redirect:/performance/list?" + query;
-		}
-		
-		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
-
-		List<Performance> listFile = service.listFile(perfNum);
+		PerformanceManage dto=service.readPerformance(perfNum);
 
 		model.addAttribute("dto", dto);
-		model.addAttribute("listFile", listFile);
-		model.addAttribute("page", page);
-		model.addAttribute("query", query);
-
-		return ".performance.article";
+		
+		return "/admin/memberManage/detaile";
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sp.tp.common.FileManager;
 import com.sp.tp.common.dao.CommonDAO;
@@ -25,27 +26,17 @@ public class PerformanceServiceImpl implements PerformanceService {
 			dto.setPerfNum(performanceSeq);
 			
 			int scheduleSeq = dao.selectOne("performance.scheduleSeq");
-			dto.setSdNum(scheduleSeq);
 			
 			dao.insertData("performance.insertPerformance", dto);
 			
 			// 포스트 업로드
 			String postFileName = fileManager.doFileUpload(dto.getPostFile(), pathname);
 			
-			// 출연진 사진 업로드
-			/*
-			if(!dto.getCastsFileName().isEmpty()) {
-				for(MultipartFile mf : dto.getCastsFileName()) {
-					String castFileName = fileManager.doFileUpload(mf, pathname);
-					if(castFileName == null) {
-						continue;
-					}
-					dto.setCastFileName(castFileName);
-					
-					insertCast(dto);
-				}
+			// 포스트 insert
+			if (postFileName != null) {
+				dto.setPostFileName(postFileName);
+				dao.insertData("performance.insertPoster", dto);
 			}
-			*/
 			
 			// 공연일정 insert
 			for(int i = 0; i < dto.getPerfsDate().size(); i++) {
@@ -55,27 +46,21 @@ public class PerformanceServiceImpl implements PerformanceService {
 				
 				insertSchedule(dto);
 			}
-			/*
+			
 			// 출연진 insert
 			for(int i = 0; i < dto.getCastsName().size(); i++) {
-				Performance vo = new Performance();
-				vo.setCastName(dto.getCastsName().get(i));
-				vo.setRoleName(dto.getRolesName().get(i));
-				for(MultipartFile mf : dto.getCastsFile()) {
-					String castFileName = fileManager.doFileUpload(mf, pathname);
-					if(castFileName == null) {
-						continue;
-					}
-					vo.setCastFileName(castFileName);
-				}
+				dto.setCastName(dto.getCastsName().get(i));
+				dto.setRoleName(dto.getRolesName().get(i));
+				dto.setSdNum(scheduleSeq);
 				
-				insertCast(vo);
-			}
-			*/
-			
-			if (postFileName != null) {
-				dto.setPostFileName(postFileName);
-				dao.insertData("performance.insertPoster", dto);
+				MultipartFile mf = dto.getCastsFile().get(i);
+				String castFileName = fileManager.doFileUpload(mf, pathname);
+				if(castFileName == null) {
+					continue;
+				}
+				dto.setCastFileName(castFileName);
+				
+				insertCast(dto);
 			}
 			
 		} catch (Exception e) {
@@ -209,9 +194,6 @@ public class PerformanceServiceImpl implements PerformanceService {
 	public void insertCast(Performance dto) throws Exception {
 		
 		try {
-			int seq = dao.selectOne("performance.scheduleSeq");
-			dto.setSdNum(seq);
-			
 			dao.insertData("performance.insertCast", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -238,8 +220,6 @@ public class PerformanceServiceImpl implements PerformanceService {
 	@Override
 	public void insertSchedule(Performance dto) throws Exception {
 		try {
-			int seq = dao.insertData("performance.scheduleSeq");
-			dto.setSdNum(seq);
 			
 			dao.insertData("performance.insertSchedule", dto);
 			

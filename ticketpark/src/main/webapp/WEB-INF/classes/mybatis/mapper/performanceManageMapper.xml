@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="performanceManage">
+
+	<select id="seq" resultType="Integer">
+		SELECT performance_seq.NEXTVAL FROM dual
+	</select>
+
+	<sql id="where-list">
+		<if test="condition=='subject'">
+			INSTR(subject, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='date'">
+			startDate &lt;= #{keyword} AND #{keyword} &lt;= endDate
+		</if>
+		<if test="condition=='hall'">
+			INSTR(hallName, #{keyword}) &gt; 0
+		</if>
+	</sql>
+	
+	<sql id="category-list">
+		<if test="category == 'musical'">
+			cNum = 1
+		</if>
+		<if test="category == 'drama'">
+			cNum = 2
+		</if>
+		<if test="category == 'concert'">
+			cNum = 3
+		</if>
+		<if test="category == ''">
+			cNum IS NOT NULL
+		</if>
+	</sql>
+
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM performance p, genre g, category c, theater t, hall h
+		WHERE p.gmNum = g.gNum AND c.cNum = g.cNum AND p.tNum = t.tNum AND t.hallNo = h.hNum
+		<if test="category != null">
+            AND c.<include refid="category-list"/>
+        </if>
+		<if test="keyword!=null and keyword!='' ">
+			AND <include refid="where-list"/>
+		</if>	
+	</select>
+	
+	<!-- 공연리스트 -->
+	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT p.perfNum, subject, po.saveFilename postFileName, category,
+		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, th.name theater, 
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, hallName, rate, rating
+		        FROM performance p, theater th, hall h, genre g, poster po, rate r, category c
+		        WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum AND c.cNum = g.cNum
+		            AND p.perfNum = po.perfNum AND r.rNum = p.rNum AND poster_main = 1 
+		           	<if test="keyword != null and keyword != ''">
+						AND <include refid="where-list"/>	
+					</if>
+					<if test="category != ''">
+						AND c.<include refid="category-list"/>
+		            </if>
+	        	ORDER BY perfNum DESC
+			)  tb WHERE ROWNUM &lt;= #{end}
+	    ) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<!-- 공연 등록 -->
+	<insert id="insertPerformance" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		INSERT INTO performance (perfNum, subject, content, gmnum, tnum, rnum, rating, price, time, startDate, endDate)
+			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum},#{rateNum}, #{rating}, #{price}, #{showTime}, #{startDate}, #{endDate})
+	</insert>
+	
+	<!-- 파일 -->
+	<insert id="insertPoster" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		INSERT INTO poster(postNum, perfNum, saveFilename, poster_main) 
+			VALUES (poster_seq.NEXTVAL, #{perfNum}, #{postFileName}, 1)
+	</insert>
+	
+	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+	    SELECT p.perfNum, subject, po.saveFilename postFileName,
+	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
+	        hallName, genre, category, time, rate, th.name as theater, p.content, rating
+	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r
+	    WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum AND c.cNum = g.cNum
+	        AND r.rNum = p.rNum
+	        AND p.perfNum = po.perfNum AND poster_main = 1 
+	        AND p.perfNum = ${perfNum}
+	</select>
+	
+	<!-- 카테고리 -->
+	<select id="listCategory" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT cNum categoryNum, category
+		FROM category
+	</select>
+	
+	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT gNum genreNum, genre
+		FROM genre
+		WHERE cNum = #{categoryNum}
+	</select>
+	
+	<select id="listRate" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT rNum rateNum, rate
+		FROM rate
+	</select>
+	
+	<select id="listHall" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT hNum hallNum, hallName
+		FROM hall
+	</select>
+	
+	<select id="listTheater" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT tNum theaterNum, Name theater
+		FROM theater
+		WHERE hallNo = #{hallNum}
+	</select>
+
+</mapper>

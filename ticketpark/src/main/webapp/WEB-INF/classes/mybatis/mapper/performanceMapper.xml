@@ -19,7 +19,7 @@
 	
 	<insert id="insertSchedule" parameterType="com.sp.tp.performance.Performance">
 		INSERT INTO schedule (sdNum,perf_time, perf_date, perfNum)
-			VALUES (schedule_seq.NEXTVAL, #{perfTime}, #{perfDate}, #{perfNum})
+			VALUES (#{sdNum}, #{perfTime}, #{perfDate}, #{perfNum})
 	</insert>
 	 
 	<insert id="insertCast" parameterType="com.sp.tp.performance.Performance">
@@ -45,6 +45,9 @@
 		</if>
 		<if test="category == 'concert'">
 			cNum = 3
+		</if>
+		<if test="category == 'all'">
+			cNum IS NOT NULL
 		</if>
 	</sql>
 	
@@ -74,7 +77,7 @@
 		        WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum
 		            AND p.perfNum = po.perfNum AND poster_main = 1 
 		            <if test="category != null">
-			            AND <include refid="category-list"/>
+			           	AND <include refid="category-list"/>
 		            </if>
 		           	<if test="keyword != null and keyword != ''">
 						AND <include refid="where-list"/>	
