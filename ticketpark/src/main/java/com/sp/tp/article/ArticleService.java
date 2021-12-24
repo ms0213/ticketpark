@@ -16,6 +16,12 @@ public interface ArticleService {
 	public void updateArticle(Article dto, String pathname) throws Exception;
 	public void deleteArticle(int num, String pathname, String userId, int membership) throws Exception;
 	
+	public void insertArticleLike(Map<String, Object> map) throws Exception;
+	public void deleteArticleLike(Map<String, Object> map) throws Exception;
+	public int articleLikeCount(int artiNum);
+	public boolean userArticleLiked(Map<String, Object> map);
+	
+	
 	public void insertReply(ArticleReply dto) throws Exception;
 	public List<ArticleReply> listReply(Map<String, Object> map);
 	public int replyCount(Map<String, Object> map);

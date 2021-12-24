@@ -133,7 +133,7 @@ function changeType() {
 
 <div class="container body-container">
 	<div class="body-title">
-		<h2><i class="icofont-google-talk"></i> 게시판 </h2>
+		<h3> 게시판 </h3>
 	</div>
     
 	<div class="body-main mx-auto pt-15">
@@ -202,9 +202,9 @@ function changeType() {
 			<table class="table">
 				<tr> 
 					<td align="center">
-						<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
-						<button type="reset" class="btn">다시입력</button>
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/article/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+						<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+						<button type="reset" class="btn btn-outline-secondary fh rhclrh">다시입력</button>
+						<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="javascript:location.href='${pageContext.request.contextPath}/article/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<c:if test="${mode=='update'}">
 							<input type="hidden" name="num" value="${dto.artiNum}">
 							<input type="hidden" name="saveFilename" value="${dto.saveFilename}">

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -382,5 +383,38 @@ public class ArticleController {
 			return model;
 		}
 	
-	
+		// 게시글 좋아요 추가/삭제 : AJAX-JSON
+		@RequestMapping(value = "insertArticleLike", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> insertArticleLike(@RequestParam int artiNum, 
+				@RequestParam boolean userLiked,
+				HttpSession session) {
+			String state = "true";
+			int articleLikeCount = 0;
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("artiNum", artiNum);
+			paramMap.put("userId", info.getUserId());
+
+			try {
+				if(userLiked) {
+					service.deleteArticleLike(paramMap);
+				} else {
+					service.insertArticleLike(paramMap);
+				}
+			} catch (DuplicateKeyException e) {
+				state = "liked";
+			} catch (Exception e) {
+				state = "false";
+			}
+
+			articleLikeCount = service.articleLikeCount(artiNum);
+
+			Map<String, Object> model = new HashMap<>();
+			model.put("state", state);
+			model.put("articleLikeCount", articleLikeCount);
+
+			return model;
+		}
 }

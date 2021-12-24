@@ -264,5 +264,54 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 	}
 
+	@Override
+	public void insertArticleLike(Map<String, Object> map) throws Exception {
+		try {
+			dao.insertData("article.insertArticleLike", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteArticleLike(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("article.deleteArticleLike", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public int articleLikeCount(int artiNum) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("article.articleLikeCount", artiNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean userArticleLiked(Map<String, Object> map) {
+		boolean result = false;
+		try {
+			Article dto = dao.selectOne("article.userArticleLiked", map);
+			if(dto != null) {
+				result = true; 
+			}
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}	
+
 	
 }

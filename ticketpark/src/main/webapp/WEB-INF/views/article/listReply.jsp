@@ -33,7 +33,7 @@
 
 		<tr>
 			<td>
-				<button type='button' class='btn btn-light btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
+				<button type='button' class='btn btn-outline-secondary fh rhclrh btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
 			</td>
 		</tr>
 	
@@ -45,7 +45,7 @@
 	                <div class='answer-right'><textarea class='boxTA' style="width: 500px; min-height: 70px;"></textarea></div>
 	            </div>
 	             <div class='answer-footer'>
-	                <button type='button' class='btn btn-light btnSendReplyAnswer' data-replyNum='${vo.replyNum}'>답글 등록</button>
+	                <button type='button' class='btn btn-outline-secondary fh rhclrh btnSendReplyAnswer' data-replyNum='${vo.replyNum}'>답글 등록</button>
 	            </div>
 			</td>
 	    </tr>

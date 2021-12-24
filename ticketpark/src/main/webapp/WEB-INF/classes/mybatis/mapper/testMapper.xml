@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+	
+	<sql id="category-list">
+		<if test="category == 'musical'">
+			c.cNum = 1
+		</if>
+		<if test="category == 'drama'">
+			c.cNum = 2
+		</if>
+		<if test="category == 'concert'">
+			c.cNum = 3
+		</if>
+	</sql>
+	
+	<!-- 공연 개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM performance p, genre g, category c, theater th, hall h, schedule s
+		WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
+		
+		<if test="category != 'all' ">
+            AND <include refid="category-list"/>
+        </if>
+		
+		<if test=" keyDate!=null and keyDate!=''">
+			AND s.perf_date = #{keyDate}
+		</if>	
+		<if test=" keyGenre!=null and keyGenre!=''">
+			AND g.gnum = #{keyGenre}
+		</if>
+		<if test=" keyAddr!=null and keyAddr!=''">
+			AND INSTR(h.addr, #{keyAddr}) &gt; 0
+		</if>		
+	</select>
+
+	<!-- 공연리스트 -->
+	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.test.Test">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT p.perfNum, subject, po.saveFilename postFileName, 
+		        	s.perf_date, hallName, g.genre, h.addr,
+		        	TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate
+		        FROM performance p, genre g, category c, theater th, hall h, schedule s,  poster po
+		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
+		            AND p.perfNum = po.perfNum AND poster_main = 1 
+					<if test="category != 'all' ">
+						AND <include refid="category-list"/>
+					</if>
+					
+					<if test=" keyDate!=null and keyDate!=''">
+						AND s.perf_date = #{keyDate}
+					</if>	
+					<if test=" keyGenre!=null and keyGenre!=''">
+						AND g.gnum = #{keyGenre}
+					</if>
+					<if test=" keyAddr!=null and keyAddr!=''">
+						AND INSTR(h.addr, #{keyAddr}) &gt; 0
+					</if>		
+	        	ORDER BY perfNum DESC
+			)  tb WHERE ROWNUM &lt;= #{end}
+	    ) WHERE rnum &gt;= #{start}
+	</select>
+
+	<!-- 카테고리 -->
+	<select id="listCategory" resultType="com.sp.tp.test.Test">
+		SELECT cNum categoryNum, category
+		FROM category
+	</select>
+	
+	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.test.Test">
+		SELECT gNum genreNum, genre
+		FROM genre g
+		WHERE cNum = #{categoryNum}
+	</select>
+	
+	<select id="listRate" parameterType="Integer" resultType="com.sp.tp.test.Test">
+		SELECT rNum rateNum, rate
+		FROM rate
+	</select>
+	
+	<select id="listHall" resultType="com.sp.tp.test.Test">
+		SELECT hNum hallNum, hallName
+		FROM hall
+	</select>
+	
+	<select id="listTheater" parameterType="Integer" resultType="com.sp.tp.test.Test">
+		SELECT tNum theaterNum, Name theater
+		FROM theater
+		WHERE hallNo = #{hallNum}
+	</select>
+	
+	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.test.Test">
+	    SELECT p.perfNum, subject, po.saveFilename postFileName,
+	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
+	        hallName, genre, category, time, rate, th.name as theater, p.content, rating
+	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r
+	    WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum AND c.cNum = g.cNum
+	        AND r.rNum = p.rNum
+	        AND p.perfNum = po.perfNum AND poster_main = 1 
+	        AND p.perfNum = ${perfNum}
+	</select>
+
+
+</mapper>

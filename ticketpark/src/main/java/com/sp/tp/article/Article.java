@@ -22,6 +22,15 @@ public class Article {
 	private List<MultipartFile> selectFile;
 	
 	private int replyCount;
+	private int articleLikeCount;
+
+	public int getArticleLikeCount() {
+		return articleLikeCount;
+	}
+
+	public void setArticleLikeCount(int articleLikeCount) {
+		this.articleLikeCount = articleLikeCount;
+	}
 
 	public int getListNum() {
 		return listNum;

@@ -52,7 +52,42 @@ function ajaxFun(url, method, query, dataType, fn) {
 		}
 	});
 }
-
+//게시글 공감 여부
+$(function(){
+	$(".btnSendArticleLike").click(function(){
+		var $i = $(this).find("i");
+		var userLiked = $i.hasClass("bi-hand-thumbs-up-fill");
+		var msg = userLiked ? "게시글 공감을 취소하시겠습니까 ? " : "게시글에 공감하십니까 ? ";
+		
+		if(! confirm( msg )) {
+			return false;
+		}
+		
+		var url="${pageContext.request.contextPath}/article/insertArticleLike";
+		var artiNum="${dto.artiNum}";
+		var query="artiNum="+artiNum+"&userLiked="+userLiked;
+		
+		var fn = function(data){
+			var state = data.state;
+			if(state==="true") {
+				if( userLiked ) {
+					$i.removeClass("bi-hand-thumbs-up-fill").addClass("bi-hand-thumbs-up");
+				} else {
+					$i.removeClass("bi-hand-thumbs-up").addClass("bi-hand-thumbs-up-fill");
+				}
+				
+				var count = data.articleLikeCount;
+				$("#articleLikeCount").text(count);
+			} else if(state==="liked") {
+				alert("게시글 공감은 한번만 가능합니다. !!!");
+			} else if(state==="false") {
+				alert("게시물 공감 여부 처리가 실패했습니다. !!!");
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
 // 페이징 처리
 $(function(){
 	listPage(1);
@@ -230,7 +265,7 @@ $(function(){
 
 <div class="container body-container">
     <div class="body-title">
-        <h2><i class="icofont-google-talk"></i> ${dto.subject} </h2>
+        <h3> ${dto.subject} </h3>
     </div>
     
     <div class="body-main pt-15 mx-auto">
@@ -240,7 +275,7 @@ $(function(){
 			<tbody>
 				<tr>
 					<td width="50%" align="left">
-						이름 : ${dto.userName}
+						작성자 : ${dto.userName}
 					</td>
 					<td width="50%" align="right">
 						${dto.reg_date} | 조회 ${dto.hitCount}
@@ -261,7 +296,11 @@ $(function(){
 						${dto.content}
 					</td>
 				</tr>
-				
+				<tr>
+					<td colspan="2" class="text-center p-3">
+						<button type="button" class="btn btn-outline-secondary btnSendArticleLike" title="좋아요"><i class="bi ${userArticleLiked ? 'bi-hand-thumbs-up-fill':'bi-hand-thumbs-up' }"></i>&nbsp;&nbsp;<span id="articleLikeCount">${dto.articleLikeCount}</span></button>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 			
@@ -270,25 +309,25 @@ $(function(){
 				<td width="50%">
 					<c:choose>
 						<c:when test="${sessionScope.member.userId==dto.admin}">
-			    			<button type="button" class="btn btn-light" onclick="javascript:location.href='${pageContext.request.contextPath}/article/update?num=${dto.artiNum}&page=${page}';">수정</button>
+			    			<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="javascript:location.href='${pageContext.request.contextPath}/article/update?num=${dto.artiNum}&page=${page}';">수정</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btn btn-light" disabled="disabled">수정</button>
+			    			<button type="button" class="btn btn-outline-secondary fh rhclrh" disabled="disabled">수정</button>
 			    		</c:otherwise>
 			    	</c:choose>
 			    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userId==dto.admin || sessionScope.member.membership>50}">
-			    			<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
+			    			<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="deleteBoard();">삭제</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
+			    			<button type="button" class="btn btn-outline-secondary fh rhclrh" disabled="disabled">삭제</button>
 			    		</c:otherwise>
 			    	</c:choose>
 				</td>
 			
 				<td align="right">
-					<button type="button" class="btn btn-light" onclick="javascript:location.href='${pageContext.request.contextPath}/article/list?${query}';">리스트</button>
+					<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="javascript:location.href='${pageContext.request.contextPath}/article/list?${query}';">리스트</button>
 				</td>
 			</tr>
 		</table>
@@ -307,7 +346,7 @@ $(function(){
 					</tr>
 					<tr>
 					   <td align='right'  style="border-top: none;">
-					        <button type='button' class='btn btn-light btnSendReply'>댓글 등록</button>
+					        <button type='button' class='btn btn-outline-secondary fh rhclrh btnSendReply'>댓글 등록</button>
 					    </td>
 					 </tr>
 				</table>

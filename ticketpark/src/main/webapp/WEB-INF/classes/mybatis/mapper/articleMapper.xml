@@ -93,6 +93,26 @@
 		DELETE FROM article WHERE artiNum = #{artiNum}
 	</delete>
 	
+	<!-- 게시 글 좋아요 추가 -->
+	<insert id="insertArticleLike" parameterType="map">
+		INSERT INTO articleLike(artiNum, userId) VALUES (#{artiNum}, #{userId})
+	</insert>
+
+	<!-- 게시 글 좋아요 삭제 -->
+	<delete id="deleteArticleLike" parameterType="map">
+		DELETE FROM articleLike WHERE artiNum = #{artiNum} AND userId = #{userId}
+	</delete>
+      
+	<!-- 게시글 좋아요 개수 -->
+	<select id="articleLikeCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) FROM articleLike WHERE artiNum=#{artiNum}
+	</select>
+
+	<!-- 게시글 좋아요 여부 -->
+	<select id="userArticleLiked" parameterType="map" resultType="com.sp.tp.article.Article">
+		SELECT artiNum, userId FROM articleLike WHERE artiNum = #{artiNum} AND userId = #{userId}
+	</select>
+	
 	<!-- 댓글 -->
 	<insert id="insertReply" parameterType="com.sp.tp.article.ArticleReply">
 		INSERT INTO articleReply (replyNum, artiNum, userId, content, reg_date, answer)

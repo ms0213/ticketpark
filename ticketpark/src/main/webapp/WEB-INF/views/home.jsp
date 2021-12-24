@@ -39,9 +39,11 @@ $(function(){
 					
 					<div class="owl-carousel" >
 						<c:forEach var="vo" items="${listPerformance}" varStatus="status">
-	                        <div class="single_event_slider">
+							<div class="single_event_slider">
+							<a class="link" href="${pageContext.request.contextPath}/performance/article?perfNum=${vo.perfNum}&page=1&category=${vo.category}" title="${vo.subject}">
 	                            <img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}" class="d-block w-100" alt="${vo.subject}" style="height: 300px; width: 200px;">
-	                            <p>${vo.subject}</p>
+	                            <span>${vo.subject}</span>
+							</a>
 	                        </div>
                         </c:forEach>
                     </div>
