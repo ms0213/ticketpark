@@ -59,4 +59,11 @@
 		JOIN hall h ON h.hNum = f.hNum
 		WHERE h.hNum = #{hallNo}
 	</select>
+	
+	<select id="listTheater2" parameterType="Integer" resultType="com.sp.tp.book.Book">
+		SELECT tNum, sCount, name, location, seats, "rows", cols, 
+			generalSeat, vipSeat
+		FROM theater 
+		WHERE tNum = #{tNum}
+	</select>
 </mapper>
