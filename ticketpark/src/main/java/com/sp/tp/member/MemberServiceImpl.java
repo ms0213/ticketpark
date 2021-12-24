@@ -1,5 +1,6 @@
 package com.sp.tp.member;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,39 @@ public class MemberServiceImpl implements MemberService {
 	public void generatePwd(Member dto) throws Exception {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<myCoupon> listMyCoupon(String userId) {
+		List<myCoupon> listMyCoupon = null;
+		
+		try {
+			listMyCoupon = dao.selectList("member.listMyCoupon", userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listMyCoupon;
+	}
+
+	@Override
+	public List<myChoice> listMyChoice(String userId) {
+		List<myChoice> listMyChoice = null;
+		try {
+			listMyChoice = dao.selectList("member.listMyChoice", userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listMyChoice;
+	}
+
+	@Override
+	public void deleteChoice(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("member.deleteChoice", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }

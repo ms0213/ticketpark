@@ -5,7 +5,7 @@
 	<select id="listCoupon" resultType="com.sp.tp.event.Coupon">
 		SELECT couponNum, coupon, TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate
 		FROM coupon
-        WHERE ( TO_DATE(startDate) >= SYSDATE)
+        WHERE endDate &gt;= SYSDATE
 		ORDER BY couponNum DESC
 	</select>
 	

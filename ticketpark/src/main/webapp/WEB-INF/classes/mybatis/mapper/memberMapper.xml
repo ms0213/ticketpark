@@ -72,4 +72,41 @@
     <delete id="deleteMember2" parameterType="String">
 		DELETE FROM member2 WHERE userId=#{userId}
     </delete>
+    
+    
+    <!-- 마이페이지 관련 -->
+    <select id="listMyCoupon" parameterType="String" resultType="com.sp.tp.member.myCoupon">
+    	SELECT c.couponNum, coupon, TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, userId, useCoupon,
+	    CASE WHEN useCoupon=1 THEN '사용완료'
+	         WHEN endDate &lt; SYSDATE THEN '기간만료'
+	         ELSE '미사용'
+		     END couponState
+		FROM coupon c
+		JOIN myCoupon mc
+		ON c.couponNum = mc.couponNum
+		WHERE userId = #{userId}
+    </select>
+    
+    <select id="listMyChoice" parameterType="String" resultType="com.sp.tp.member.myChoice">
+    	SELECT p.perfNum, subject, rating, time, saveFilename, userId, category
+		FROM performance p
+		JOIN choice c
+		ON c.perfNum = p.perfNum
+		JOIN poster ps
+		ON p.perfnum = ps.perfnum
+		JOIN genre g
+        ON g.gnum = p.gmnum
+        JOIN category ct
+        ON ct.cnum = g.cnum
+		WHERE userId = #{userId}
+		AND ps.poster_main = 1
+    </select>
+    
+    <insert id="insertChoice" parameterType="map">
+    	INSERT INTO choice (userId, perfNum) VALUES(#{userId}, #{perfNum})
+    </insert>
+    
+    <delete id="deleteChoice" parameterType="map">
+    	DELETE FROM choice WHERE userId=#{userId} AND perfNum=#{perfNum}
+    </delete>
 </mapper>

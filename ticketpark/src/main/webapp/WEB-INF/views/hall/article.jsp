@@ -117,22 +117,22 @@ function deleteOk() {
 			<tr>
 				<td width="50%"><c:choose>
 						<c:when test="${sessionScope.member.membership>50}">
-							<button type="button" class="btn btn-light"
+							<button type="button" class="btn btn-outline-secondary"
 								onclick="location.href='${pageContext.request.contextPath}/hall/update?hNum=${dto.hNum}&page=${page}';">수정</button>
 						</c:when>
 						<c:otherwise>
-							<button type="button" class="btn btn-light" disabled="disabled">수정</button>
+							<button type="button" class="btn btn-outline-secondary" disabled="disabled">수정</button>
 						</c:otherwise>
 					</c:choose> <c:choose>
 						<c:when test="${sessionScope.member.membership>50}">
-							<button type="button" class="btn btn-light" onclick="deleteOk();">삭제</button>
+							<button type="button" class="btn btn-outline-secondary" onclick="deleteOk();">삭제</button>
 						</c:when>
 						<c:otherwise>
-							<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
+							<button type="button" class="btn btn-outline-secondary" disabled="disabled">삭제</button>
 						</c:otherwise>
 					</c:choose></td>
-				<td class="text-end">
-					<button type="button" class="btn btn-light"
+				<td class="text-right">
+					<button type="button" class="btn btn-outline-secondary"
 						onclick="location.href='${pageContext.request.contextPath}/hall/list?${query}';">리스트</button>
 				</td>
 			</tr>
