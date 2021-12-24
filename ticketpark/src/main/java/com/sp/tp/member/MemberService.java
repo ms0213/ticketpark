@@ -1,5 +1,6 @@
 package com.sp.tp.member;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
@@ -15,4 +16,9 @@ public interface MemberService {
 	public void deleteMember(Map<String, Object> map) throws Exception;
 	
 	public void generatePwd(Member dto) throws Exception;
+	
+	public List<myCoupon> listMyCoupon(String userId);
+	
+	public List<myChoice> listMyChoice(String userId);
+	public void deleteChoice(Map<String, Object> map) throws Exception;
 }

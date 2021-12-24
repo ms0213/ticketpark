@@ -1,6 +1,7 @@
 package com.sp.tp.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -272,7 +273,20 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "mypage")
-	public String myPage() {
+	public String myPage(HttpSession session, Model model) {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Member dto = service.readMember(info.getUserId());
+		if (dto == null) {
+			session.invalidate();
+			return "redirect:/";
+		}
+		List<myCoupon> myCouponList = service.listMyCoupon(info.getUserId());
+		List<myChoice> myChoiceList = service.listMyChoice(info.getUserId());
+		
+		model.addAttribute("dto", dto);
+		model.addAttribute("myCouponList", myCouponList);
+		model.addAttribute("myChoiceList", myChoiceList);
+		
 		return ".member.mypage";
 	}
 	
@@ -289,5 +303,24 @@ public class MemberController {
 	@RequestMapping(value = "coupon")
 	public String couponList() {
 		return ".member.coupon";
+	}
+	
+	@RequestMapping(value = "deleteChoice")
+	@ResponseBody
+	public Map<String, Object> deleteChoice(@RequestParam int perfNum,
+			HttpSession session) throws Exception{
+		String state = "false";
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", info.getUserId());
+		map.put("perfNum", perfNum);
+		try {
+			service.deleteChoice(map);
+			state = "true";
+		} catch (Exception e) {
+		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state",state);
+		return model;
 	}
 }

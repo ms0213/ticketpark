@@ -96,13 +96,13 @@ function searchList() {
 							<input type="text" name="keyword" value="${keyword}" class="form-control">
 						</div>
 						<div class="col-auto p-1">
-							<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
+							<button type="button" class="btn btn-outline-secondary" onclick="searchList()"> <i class="bi bi-search"></i> </button>
 						</div>
 					</form>
 				</div>
 				<c:if test="${sessionScope.member.membership>50}">
 					<div class="col" style="text-align: right; margin-right: 40px;">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/event/write';">글올리기</button>
+						<button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/event/write';">글올리기</button>
 					</div>
 				</c:if>
 			</div>
