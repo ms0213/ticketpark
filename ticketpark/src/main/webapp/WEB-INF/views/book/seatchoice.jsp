@@ -128,15 +128,15 @@ a:active, a:hover {
 }
 
 .seatSelect-container .seat-general {
-	background: darkblue;
+	background: #48b461;
 	cursor: pointer;
 }
 .seatSelect-container .seat-vip {
-	background: yellow;
+	background: #24468A;
 	cursor: pointer;
 }
 .seatSelect-container .seat-select {
-	background: brown;
+	background: black;
 	cursor: pointer;
 }
 .seatSelect-container .seat-reserved {

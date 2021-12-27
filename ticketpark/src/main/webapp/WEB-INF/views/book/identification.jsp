@@ -7,7 +7,25 @@
 function sendOk() {
 	var f = document.identificationForm;
 	
+	var str = f.birth.value;
+	var birth = f.abc.value;
+	var strArray = birth.toString().split("-");
+	var a = strArray[0]+strArray[1]+strArray[2];
+	
+	if( str != a ) { 
+		alert("정보가 일치하지 않습니다. ");
+		f.birth.focus();
+		return;
+	}
+	
 	f.action = "${pageContext.request.contextPath}/book/identification";
+	f.submit();
+}
+
+function sendCancel() {
+	var f = document.identificationForm;
+	
+	f.action = "${pageContext.request.contextPath}/book/bookCancel";
 	f.submit();
 }
 </script>
@@ -26,7 +44,7 @@ function sendOk() {
 		
 		<div class="body-main">
 			
-			<form name="identificationForm" method="post" enctype="multipart/form-data"> 
+			<form name="identificationForm" method="post"> 
 				<table class="table mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">이름</td>
@@ -38,7 +56,8 @@ function sendOk() {
 					<tr>
 						<td class="table-light col-sm-2" scope="row">생년월일</td>
 						<td>
-							<p class="form-control-plaintext">${birth}</p>
+							<p class="form-control-plaintext birth"><input type="text" name="birth"></p>
+							<p>생년월일을 입력하세요. 본인정보와 일치하지 않으면 예매가 취소됩니다.</p>
 						</td>
 					</tr>
 					
@@ -67,6 +86,7 @@ function sendOk() {
 						</td>
 					</tr>
 				</table>
+				<input type="hidden" value="${birth}" name="abc">
 			</form>
 			
 		</div>

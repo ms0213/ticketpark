@@ -15,4 +15,27 @@
 		INSERT INTO book2(b2Num, bNum, sdNum, seat_num, seat_price)
 		VALUES(book2_seq.NEXTVAL, #{bNum}, #{sdNum}, #{seat_num}, #{seat_price})
 	</insert>
+	
+	<select id="readBook" parameterType="String" resultType="com.sp.tp.book.Book">
+		SELECT MAX(bNum) bNum 
+		FROM BOOK
+		WHERE userId = #{userId} 
+	</select>
+	
+	<delete id="deleteBook2" parameterType="Integer">
+		DELETE FROM book2 WHERE bNum = #{bNum}
+	</delete>
+	
+	<delete id="deleteBook" parameterType="Integer">
+		DELETE FROM book WHERE bNum = #{bNum}
+	</delete>
+	
+	<select id="readPay" parameterType="Integer" resultType="com.sp.tp.book.Book">
+		SELECT SUM(seat_price) amount, subject
+		FROM book2 b
+		JOIN schedule s ON s.sdNum = b.sdNum
+		JOIN performance p ON p.perfNum = s.perfnum
+		WHERE bNum = #{bNum}
+		GROUP BY subject
+	</select>
 </mapper>

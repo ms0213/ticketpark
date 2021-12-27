@@ -106,21 +106,69 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "identification", method = RequestMethod.POST)
-	public String identificationOk(final RedirectAttributes reAttr) {
-		
+	public String identificationOk() {
 		return "redirect:/book/payment";
+	}
+	
+	@RequestMapping(value = "bookCancel")
+	public String bookCancel(
+			HttpSession session
+			) {
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		Book dto = new Book();
+		try {
+			dto = service.readBook(info.getUserId());
+			service.deleteBook2(dto.getbNum());
+			service.deleteBook(dto.getbNum());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "payment", method = RequestMethod.GET)
 	public String payment(
+			HttpSession session,
 			Model model) {
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		Member dto = new Member();
+		Book vo = new Book();
+		try {
+			dto = service.readMember(info.getUserId());
+			vo = service.readBook(info.getUserId());
+			vo = service.readPay(vo.getbNum());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		model.addAttribute("userName", dto.getUserName());
+		model.addAttribute("tel", dto.getTel());
+		model.addAttribute("email", dto.getEmail());
+		model.addAttribute("addr", dto.getAddr1()+dto.getAddr2());
+		model.addAttribute("amount", vo.getAmount());
+		model.addAttribute("name", vo.getSubject());
 		return ".book.payment";
 	}
 	
 	@RequestMapping(value = "payment", method = RequestMethod.POST)
-	public String paymentOk() {
-		
+	public String paymentOk(
+			final RedirectAttributes reAttr,
+			HttpSession session,
+			Model model) {
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		try {
+			
+		} catch (Exception e) {
+			try {
+				Book dto = new Book();
+				dto = service.readBook(info.getUserId());
+				service.deleteBook2(dto.getbNum());
+				service.deleteBook(dto.getbNum());
+				reAttr.addFlashAttribute("message", "결제에 실패하였습니다.");
+				return "redirect:/book/complete";				
+			} catch (Exception e2) {				
+			}
+		}
 		/*
 		String ss = "";
 		int n;
@@ -130,9 +178,9 @@ public class BookController {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("예매가 성공적으로 처리되었습니다.<br>");
-		sb.append("예매하신 상영관 번호는");
-		sb.append(cinemaCode);
-		sb.append("입니다.<br>");
+		sb.append("예매하신 상영관 정보는 ");
+		sb.append(hName + tName);
+		sb.append(" 입니다.<br>");
 		sb.append("선택하신 좌석 번호는");
 		sb.append(ss);
 		sb.append("입니다.<br>");

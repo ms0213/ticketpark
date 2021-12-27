@@ -70,6 +70,50 @@ public class BookServiceImpl implements BookService {
 		return dto;
 	}
 
+	@Override
+	public Book readBook(String userId) {
+		Book dto = null;
+		try {
+			dto = dao.selectOne("book.readBook", userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+
+	@Override
+	public void deleteBook(int bNum) throws Exception {
+		try {
+			dao.deleteData("book.deleteBook", bNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void deleteBook2(int bNum) throws Exception {
+		try {
+			dao.deleteData("book.deleteBook2", bNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public Book readPay(int bNum) throws Exception {
+		Book dto = null;
+		try {
+			dto = dao.selectOne("book.readPay", bNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+
 
 
 }
