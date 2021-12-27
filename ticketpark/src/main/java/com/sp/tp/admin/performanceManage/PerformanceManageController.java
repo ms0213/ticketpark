@@ -151,7 +151,7 @@ public class PerformanceManageController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		if (info.getMembership() < 51) {
-			return "redirect:/";
+			return "redirect:/admin/performanceManage/perfList";
 		}
 
 		try {
@@ -159,7 +159,7 @@ public class PerformanceManageController {
 		} catch (Exception e) {
 		}
 
-		return "redirect:/";
+		return "redirect:/admin/performanceManage/perfList";
 	}
 	
 	@RequestMapping(value = "genre", method = RequestMethod.GET)
@@ -196,7 +196,7 @@ public class PerformanceManageController {
 		
 	}
 	
-	@RequestMapping(value="detaile")
+	@RequestMapping(value="detail")
 	public String detailePerformance(
 			@RequestParam int perfNum,
 			Model model) throws Exception {
@@ -205,6 +205,6 @@ public class PerformanceManageController {
 
 		model.addAttribute("dto", dto);
 		
-		return "/admin/memberManage/detaile";
+		return "/admin/performanceManage/perfDetail";
 	}
 }

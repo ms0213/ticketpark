@@ -7,11 +7,22 @@
 .body-container {
 	max-width: 800px;
 }
+.ck.ck-editor {
+	max-width: 97%;
+}
+.ck-editor__editable {
+    min-height: 250px;
+}
+.ck-content .image>figcaption {
+	min-height: 25px;
+}
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css1/bootstrap.min.css">
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/ckeditor5/ckeditor.js"></script>
 
 <style type="text/css">
 .selectField {
@@ -75,13 +86,13 @@
 	opacity: .65;
 }
 
-.scheduleRemoveBtn, .castRemoveBtn {
+.scheduleRemoveBtn, .actorRemoveBtn {
     cursor: pointer;
     width: 38px;
     text-align: center;
 }
 
-.cast-img, .post-img {
+.actor-img, .post-img {
     cursor: pointer;
     border: 1px solid #ccc;
     width: 45px;
@@ -197,12 +208,36 @@ function sendOk() {
         return;
     }
     
-    str = f.content.value.trim();
-    if(!str) {
+	var b = true;
+    $("input[name=actorsName]").each(function(index) {
+    	if(! $(this).val()) {
+			b = false;
+    	}
+    	if(! b) return false;
+    	
+    	if(! $("input[name=rolesName]").eq(index).val()) {
+    		b = false;
+    	}
+    	if(! b) return false;
+    	
+    	if(! $("input[name=actorsFile]").eq(index).val()) {
+    		b = false;
+    	}
+    	if(! b) return false;
+    });
+	
+	if(! b) {
+		alert("출연진정보를 정확히 입력 하세요");
+		return;
+	}
+    
+    str = window.editor.getData().trim();
+    if(! str) {
         alert("내용을 입력하세요. ");
-        f.content.focus();
+        window.editor.focus();
         return;
     }
+	f.content.value = str;
     
     var mode = "${mode}";
     if( (mode === "add") && (!f.postFile.value) ) {
@@ -288,6 +323,77 @@ $(function(){
 			});
 		};
 		ajaxFun(url, "get", query, "json", fn);
+	});
+});
+
+$(function() {
+	var actorImg = "${dto.actorFileName}";
+	if( actorImg ) {
+		actorImg = "${pageContext.request.contextPath}/uploads/performance/" + actorImg;
+		$(".write-form .actor-img").empty();
+		$(".write-form .actor-img").css("background-image", "url("+actorImg+")");
+	}
+	
+	$("body").on("click", ".write-form .actor-img", function(actor){
+		$(this).next("input[name=actorsFile]").trigger("click"); 
+	});
+	
+	$("body").on("change", "form[name=performanceForm] input[name=actorsFile]", function() {
+		var $p = $(this).closest("p");
+		var actorFile=this.files[0];
+		if(! actorFile) {
+			$p.find(".actor-img").empty();
+			if( actorImg ) {
+				actorImg = "${pageContext.request.contextPath}/uploads/performance/" + actorImg;
+				$p.find(".actor-img").css("background-image", "url("+actorImg+")");
+			} else {
+				actorImg = "${pageContext.request.contextPath}/resources/images1/add_photo.png";
+				$p.find(".actor-img").css("background-image", "url("+actorImg+")");
+			}
+			return false;
+		}
+		
+		if(! actorFile.type.match("image.*")) {
+			this.focus();
+			return false;
+		}
+		
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$p.find(".actor-img").empty();
+			$p.find(".actor-img").css("background-image", "url("+e.target.result+")");
+		}
+		reader.readAsDataURL(actorFile);
+	});
+});
+
+$(function(){
+	$(".actorRemoveBtn").hide();
+	
+	$(".actorAddBtn").click(function(){
+		$(".actorRemoveBtn").show();
+		
+		var p=$(this).parent().parent().find("p:first").clone();
+		$(p).find("input").each(function(){
+			$(this).val("");
+			$(p).find(".actor-img").css("background-image", "url(/tp/resources/images1/add_photo.png)");
+		});
+		
+		$(this).parent().parent().find(".actor").append(p);
+	});
+	
+	$("body").on("click", ".actorRemoveBtn", function(){
+		var $p = $(this).closest("p");
+		
+		if($(this).closest(".actor").find("p").length<=1) {
+			return;
+		}
+		
+		$p.remove();
+		
+		if($(".actorRemoveBtn").closest("p").length<=1) {
+            $(".actorRemoveBtn").hide();
+        }
 	});
 });
 
@@ -433,10 +539,34 @@ $(function(){
 							</div>
 						</td>
 					</tr>
+				</table>
+				
+				<table class="table write-form mt-5">
+					<tr>
+						<td class="table-light col-sm-2" scope="row">출연진 정보</td>
+						<td class="actor" style="width: 70%;">
+							<p style="margin: 12px;">
+								<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${dto.actorName}">
+								<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${dto.roleName}">
+								<img class="actor-img">
+								<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control">
+								
+								<span class="actorRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
+							</p>
+						</td>
+						
+						<td>
+							<button type="button" class="boxTF btn actorAddBtn" style="text-align: center;">추가</button>
+						</td>
+					</tr>
+				</table>
+				
+				<table class="table write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">내 용</td>
 						<td>
-							<textarea name="content" id="content" class="form-control">${dto.content}</textarea>
+							<div class="editor">${dto.content}</div>
+							<input type="hidden" name="content">
 						</td>
 					</tr>
 					
@@ -458,7 +588,7 @@ $(function(){
 							<c:if test="${mode=='update'}">
 								<input type="hidden" name="perfNum" value="${dto.perfNum}">
 								<input type="hidden" name="postFileName" value="${dto.postFileName}">
-								<input type="hidden" name="castFileName" value="${dto.castFileName}">
+								<input type="hidden" name="actorFileName" value="${dto.actorFileName}">
 								<input type="hidden" name="page" value="${page}">
 							</c:if>
 						</td>
@@ -469,3 +599,55 @@ $(function(){
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	ClassicEditor
+	.create( document.querySelector( '.editor' ), {
+		fontFamily: {
+	        options: [
+	            'default',
+	            '맑은 고딕, Malgun Gothic, 돋움, sans-serif',
+	            '나눔고딕, NanumGothic, Arial'
+	        ]
+	    },
+	    fontSize: {
+	        options: [
+	            9, 11, 13, 'default', 17, 19, 21
+	        ]
+	    },
+		toolbar: {
+			items: [
+				'heading','|',
+				'fontFamily','fontSize','bold','italic','fontColor','|',
+				'alignment','bulletedList','numberedList','|',
+				'imageUpload','insertTable','sourceEditing','blockQuote','mediaEmbed','|',
+				'undo','redo','|',
+				'link','outdent','indent','|',
+			]
+		},
+		image: {
+	        toolbar: [
+	            'imageStyle:full',
+	            'imageStyle:side',
+	            '|',
+	            'imageTextAlternative'
+	        ],
+	
+	        // The default value.
+	        styles: [
+	            'full',
+	            'side'
+	        ]
+	    },
+		language: 'ko',
+		ckfinder: {
+	        uploadUrl: '${pageContext.request.contextPath}/image/upload' // 업로드 url (post로 요청 감)
+	    }
+	})
+	.then( editor => {
+		window.editor = editor;
+	})
+	.catch( err => {
+		console.error( err.stack );
+	});
+</script>

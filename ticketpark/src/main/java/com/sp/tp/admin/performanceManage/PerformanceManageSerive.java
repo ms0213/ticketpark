@@ -15,4 +15,6 @@ public interface PerformanceManageSerive {
 	public List<PerformanceManage> listHall();
 	public List<PerformanceManage> listTheater(Map<String, Object> map);
 	public void insertPoster(PerformanceManage dto) throws Exception;
+	public void insertActor(PerformanceManage dto) throws Exception;
+	
 }

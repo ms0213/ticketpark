@@ -34,6 +34,33 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/icons/icofont/icofont.min.css" type="text/css">
 
 <script type="text/javascript">
+
+function ajaxFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		data:query,
+		dataType:dataType,
+		success:function(data){
+			fn(data);
+		},
+		beforeSend : function(jqXHR) {
+			jqXHR.setRequestHeader("AJAX", true);
+		},
+		error : function(jqXHR) {
+			if (jqXHR.status == 403) {
+				location.href="${pageContext.request.contextPath}/member/login";
+				// login();
+				return false;
+			} else if(jqXHR.status === 400) {
+				alert("요청 처리가 실패했습니다.");
+				return false;
+			}
+			console.log(jqXHR.responseText);
+		}
+	});
+}
+
 function searchList() {
 	var f=document.searchForm;
 	f.category.value=$("#selectCategory").val();
@@ -57,13 +84,13 @@ function detailedPerformance(perfNum) {
 		       }
 		  },
 		  height: 520,
-		  width: 800,
+		  width: 900,
 		  title: "공연상세정보",
 		  close: function(event, ui) {
 		  }
 	});
 
-	var url = "${pageContext.request.contextPath}/admin/performanceManage/detaile";
+	var url = "${pageContext.request.contextPath}/admin/performanceManage/detail";
 	var query = "perfNum="+perfNum;
 	
 	var fn = function(data){

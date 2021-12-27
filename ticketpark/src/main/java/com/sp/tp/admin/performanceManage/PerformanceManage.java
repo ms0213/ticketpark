@@ -36,14 +36,15 @@ public class PerformanceManage {
 	private int rateNum;
 	private String rate;
 	
+	private int actorNum;
 	private int castNum;
-	private String castName;
+	private String actorName;
 	private String roleName;
-	private String castFileName;
-	private MultipartFile castFile;
-	private List<String> castsName;
+	private String actorFileName;
+	private MultipartFile actorFile;
+	private List<String> actorsName;
 	private List<String> rolesName;
-	private List<MultipartFile> castsFile;
+	private List<MultipartFile> actorsFile;
 	
 	private int postNum;
 	private String postFileName;
@@ -211,11 +212,17 @@ public class PerformanceManage {
 	public void setCastNum(int castNum) {
 		this.castNum = castNum;
 	}
-	public String getCastName() {
-		return castName;
+	public int getActorNum() {
+		return actorNum;
 	}
-	public void setCastName(String castName) {
-		this.castName = castName;
+	public void setActorNum(int actorNum) {
+		this.actorNum = actorNum;
+	}
+	public String getActorName() {
+		return actorName;
+	}
+	public void setActorName(String actorName) {
+		this.actorName = actorName;
 	}
 	public String getRoleName() {
 		return roleName;
@@ -223,17 +230,23 @@ public class PerformanceManage {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	public String getCastFileName() {
-		return castFileName;
+	public String getActorFileName() {
+		return actorFileName;
 	}
-	public void setCastFileName(String castFileName) {
-		this.castFileName = castFileName;
+	public void setActorFileName(String actorFileName) {
+		this.actorFileName = actorFileName;
 	}
-	public List<String> getCastsName() {
-		return castsName;
+	public MultipartFile getActorFile() {
+		return actorFile;
 	}
-	public void setCastsName(List<String> castsName) {
-		this.castsName = castsName;
+	public void setActorFile(MultipartFile actorFile) {
+		this.actorFile = actorFile;
+	}
+	public List<String> getActorsName() {
+		return actorsName;
+	}
+	public void setActorsName(List<String> actorsName) {
+		this.actorsName = actorsName;
 	}
 	public List<String> getRolesName() {
 		return rolesName;
@@ -241,17 +254,11 @@ public class PerformanceManage {
 	public void setRolesName(List<String> rolesName) {
 		this.rolesName = rolesName;
 	}
-	public MultipartFile getCastFile() {
-		return castFile;
+	public List<MultipartFile> getActorsFile() {
+		return actorsFile;
 	}
-	public void setCastFile(MultipartFile castFile) {
-		this.castFile = castFile;
-	}
-	public List<MultipartFile> getCastsFile() {
-		return castsFile;
-	}
-	public void setCastsFile(List<MultipartFile> castsFile) {
-		this.castsFile = castsFile;
+	public void setActorsFile(List<MultipartFile> actorsFile) {
+		this.actorsFile = actorsFile;
 	}
 	public MultipartFile getPostFile() {
 		return postFile;

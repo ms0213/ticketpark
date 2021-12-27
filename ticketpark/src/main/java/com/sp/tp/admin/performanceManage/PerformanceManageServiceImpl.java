@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sp.tp.common.FileManager;
 import com.sp.tp.common.dao.CommonDAO;
@@ -57,6 +58,23 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 		if (postFileName != null) {
 			dto.setPostFileName(postFileName);
 			dao.insertData("performanceManage.insertPoster", dto);
+		}
+		
+		// 출연진 insert
+		for(int i = 0; i < dto.getActorsName().size(); i++) {
+			dto.setActorName(dto.getActorsName().get(i));
+			dto.setRoleName(dto.getRolesName().get(i));
+			dto.setPerfNum(seq);
+			dto.setActorNum(dao.selectOne("performanceManage.actorSeq"));
+			
+			MultipartFile mf = dto.getActorsFile().get(i);
+			String actorFileName = fileManager.doFileUpload(mf, pathname);
+			if(actorFileName == null) {
+				continue;
+			}
+			dto.setActorFileName(actorFileName);
+			
+			insertActor(dto);
 		}
 	}
 	
@@ -142,5 +160,15 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 		}
 		
 		return dto;
+	}
+	
+	@Override
+	public void insertActor(PerformanceManage dto) throws Exception {
+		try {
+			dao.insertData("performanceManage.insertActor", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }
