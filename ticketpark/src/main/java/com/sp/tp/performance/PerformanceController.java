@@ -88,19 +88,19 @@ public class PerformanceController {
 		String query = "category=" + category+"&categoryNum=" + categoryNum;
 		
 		if(keyGenre.length()!=0) {
-			query+="&keyGenre="+keyGenre;
+			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
 		}
 		
 		if(keyAddr.length()!=0) {
-			query += "&keyAddr=" + URLEncoder.encode(keyAddr, "utf-8");
+			query += "&condiAddr="+condiAddr+"&keyAddr=" + URLEncoder.encode(keyAddr, "utf-8");
 		}
 		
 		if(keyDate.length()!=0) {
-			query += "&keyDate=" + keyDate;
+			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
 		}
 		
 		String listUrl = cp + "/performance/list"; 
-		String articleUrl = cp + "/performance/article?page=" + current_page;
+		String articleUrl = cp + "/performance/article?page=" + current_page + "&categoryNum="+categoryNum;
 		
 		query = "condiDate=" + condiDate + "&condiAddr=" + condiAddr + 
 				"&condiGenre=" + condiGenre;
@@ -210,20 +210,36 @@ public class PerformanceController {
 	@RequestMapping(value = "article", method = RequestMethod.GET)
 	public String article(@RequestParam int perfNum,
 			@RequestParam String page,
-			@RequestParam(defaultValue = "all") String condition,
-			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam(defaultValue = "") String condiDate,
+			@RequestParam(defaultValue = "") String condiAddr,
+			@RequestParam(defaultValue = "") String condiGenre,
+			@RequestParam(defaultValue = "") String keyDate,
+			@RequestParam(defaultValue = "") String keyAddr,
+			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam String category,
+			@RequestParam(value = "categoryNum") Integer categoryNum,
 			Model model) throws Exception {		
 
-		keyword = URLDecoder.decode(keyword, "utf-8");
+		
+		keyGenre = URLDecoder.decode(keyGenre, "utf-8");
+		keyAddr = URLDecoder.decode(keyAddr, "utf-8");
+		
 
 		String query = "page=" + page;
-		query += "&category=" + category;
+		query += "&category=" + category+"&categoryNum=" + categoryNum;
 		
-		if (keyword.length() != 0) {
-			query += "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
+		if(keyGenre.length()!=0) {
+			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
 		}
-
+		
+		if(keyAddr.length()!=0) {
+			query += "&condiAddr="+condiAddr+"&keyAddr=" + URLEncoder.encode(keyAddr, "utf-8");
+		}
+		
+		if(keyDate.length()!=0) {
+			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
+		}
+		
 		Performance dto = service.readPerformance(perfNum);
 		if (dto == null) {
 			return "redirect:/performance/list?" + query;

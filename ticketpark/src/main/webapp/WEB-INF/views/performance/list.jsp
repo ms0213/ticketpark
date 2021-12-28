@@ -145,7 +145,7 @@ $("body").on("change", "#condiGenre", function(){
 						</div>
 						
 						<div class="col-auto p-1">
-							<input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="datepicker" placeholder="날짜">
+							<input type="text" name="keyDate" value="${keyDate}" id="datepicker" placeholder="날짜">
 						</div>
 						<div class="col-auto p-1">
 							<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
@@ -165,7 +165,7 @@ $("body").on("change", "#condiGenre", function(){
 	         <div class="row">
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
-			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}" title="${dto.subject}">
+			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}&categoryNum=${categoryNum}" title="${dto.subject}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
 			 			</a>
