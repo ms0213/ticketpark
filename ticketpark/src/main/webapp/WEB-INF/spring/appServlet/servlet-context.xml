@@ -62,6 +62,7 @@
             <mapping path="/**"/>
             <!-- 제외 -->
             <exclude-mapping path="/"/>
+            <exclude-mapping path="/listGenreMain"/>
             <exclude-mapping path="/resources/**"/>
             <exclude-mapping path="/member/login"/>
             <exclude-mapping path="/member/logout"/>

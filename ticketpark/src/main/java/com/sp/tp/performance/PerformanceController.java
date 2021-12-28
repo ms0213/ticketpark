@@ -99,15 +99,15 @@ public class PerformanceController {
 			query += "&keyDate=" + keyDate;
 		}
 		
-		String listUrl = cp + "/test/list"; 
-		String articleUrl = cp + "/test/article?page=" + current_page;
+		String listUrl = cp + "/performance/list"; 
+		String articleUrl = cp + "/performance/article?page=" + current_page;
 		
 		query = "condiDate=" + condiDate + "&condiAddr=" + condiAddr + 
 				"&condiGenre=" + condiGenre;
 		
 		if (query.length() != 0) {
-			listUrl = cp + "/test/list?" + query;
-			articleUrl = cp + "/test/article?page=" + current_page + "&" + query;
+			listUrl = cp + "/performance/list?" + query;
+			articleUrl = cp + "/performance/article?page=" + current_page + "&" + query;
 		}
 		
 		String paging = myUtil.paging(current_page, total_page, listUrl);

@@ -72,7 +72,7 @@
 	</select>
 	
 	<select id="readArticle" parameterType="Integer" resultType="com.sp.tp.article.Article">
-		SELECT a.artiNum, admin, subject, content, a.reg_date, atName, m.userName, NVL(articleLikeCount, 0) articleLikeCount
+		SELECT a.artiNum, admin, subject, content, a.reg_date, hitCount, atName, m.userName, NVL(articleLikeCount, 0) articleLikeCount
 		FROM article a
 		JOIN articleType at ON at.atNum = a.atNum
 		JOIN member1 m ON m.userId = a.admin

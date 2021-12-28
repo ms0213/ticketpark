@@ -4,8 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style>
-.col-md-8:hover {
-	background-color: #bee6c7;
+.col-md-8 {
+	cursor: pointer;
+}
+.col-md-4 {
+	cursor: pointer;
 }
 </style>
 <script>
