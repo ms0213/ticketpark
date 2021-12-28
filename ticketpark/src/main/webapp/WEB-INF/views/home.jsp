@@ -104,6 +104,13 @@ $(function(){
 </script>
 <style>
 .form-select {
+	padding-left: 16px;
+}
+
+.booking_part .form-row {
+	justify-content: space-evenly;
+}
+.form-select {
 	width: 100%;
     border-color: #2493e0;
     border-radius: 0;
@@ -191,13 +198,13 @@ $(function(){
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="musical" role="tabpanel" aria-labelledby="musical-tab">
                                 <div class="booking_form">
-                                    <form name="musicalForm" action="${pageContext.request.contextPath}/performance/list" method="post">
+                                    <form name="musicalForm  pt-15 mx-auto" action="${pageContext.request.contextPath}/performance/list" method="post">
                                         <div class="form-row">
                                             <div class="form_colum">
                                                 <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
                                             </div>
                                             <div class="form_colum">
-                                                <select name="condiGenre" id="musicalGenre">
+                                                <select class="form-select" name="condiGenre" id="musicalGenre">
                                                 	<option value="">장르</option>
                                                 </select>
                                             </div>
@@ -208,7 +215,7 @@ $(function(){
                                             <div class="form_btn">
                                                 <button type="submit" class="btn_1" style="border: none;">검색하기</button>
                                                 <input type="hidden" name="category" value="musical">
-												<input type="hidden" name="categoryNum" value="1">
+												
 												<input type="hidden" class="musicalparam" name="keyGenre" value="">
                                             </div>
                                         </div>
@@ -223,7 +230,7 @@ $(function(){
                                                 <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
                                             </div>
                                             <div class="form_colum">
-                                                <select name="condiGenre" id="dramaGenre">
+                                                <select class="form-select" name="condiGenre" id="dramaGenre">
                                                 	<option value="">장르</option>
                                                 </select>
                                             </div>
@@ -234,7 +241,7 @@ $(function(){
                                             <div class="form_btn">
                                                 <button type="submit" class="btn_1" style="border: none;">검색하기</button>
                                                 <input type="hidden" name="category" value="drama">
-												<input type="hidden" name="categoryNum" value="2">
+												
 												<input type="hidden" class="dramaparam" name="keyGenre" value="">
                                             </div>
                                         </div>
@@ -244,12 +251,12 @@ $(function(){
                             <div class="tab-pane fade" id="concert" role="tabpanel" aria-labelledby="concert-tab">
                                 <div class="booking_form">
                                     <form name="concertForm" action="${pageContext.request.contextPath}/performance/list" method="post">
-                                        <div class="form-row">
+                                        <div class="form-row" >
                                             <div class="form_colum">
                                                 <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
                                             </div>
                                            <div class="form_colum">
-                                                <select name="condiGenre" id="concertGenre">
+                                                <select class="form-select" name="condiGenre" id="concertGenre">
                                                 	<option value="">장르</option>
                                                 </select>
                                             </div>
@@ -259,7 +266,7 @@ $(function(){
                                              <div class="form_btn">
                                                 <button type="submit" class="btn_1" style="border: none;">검색하기</button>
                                                 <input type="hidden" name="category" value="concert">
-												<input type="hidden" name="categoryNum" value="3">
+												
 												<input type="hidden" class="concertparam" name="keyGenre" value="">
                                             </div>
                                         </div>

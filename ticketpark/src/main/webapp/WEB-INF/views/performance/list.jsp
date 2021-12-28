@@ -4,6 +4,32 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
+
+input[name=keyAddr]::placeholder {
+	color: black;
+	padding-left: 10px;
+}
+input[name=keyDate]::placeholder {
+	color: black;
+	padding-left: 10px;
+}
+
+
+input[name=keyDate] {
+	border-bottom: solid rgba(0,0,0,.42);
+}
+
+
+input[name=keyAddr] {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: solid rgba(0,0,0,.42);
+}
+
+.form_colum {
+	margin: 10px;
+}
 .col-6 {
 	width: auto;
 }
@@ -103,7 +129,7 @@ function searchList() {
 }
 
 $(function(){
-	$("#datepicker").datepicker({
+	$("#dateSelect").datepicker({
 		format:"yyyy-mm-dd"
 	});
 });
@@ -128,35 +154,38 @@ $("body").on("change", "#condiGenre", function(){
 		
 		<div class="body-main">
 			<div class="row board-list-footer">
-				<div class="col-6 text-center">
+				<div class="col-6 text-center" style="display: flex; min-width: 75%;">
 					<form class="row row-form" name="searchForm" method="post">
-						<div class="col-auto p-1">
-							<input type="text" name="keyAddr" value="${keyAddr}" placeholder="지역" class="form-select">
-						</div>
-						<div class="col-auto p-1">
-							<c:if test="${not empty listGenre}">
-								<select name="condiGenre" class="form-select" id="condiGenre">
-										<option value="" >::장르::</option>
-									<c:forEach var="vo" items="${listGenre}">
-										<option value="${vo.genreNum}" ${vo.genreNum == keyGenre ? "selected='selected'" : ""}>${vo.genre}</option>
-									</c:forEach>
-								</select>
-							</c:if>
-						</div>
-						
-						<div class="col-auto p-1">
-							<input type="text" name="keyDate" value="${keyDate}" id="datepicker" placeholder="날짜">
-						</div>
-						<div class="col-auto p-1">
-							<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
-							<input type="hidden" name="category" value="${category}">
-							<input type="hidden" name="categoryNum" value="${category=='all' ? 0 : categoryNum}">
-							<input type="hidden" name="keyGenre" id="keyGenre" value="${keyGenre}">
+						<div class="form-row" >
+							<div class="form_colum">
+								<input type="text" name="keyAddr" value="${keyAddr}" placeholder="지역" class="form-select">
+							</div>
+							<div class="form_colum">
+								<c:if test="${not empty listGenre}">
+									<select name="condiGenre" class="form-select" id="condiGenre" style="border-top: none; border-left: none; border-right: none; border-bottom: solid rgba(0,0,0,.42);">
+											<option value="" style="text-align: center;">::: 장르 :::</option>
+										<c:forEach var="vo" items="${listGenre}">
+											<option value="${vo.genreNum}" ${vo.genreNum == keyGenre ? "selected='selected'" : ""}  style="text-align: center;">${vo.genre}</option>
+										</c:forEach>
+									</select>
+								</c:if>
+							</div>
+							
+							<div class="form_colum">
+								<input type="text" name="keyDate" value="${keyDate}" id="dateSelect" placeholder="날짜" style="margin-top: 10px;">
+							</div>
+							<div class="form_btn">
+								<button type="button" class="btn btn-light" onclick="searchList()" style="margin-top: 10px;">
+									<i class="bi bi-search"></i>
+								</button>
+								<input type="hidden" name="${category}" value="${category}">
+								<input type="hidden" name="keyGenre" id="keyGenre" value="${keyGenre}">
+							</div>
 						</div>
 					</form>
 				</div>
 				<c:if test="${sessionScope.member.membership>50}">
-					<div class="col" style="text-align: right; margin-right: 40px;" >
+					<div class="col" style="text-align: right; margin-right: 40px; max-width: 20%; margin-top: 20px;" >
 						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/performance/add';">글올리기</button>
 					</div>
 				</c:if>
@@ -165,7 +194,7 @@ $("body").on("change", "#condiGenre", function(){
 	         <div class="row">
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
-			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}&categoryNum=${categoryNum}" title="${dto.subject}">
+			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}" title="${dto.subject}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
 			 			</a>

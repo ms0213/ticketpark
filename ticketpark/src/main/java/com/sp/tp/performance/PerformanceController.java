@@ -40,7 +40,6 @@ public class PerformanceController {
 			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam(defaultValue = "all") String category,
-			@RequestParam(value = "categoryNum") Integer categoryNum,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -80,12 +79,10 @@ public class PerformanceController {
 		map.put("category", category);
 
 		List<Performance> list = service.listPerformance(map);
+		List<Performance> listGenre = service.listGenre(map);
+		
 
-		Map<String, Object> map2 = new HashMap<String, Object>();
-		map2.put("categoryNum", categoryNum);
-		List<Performance> listGenre = service.listGenre(map2);
-
-		String query = "category=" + category+"&categoryNum=" + categoryNum;
+		String query = "category=" + category;
 		
 		if(keyGenre.length()!=0) {
 			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
@@ -100,7 +97,7 @@ public class PerformanceController {
 		}
 		
 		String listUrl = cp + "/performance/list"; 
-		String articleUrl = cp + "/performance/article?page=" + current_page + "&categoryNum="+categoryNum;
+		String articleUrl = cp + "/performance/article?page=" + current_page;
 		
 		query = "condiDate=" + condiDate + "&condiAddr=" + condiAddr + 
 				"&condiGenre=" + condiGenre;
@@ -115,7 +112,6 @@ public class PerformanceController {
 		model.addAttribute("listGenre", listGenre);
 		
 		model.addAttribute("list", list);
-		model.addAttribute("categoryNum", categoryNum);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("articleUrl", articleUrl);
@@ -217,8 +213,7 @@ public class PerformanceController {
 			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam String category,
-			@RequestParam(value = "categoryNum") Integer categoryNum,
-			Model model) throws Exception {		
+			Model model) throws Exception {
 
 		
 		keyGenre = URLDecoder.decode(keyGenre, "utf-8");
@@ -226,7 +221,7 @@ public class PerformanceController {
 		
 
 		String query = "page=" + page;
-		query += "&category=" + category+"&categoryNum=" + categoryNum;
+		query += "&category=" + category;
 		
 		if(keyGenre.length()!=0) {
 			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;

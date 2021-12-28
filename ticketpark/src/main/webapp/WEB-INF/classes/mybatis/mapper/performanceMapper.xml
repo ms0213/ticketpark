@@ -37,6 +37,24 @@
 		<if test="category == 'concert'">
 			c.cNum = 3
 		</if>
+		<if test="category=='all'">
+			c.cNum IS NOT NULL
+		</if>
+	</sql>
+	
+	<sql id="category-list-genre">
+		<if test="category == 'musical'">
+			cNum = 1
+		</if>
+		<if test="category == 'drama'">
+			cNum = 2
+		</if>
+		<if test="category == 'concert'">
+			cNum = 3
+		</if>
+		<if test="category=='all'">
+			cNum IS NOT NULL
+		</if>
 	</sql>
 	
 	<!-- 공연 개수(메인) -->
@@ -45,7 +63,7 @@
 		FROM performance p, genre g, category c, theater th, hall h, schedule s
 		WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
 		
-			<if test="category != null and category != '' and category != 'all' ">
+			<if test="category != null and category != ''">
 	            AND <include refid="category-list"/>
 	        </if>
 			
@@ -73,7 +91,7 @@
 		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
 		            AND p.perfNum = po.perfNum AND poster_main = 1 
 					
-						<if test="category != null and category != '' and category != 'all'">
+						<if test="category != null and category != ''">
 							AND <include refid="category-list"/>
 						</if>
 						
@@ -110,10 +128,12 @@
 		FROM category
 	</select>
 	
-	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
+	<select id="listGenre" parameterType="map" resultType="com.sp.tp.performance.Performance">
 		SELECT gNum genreNum, genre
 		FROM genre
-		WHERE cNum = #{categoryNum}
+		<where>
+			<include refid="category-list-genre"/>
+		</where>
 	</select>
 	
 	<select id="listGenreMain" parameterType="map" resultType="com.sp.tp.performance.Performance">

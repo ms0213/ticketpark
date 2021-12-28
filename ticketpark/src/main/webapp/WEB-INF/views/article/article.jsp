@@ -5,7 +5,7 @@
 
 <style type="text/css">
 .body-main {
-	max-width: 800px;
+	max-width: 1000px;
 }
 </style>
 
@@ -284,7 +284,7 @@ $(function(){
 				
 				<tr style="border: none;">
 					<c:forEach var="vo" items="${listFile}">
-						<td style="border: none;">
+						<td style="border: none; size: ">
 							<img src="${pageContext.request.contextPath}/uploads/article/${vo.saveFilename}">
 						</td>
 					</c:forEach>

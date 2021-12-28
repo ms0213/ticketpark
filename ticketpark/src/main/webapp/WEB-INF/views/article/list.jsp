@@ -4,6 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style>
+.body-main {
+	max-width: 1000px;
+}
+
 .col-md-8 {
 	cursor: pointer;
 }
@@ -25,7 +29,7 @@ function searchList() {
 			<h3> 문화 칼럼 </h3>
 		</div>
 		
-		<div class="body-main">
+		<div class="body-main pt-15 mx-auto">
 
 	        <div class="row board-list-header">
 	            <div class="col-auto me-auto">
@@ -33,15 +37,17 @@ function searchList() {
 	            </div>
 	            <div class="col-auto">&nbsp;</div>
 	        </div>				
-			
+			<br>
 				<div class="card mb-3" style="border-style: none;">
 					<c:forEach var="dto" items="${list}">
 						<div class="row g-0" onclick="location.href='${articleUrl}&num=${dto.artiNum}';">
 							<div class="col-md-4">
 								<c:forEach var="vo" items="${dto.saveFilename}" varStatus="status">
 									<c:if test="${status.index==0}">
+										<div style="width: 320px; height: 210px;">
 										<img src="${pageContext.request.contextPath}/uploads/article/${dto.saveFilename}"
-											 class="img-fluid rounded-start" style="max-height: 450px;">									
+											 class="img-fluid rounded-start" style="object-fit: cover; width: 100%; height: 100%;">			
+										</div>						
 									</c:if>
 								</c:forEach>
 							</div>							
@@ -70,7 +76,7 @@ function searchList() {
 					<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="location.href='${pageContext.request.contextPath}/article/list';">새로고침</button>
 				</div>
 				<div class="col-6 text-center">
-					<form class="row" name="searchForm" action="${pageContext.request.contextPath}/article/list" method="post" style="margin-left: 100px;">
+					<form class="row" name="searchForm" action="${pageContext.request.contextPath}/article/list" method="post" style="margin-left: 50px;">
 						<div class="col-auto p-1">
 							<select name="condition" class="form-select">
 								<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
@@ -88,7 +94,7 @@ function searchList() {
 						</div>
 					</form>
 				</div>
-				<div class="col text-end" style="width: 100px;">
+				<div class="col text-end" style="width: 100px; text-align: right;">
 				<c:if test="${sessionScope.member.userId=='admin'}">
 					<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="location.href='${pageContext.request.contextPath}/article/write';">글올리기</button>
 				</c:if>
