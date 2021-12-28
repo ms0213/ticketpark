@@ -72,11 +72,15 @@
 	</select>
 	
 	<select id="readArticle" parameterType="Integer" resultType="com.sp.tp.article.Article">
-		SELECT artiNum, admin, subject, content, a.reg_date, atName, m.userName
+		SELECT a.artiNum, admin, subject, content, a.reg_date, atName, m.userName, NVL(articleLikeCount, 0) articleLikeCount
 		FROM article a
 		JOIN articleType at ON at.atNum = a.atNum
 		JOIN member1 m ON m.userId = a.admin
-		WHERE artiNum = #{artiNum}
+		LEFT OUTER JOIN (
+			SELECT artiNum, COUNT(*) articleLikeCount FROM articleLike
+			GROUP BY artiNum
+		) ac ON a.artiNum = ac.artiNum
+		WHERE a.artiNum = #{artiNum}
 	</select>
 	
 	<update id="updateHitCount" parameterType="Integer">

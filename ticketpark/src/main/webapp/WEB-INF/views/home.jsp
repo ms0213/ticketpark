@@ -15,9 +15,104 @@ $(function(){
         autoplayHoverPause: true
     });
 });
+
+$(function(){
+	$("#musicalDate").datepicker({
+		format:"yyyy-mm-dd"
+	});
+	
+	$("#dramaDate").datepicker({
+		format:"yyyy-mm-dd"
+	});
+	
+	$("#concertDate").datepicker({
+		format:"yyyy-mm-dd"
+	});
+});
+
+$("body").on("change", "#musicalGenre", function(){
+	var f = $(this).val();
+	$(".musicalparam").val(f);
+});
+
+$("body").on("change", "#dramaGenre", function(){
+	var f = $(this).val();
+	$(".dramaparam").val(f);
+});
+
+$("body").on("change", "#concertGenre", function(){
+	var f = $(this).val();
+	$(".concertparam").val(f);
+});
+
+
+function ajaxFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		data:query,
+		dataType:dataType,
+		success:function(data) {
+			fn(data);
+		},
+		beforeSend:function(jqXHR) {
+			jqXHR.setRequestHeader("AJAX", true);
+		},
+		error:function(jqXHR) {
+			if(jqXHR.status === 400) {
+				alert("요청 처리가 실패했습니다.");
+				return false;
+			}
+	    	
+			console.log(jqXHR.responseText);
+		}
+	});
+}
+
+$(function(){
+	var url = "${pageContext.request.contextPath}/listGenreMain";
+	var query = "";
+	
+	var fn = function(data) {
+		$.each(data.listGenreMain, function(index, item){
+			var genreNum = item.genreNum;
+			var genre = item.genre;
+			var categoryNum = parseInt(item.categoryNum);
+			
+			if(categoryNum === 1) {
+				var s = "<option value='"+genreNum+"'>"+genre+"</option>";
+				$("#musicalGenre").append(s);
+			}
+			if(categoryNum === 2) {
+				var s = "<option value='"+genreNum+"'>"+genre+"</option>";
+				$("#dramaGenre").append(s);
+			}
+			
+			if(categoryNum === 3) {
+				var s = "<option value='"+genreNum+"'>"+genre+"</option>";
+				$("#concertGenre").append(s);
+			}
+		});
+		$("#musicalGenre").addClass("nc_select");
+		$("#dramaGenre").addClass("nc_select");
+		$("#concertGenre").addClass("nc_select");
+
+	};
+	ajaxFun(url, "get", query, "json", fn);
+
+});
 </script>
 <style>
+.form-select {
+	width: 100%;
+    border-color: #2493e0;
+    border-radius: 0;
+    color: #2493e0;
+    height: 50px;
+    display: flex;
+    align-items: center;
 
+}
 
 @media (min-width: 768px)
 .col-md-6 {
@@ -80,13 +175,13 @@ $(function(){
                     <div class="booking_menu">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                            <a class="nav-link active" id="hotel-tab" data-toggle="tab" href="#hotel" role="tab" aria-controls="hotel" aria-selected="true">뮤지컬</a>
+                            <a class="nav-link active" id="musical-tab" data-toggle="tab" href="#musical" role="tab" aria-controls="musical" aria-selected="true">뮤지컬</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link" id="tricket-tab" data-toggle="tab" href="#tricket" role="tab" aria-controls="tricket" aria-selected="false">연극</a>
+                            <a class="nav-link" id="drama-tab" data-toggle="tab" href="#drama" role="tab" aria-controls="drama" aria-selected="false">연극</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link" id="place-tab" data-toggle="tab" href="#place" role="tab" aria-controls="place" aria-selected="false">콘서트</a>
+                            <a class="nav-link" id="concert-tab" data-toggle="tab" href="#concert" role="tab" aria-controls="concert" aria-selected="false">콘서트</a>
                             </li>
                         </ul>
                     </div>
@@ -94,118 +189,78 @@ $(function(){
                 <div class="col-lg-12">
                     <div class="booking_content">
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
+                            <div class="tab-pane fade show active" id="musical" role="tabpanel" aria-labelledby="musical-tab">
                                 <div class="booking_form">
-                                    <form action="#">
+                                    <form name="musicalForm" action="${pageContext.request.contextPath}/performance/list" method="post">
                                         <div class="form-row">
                                             <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 지역 </option>
-                                                    <option value="1">서울</option>
-                                                    <option value="2">인천</option>
-                                                    <option value="3">경기</option>
+                                                <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
+                                            </div>
+                                            <div class="form_colum">
+                                                <select name="condiGenre" id="musicalGenre">
+                                                	<option value="">장르</option>
                                                 </select>
                                             </div>
                                             <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 장르 </option>
-                                                    <option value="1"></option>
-                                                    <option value="2"></option>
-                                                    <option value="3"></option>
-                                                </select>
-                                            </div>
-                                            <div class="form_colum">
-                                                <input id="datepicker_1" placeholder="날짜">
-                                            </div>
-                                            <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 인원 수 </option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                </select>
+                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="musicalDate" placeholder="날짜">
                                             </div>
                                             
                                             <div class="form_btn">
-                                                <a href="#" class="btn_1">검색하기</a>
+                                                <button type="submit" class="btn_1" style="border: none;">검색하기</button>
+                                                <input type="hidden" name="category" value="musical">
+												<input type="hidden" name="categoryNum" value="1">
+												<input type="hidden" class="musicalparam" name="keyGenre" value="">
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="tricket" role="tabpanel" aria-labelledby="tricket-tab">
+                            <div class="tab-pane fade" id="drama" role="tabpanel" aria-labelledby="drama-tab">
                                 <div class="booking_form">
-                                    <form action="#">
+                                    <form name="dramaForm" action="${pageContext.request.contextPath}/performance/list" method="post">
                                         <div class="form-row">
                                             <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 지역 </option>
-                                                    <option value="1">서울</option>
-                                                    <option value="2">인천</option>
-                                                    <option value="3">경기</option>
-                                                </select>
+                                                <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
                                             </div>
                                             <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 장르 </option>
-                                                    <option value="1"></option>
-                                                    <option value="2"></option>
-                                                    <option value="3"></option>
+                                                <select name="condiGenre" id="dramaGenre">
+                                                	<option value="">장르</option>
                                                 </select>
                                             </div>
-                                            <div class="form_colum">
-                                                <input id="datepicker_2" placeholder="날짜">
-                                            </div>
-                                            <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 인원 수 </option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                </select>
+											<div class="form_colum">
+                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="dramaDate" placeholder="날짜">
                                             </div>
                                             
                                             <div class="form_btn">
-                                                <a href="#" class="btn_1">검색하기</a>
+                                                <button type="submit" class="btn_1" style="border: none;">검색하기</button>
+                                                <input type="hidden" name="category" value="drama">
+												<input type="hidden" name="categoryNum" value="2">
+												<input type="hidden" class="dramaparam" name="keyGenre" value="">
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="place" role="tabpanel" aria-labelledby="place-tab">
+                            <div class="tab-pane fade" id="concert" role="tabpanel" aria-labelledby="concert-tab">
                                 <div class="booking_form">
-                                    <form action="#">
+                                    <form name="concertForm" action="${pageContext.request.contextPath}/performance/list" method="post">
                                         <div class="form-row">
                                             <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 지역 </option>
-                                                    <option value="1">서울</option>
-                                                    <option value="2">인천</option>
-                                                    <option value="3">경기</option>
+                                                <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
+                                            </div>
+                                           <div class="form_colum">
+                                                <select name="condiGenre" id="concertGenre">
+                                                	<option value="">장르</option>
                                                 </select>
                                             </div>
                                             <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 장르 </option>
-                                                    <option value="1"></option>
-                                                    <option value="2"></option>
-                                                    <option value="3"></option>
-                                                </select>
+                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="concertDate" placeholder="날짜">
                                             </div>
-                                            <div class="form_colum">
-                                                <input id="datepicker_3" placeholder="날짜">
-                                            </div>
-                                            <div class="form_colum">
-                                                <select class="nc_select">
-                                                    <option selected> 인원 수 </option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                </select>
-                                            </div>
-                                            
-                                            <div class="form_btn">
-                                                <a href="#" class="btn_1">검색하기</a>
+                                             <div class="form_btn">
+                                                <button type="submit" class="btn_1" style="border: none;">검색하기</button>
+                                                <input type="hidden" name="category" value="concert">
+												<input type="hidden" name="categoryNum" value="3">
+												<input type="hidden" class="concertparam" name="keyGenre" value="">
                                             </div>
                                         </div>
                                     </form>

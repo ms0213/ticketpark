@@ -4,7 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
-
+.col-6 {
+	width: auto;
+}
 .performance-container {
     width: 100%;
     max-width: 1140px;
@@ -68,6 +70,12 @@
     margin: 3px 5px 5px 5px;
 }
 
+.page-box {
+	clear: both;
+	padding: 20px 0;
+	text-align: center;
+}
+
 .subject {
    	display: block;
     height: auto;
@@ -90,35 +98,60 @@
 <script type="text/javascript">
 function searchList() {
 	var f = document.searchForm;
+	f.action="${pageContext.request.contextPath}/performance/list";
 	f.submit();
 }
+
+$(function(){
+	$("#datepicker").datepicker({
+		format:"yyyy-mm-dd"
+	});
+});
+
+$("body").on("change", "#condiGenre", function(){
+	var f = $(this).val();
+	$("#keyGenre").val(f);
+});
+		
 </script>
 
 <div class="performance-container">
 	<div class="body-container">
 		<div class="body-title">
-			<h3><i class="bi bi-image"></i> 
+			<h3>
 				${category=="musical" ? "뮤지컬" : ""}
 				${category=="drama" ? "연극" : ""}
 				${category=="concert" ? "콘서트" : ""}
+				${category=="all" ? "전체" : ""}
 			</h3>
 		</div>
 		
 		<div class="body-main">
 			<div class="row board-list-footer">
 				<div class="col-6 text-center">
-					<form class="row row-form" name="searchForm" action="${pageContext.request.contextPath}/performance/list" method="post">
+					<form class="row row-form" name="searchForm" method="post">
 						<div class="col-auto p-1">
-						<select name="condition" class="form-select">
-							<option value="subject" ${condition=="subject"?"selected='selected'":""}>공연이름</option>
-							<option value="date" ${condition=="date"?"selected='selected'":""}>공연 기간</option>
-						</select>
+							<input type="text" name="keyAddr" value="${keyAddr}" placeholder="지역" class="form-select">
 						</div>
 						<div class="col-auto p-1">
-							<input type="text" name="keyword" value="${keyword}" class="form-control">
+							<c:if test="${not empty listGenre}">
+								<select name="condiGenre" class="form-select" id="condiGenre">
+										<option value="" >::장르::</option>
+									<c:forEach var="vo" items="${listGenre}">
+										<option value="${vo.genreNum}" ${vo.genreNum == keyGenre ? "selected='selected'" : ""}>${vo.genre}</option>
+									</c:forEach>
+								</select>
+							</c:if>
+						</div>
+						
+						<div class="col-auto p-1">
+							<input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="datepicker" placeholder="날짜">
 						</div>
 						<div class="col-auto p-1">
 							<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
+							<input type="hidden" name="category" value="${category}">
+							<input type="hidden" name="categoryNum" value="${category=='all' ? 0 : categoryNum}">
+							<input type="hidden" name="keyGenre" id="keyGenre" value="${keyGenre}">
 						</div>
 					</form>
 				</div>
@@ -132,7 +165,7 @@ function searchList() {
 	         <div class="row">
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
-			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}" title="${dto.subject}">
+			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}" title="${dto.subject}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
 			 			</a>

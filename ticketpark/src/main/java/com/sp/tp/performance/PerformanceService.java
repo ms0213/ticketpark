@@ -13,6 +13,7 @@ public interface PerformanceService {
 	public List<Performance> listRate();
 	public List<Performance> listCategory();
 	public List<Performance> listGenre(Map<String, Object> map);
+	public List<Performance> listGenreMain(Map<String, Object> map);
 	public List<Performance> listHall();
 	public List<Performance> listTheater(Map<String, Object> map);
 	public List<Performance> listFile(int perfNum);

@@ -3,6 +3,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style>
+.col-md-8:hover {
+	background-color: #bee6c7;
+}
+</style>
+<script>
+function searchList() {
+	var f = document.searchForm;
+	f.submit();
+	
+}
+</script>
+
 <div class="container">
 	<div class="body-container">	
 		<div class="body-title">
@@ -37,8 +50,8 @@
 									<p class="card-text">게시일 : ${dto.reg_date}</p>
 									<p class="card-text" style="overflow:hidden;  text-overflow:ellipsis; 
 										display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;">${dto.content}</p>
-
 								</div>
+								
 							</div>
 						</div>
 						<hr>			
@@ -54,7 +67,7 @@
 					<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="location.href='${pageContext.request.contextPath}/article/list';">새로고침</button>
 				</div>
 				<div class="col-6 text-center">
-					<form class="row" name="searchForm" action="${pageContext.request.contextPath}/article/list" method="post">
+					<form class="row" name="searchForm" action="${pageContext.request.contextPath}/article/list" method="post" style="margin-left: 100px;">
 						<div class="col-auto p-1">
 							<select name="condition" class="form-select">
 								<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
@@ -72,8 +85,8 @@
 						</div>
 					</form>
 				</div>
-				<div class="col text-end">
-				<c:if test="${sessionScope.member.userId==dto.admin}">
+				<div class="col text-end" style="width: 100px;">
+				<c:if test="${sessionScope.member.userId=='admin'}">
 					<button type="button" class="btn btn-outline-secondary fh rhclrh" onclick="location.href='${pageContext.request.contextPath}/article/write';">글올리기</button>
 				</c:if>
 				</div>

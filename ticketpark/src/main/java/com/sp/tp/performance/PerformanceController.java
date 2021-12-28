@@ -33,9 +33,14 @@ public class PerformanceController {
 	
 	@RequestMapping(value = "list")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
-			@RequestParam(defaultValue = "all") String condition,
-			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam(defaultValue = "") String condiDate,
+			@RequestParam(defaultValue = "") String condiAddr,
+			@RequestParam(defaultValue = "") String condiGenre,
+			@RequestParam(defaultValue = "") String keyDate,
+			@RequestParam(defaultValue = "") String keyAddr,
+			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam(defaultValue = "all") String category,
+			@RequestParam(value = "categoryNum") Integer categoryNum,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -47,13 +52,18 @@ public class PerformanceController {
 		int dataCount;
 
 		if (req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
-			keyword = URLDecoder.decode(keyword, "utf-8");
+			keyGenre = URLDecoder.decode(keyGenre, "utf-8");
+			keyAddr = URLDecoder.decode(keyAddr, "utf-8");
 		}
 
 		// 전체 페이지 수
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("condition", condition);
-		map.put("keyword", keyword);
+		map.put("condiDate", condiDate);
+		map.put("condiAddr", condiAddr);
+		map.put("condiGenre", condiGenre);
+		map.put("keyDate", keyDate);
+		map.put("keyAddr", keyAddr);
+		map.put("keyGenre", keyGenre);
 		map.put("category", category);
 
 		dataCount = service.dataCount(map);
@@ -71,21 +81,41 @@ public class PerformanceController {
 
 		List<Performance> list = service.listPerformance(map);
 
-		String query = "category=" + category;
-		String listUrl = cp + "/performance/list";
-		String articleUrl = cp + "/performance/article?page=" + current_page;
-		if (keyword.length() != 0) {
-			query = "&condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8"); 
-		}
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("categoryNum", categoryNum);
+		List<Performance> listGenre = service.listGenre(map2);
 
+		String query = "category=" + category+"&categoryNum=" + categoryNum;
+		
+		if(keyGenre.length()!=0) {
+			query+="&keyGenre="+keyGenre;
+		}
+		
+		if(keyAddr.length()!=0) {
+			query += "&keyAddr=" + URLEncoder.encode(keyAddr, "utf-8");
+		}
+		
+		if(keyDate.length()!=0) {
+			query += "&keyDate=" + keyDate;
+		}
+		
+		String listUrl = cp + "/test/list"; 
+		String articleUrl = cp + "/test/article?page=" + current_page;
+		
+		query = "condiDate=" + condiDate + "&condiAddr=" + condiAddr + 
+				"&condiGenre=" + condiGenre;
+		
 		if (query.length() != 0) {
-			listUrl = cp + "/performance/list?" + query;
-			articleUrl = cp + "/performance/article?page=" + current_page + "&" + query;
+			listUrl = cp + "/test/list?" + query;
+			articleUrl = cp + "/test/article?page=" + current_page + "&" + query;
 		}
-
+		
 		String paging = myUtil.paging(current_page, total_page, listUrl);
 
+		model.addAttribute("listGenre", listGenre);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("categoryNum", categoryNum);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("articleUrl", articleUrl);
@@ -93,8 +123,12 @@ public class PerformanceController {
 		model.addAttribute("paging", paging);
 		model.addAttribute("category", category);
 
-		model.addAttribute("condition", condition);
-		model.addAttribute("keyword", keyword);
+		model.addAttribute("condiDate", condiDate);
+		model.addAttribute("condiAddr", condiAddr);
+		model.addAttribute("condiGenre", condiGenre);
+		model.addAttribute("keyDate", keyDate);
+		model.addAttribute("keyAddr", keyAddr);
+		model.addAttribute("keyGenre", keyGenre);
 		
 		return ".performance.list";
 	}

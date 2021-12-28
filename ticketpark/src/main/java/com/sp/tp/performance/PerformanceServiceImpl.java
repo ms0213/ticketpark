@@ -263,4 +263,16 @@ public class PerformanceServiceImpl implements PerformanceService {
 		}
 		return listFile;
 	}
+
+	@Override
+	public List<Performance> listGenreMain(Map<String, Object> map) {
+		List<Performance> listGenreMain = null;
+		
+		try {
+			listGenreMain = dao.selectList("performance.listGenreMain", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listGenreMain;
+	}
 }

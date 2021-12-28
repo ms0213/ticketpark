@@ -3,9 +3,7 @@ package com.sp.tp.test;
 import java.util.List;
 import java.util.Map;
 
-
 public interface TestService {
-
 	public void insertPerformance(Test dto, String pathname) throws Exception;
 	public int dataCount(Map<String, Object> map);
 	public List<Test> listPerformance(Map<String, Object> map);

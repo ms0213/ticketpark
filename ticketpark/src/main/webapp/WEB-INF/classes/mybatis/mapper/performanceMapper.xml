@@ -27,61 +27,66 @@
 			VALUES(cast_seq.NEXTVAL, #{sdNum}, #{castName}, #{roleName}, #{castFileName})
 	</insert>
 	
-	<sql id="where-list">
-		<if test="condition=='subject'">
-			INSTR(subject, #{keyword}) &gt; 0
-		</if>
-		<if test="condition=='date'">
-			startDate &lt;= #{keyword} AND #{keyword} &lt;= endDate
-		</if>
-	</sql>
-	
 	<sql id="category-list">
 		<if test="category == 'musical'">
-			cNum = 1
+			c.cNum = 1
 		</if>
 		<if test="category == 'drama'">
-			cNum = 2
+			c.cNum = 2
 		</if>
 		<if test="category == 'concert'">
-			cNum = 3
-		</if>
-		<if test="category == 'all'">
-			cNum IS NOT NULL
+			c.cNum = 3
 		</if>
 	</sql>
 	
-	<!-- 공연 개수 -->
+	<!-- 공연 개수(메인) -->
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
-		FROM performance p, genre g, category c
-		WHERE p.gmNum = g.gNum AND c.cNum = g.cNum
-		<if test="category != null">
-            AND c.<include refid="category-list"/>
-        </if>
-		<where>
-			<if test="keyword!=null and keyword!='' ">
-				<include refid="where-list"/>
+		FROM performance p, genre g, category c, theater th, hall h, schedule s
+		WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
+		
+			<if test="category != null and category != '' and category != 'all' ">
+	            AND <include refid="category-list"/>
+	        </if>
+			
+			<if test=" keyDate!=null and keyDate!=''">
+				AND s.perf_date = #{keyDate}
 			</if>	
-		</where>
+			<if test=" keyGenre!=null and keyGenre!=''">
+				AND g.gnum = #{keyGenre}
+			</if>
+			<if test=" keyAddr!=null and keyAddr!=''">
+				AND INSTR(h.addr, #{keyAddr}) &gt; 0
+			</if>
+			
 	</select>
 	
-	<!-- 공연리스트 -->
+	<!-- 공연리스트(메인) -->
 	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.performance.Performance">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT p.perfNum, subject, po.saveFilename postFileName,
-		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
-		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, hallName
-		        FROM performance p, theater th, hall h, genre g, poster po
-		        WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum
+		        SELECT p.perfNum, subject, po.saveFilename postFileName, 
+		        	s.perf_date, hallName, g.genre, h.addr,
+		        	TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate
+		        FROM performance p, genre g, category c, theater th, hall h, schedule s,  poster po
+		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
 		            AND p.perfNum = po.perfNum AND poster_main = 1 
-		            <if test="category != null">
-			           	AND <include refid="category-list"/>
-		            </if>
-		           	<if test="keyword != null and keyword != ''">
-						AND <include refid="where-list"/>	
-					</if>
+					
+						<if test="category != null and category != '' and category != 'all'">
+							AND <include refid="category-list"/>
+						</if>
+						
+						<if test=" keyDate!=null and keyDate!=''">
+							AND s.perf_date = #{keyDate}
+						</if>	
+						<if test=" keyGenre!=null and keyGenre!=''">
+							AND g.gnum = #{keyGenre}
+						</if>
+						<if test=" keyAddr!=null and keyAddr!=''">
+							AND INSTR(h.addr, #{keyAddr}) &gt; 0
+						</if>
+						
 	        	ORDER BY perfNum DESC
 			)  tb WHERE ROWNUM &lt;= #{end}
 	    ) WHERE rnum &gt;= #{start}
@@ -109,6 +114,11 @@
 		SELECT gNum genreNum, genre
 		FROM genre
 		WHERE cNum = #{categoryNum}
+	</select>
+	
+	<select id="listGenreMain" parameterType="map" resultType="com.sp.tp.performance.Performance">
+		SELECT gNum genreNum, genre, cNum categoryNum
+		FROM genre
 	</select>
 	
 	<select id="listRate" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
