@@ -13,7 +13,7 @@ window.onload =	function requestPay() {
 	    IMP.request_pay({ // param
 	    pg: "html5_inicis",
 	    pay_method: "card",
-	    merchant_uid: "ORD20180131-0000011",
+	    merchant_uid: "ORD20180131-0000011" + new Date().getTime(),
 	    name: f.name.value,
 	    amount: 100,
 	    buyer_email: f.email.value,
@@ -24,11 +24,11 @@ window.onload =	function requestPay() {
 	    console.log(rsp);
 	    if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
 	    	var msg = '결제에 성공하였습니다. 예매 내역은 마이페이지를 확인해주세요.';
-	    	f.action="${pageContext.request.contextPath}/book/paymentOk";
+	    	f.action="${pageContext.request.contextPath}/book/payment";
 	    	f.submit();
 	    } else {
 	    	var msg = '결제에 실패하였습니다.';
-	    	msg += '<br>실패사유 : ' + rsp.error_msg;
+	    	msg += '\n실패사유 : ' + rsp.error_msg;
 	    }
 	    alert(msg);
 	  });
@@ -53,7 +53,8 @@ window.onload =	function requestPay() {
 				<input type="hidden" value="${tel}" name="tel">	
 				<input type="hidden" value="${addr}" name="addr">
 				<input type="hidden" value="${amount}" name="amount">
-				<input type="hidden" value="${name}" name="name">	
+				<input type="hidden" value="${name}" name="name">
+				<input type="hidden" value="${bNum}" name="bNum">	
 			</form>
 		</div>
 	        

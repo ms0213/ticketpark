@@ -2,6 +2,11 @@ package com.sp.tp.book;
 
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sp.tp.member.Member;
@@ -131,22 +137,26 @@ public class BookController {
 			HttpSession session,
 			Model model) {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		Member dto = new Member();
-		Book vo = new Book();
+		Member dto;
+		Book vo;
+		int bNum;
 		try {
 			dto = service.readMember(info.getUserId());
-			vo = service.readBook(info.getUserId());
-			vo = service.readPay(vo.getbNum());
+			bNum = service.readBook(info.getUserId()).getbNum();
+			vo = service.readPay(bNum);
+			
+			model.addAttribute("bNum", bNum);
+			model.addAttribute("userName", dto.getUserName());
+			model.addAttribute("tel", dto.getTel());
+			model.addAttribute("email", dto.getEmail());
+			model.addAttribute("addr", dto.getAddr1()+dto.getAddr2());
+			model.addAttribute("amount", vo.getAmount());
+			model.addAttribute("name", vo.getSubject());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		model.addAttribute("userName", dto.getUserName());
-		model.addAttribute("tel", dto.getTel());
-		model.addAttribute("email", dto.getEmail());
-		model.addAttribute("addr", dto.getAddr1()+dto.getAddr2());
-		model.addAttribute("amount", vo.getAmount());
-		model.addAttribute("name", vo.getSubject());
 		return ".book.payment";
 	}
 	
@@ -154,11 +164,51 @@ public class BookController {
 	public String paymentOk(
 			final RedirectAttributes reAttr,
 			HttpSession session,
-			Model model) {
+			Model model,
+			@RequestParam int bNum,
+			@RequestParam int amount) {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("userId", info.getUserId());
+			map.put("bNum", bNum);
+			List<Book> list = new ArrayList<Book>();
+			list = service.readComplete(map);
 			
+			Map<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("bNum", bNum);
+			map2.put("amount", list.size());
+			map2.put("price", amount);
+			service.updateBook(map2);
+			
+			String hName = list.get(0).gethName();
+			String tName = list.get(0).gettName();
+			
+			String seats = "";
+			for(int i=0; i<list.size(); i++) {
+				seats += list.get(i).getSeat_num()+",";
+			}
+			seats=seats.substring(0,seats.length()-1);
+			String []arrSeat = seats.split(",");
+			String ss = "";
+			int n;
+			for(String s : arrSeat) {
+				n = Integer.parseInt(s.substring(4));	
+				ss += s.substring(0, 3) +"("+(n==1?"일반석":"vip석")+") ";
+			}
+			StringBuilder sb = new StringBuilder();
+			sb.append("예매가 성공적으로 처리되었습니다.<br>");
+			sb.append("예매하신 상영관 정보는 ");
+			sb.append(hName +"&nbsp;&nbsp;"+ tName);
+			sb.append(" 입니다.<br>");
+			sb.append("선택하신 좌석 번호는 ");
+			sb.append(ss);
+			sb.append("입니다.<br>");
+			
+			reAttr.addFlashAttribute("message", sb.toString());
+			reAttr.addFlashAttribute("title", "예매 정보");
 		} catch (Exception e) {
+			e.printStackTrace();
 			try {
 				Book dto = new Book();
 				dto = service.readBook(info.getUserId());
@@ -169,25 +219,7 @@ public class BookController {
 			} catch (Exception e2) {				
 			}
 		}
-		/*
-		String ss = "";
-		int n;
-		for(String s : arrSeat) {
-			n = Integer.parseInt(s.substring(4));	
-			ss += s.substring(0, 3) +"("+(n==1?"일반석":"vip석")+") ";
-		}
-		StringBuilder sb = new StringBuilder();
-		sb.append("예매가 성공적으로 처리되었습니다.<br>");
-		sb.append("예매하신 상영관 정보는 ");
-		sb.append(hName + tName);
-		sb.append(" 입니다.<br>");
-		sb.append("선택하신 좌석 번호는");
-		sb.append(ss);
-		sb.append("입니다.<br>");
-		
-		reAttr.addFlashAttribute("message", sb.toString());
-		reAttr.addFlashAttribute("title", "예매 정보");
-		*/
+	
 		return "redirect:/book/complete";
 	}
 	

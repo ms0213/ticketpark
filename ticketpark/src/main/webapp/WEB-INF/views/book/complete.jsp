@@ -25,8 +25,8 @@
 						<p class="text-center">${message}</p>
 	                </div>
                        
-                    <div class="d-grid">
-                        <button type="button" class="btn btn-lg btn-success" onclick="location.href='${pageContext.request.contextPath}/';">메인화면 <i class="bi bi-check2"></i> </button>
+                    <div class="d-grid" style="text-align-last: center;">
+                        <button type="button" class="btn btn-lg btn-success" onclick="location.href='${pageContext.request.contextPath}/';">메인화면</button>
                     </div>
                 </div>
 

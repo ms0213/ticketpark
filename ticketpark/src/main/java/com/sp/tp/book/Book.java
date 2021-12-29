@@ -28,10 +28,24 @@ public class Book {
 	private String []reservedSeat;
 	
 	private String subject;
+	private String hName;
+	private String tName;
 	
 	
 	
 
+	public String gethName() {
+		return hName;
+	}
+	public void sethName(String hName) {
+		this.hName = hName;
+	}
+	public String gettName() {
+		return tName;
+	}
+	public void settName(String tName) {
+		this.tName = tName;
+	}
 	public String getSubject() {
 		return subject;
 	}

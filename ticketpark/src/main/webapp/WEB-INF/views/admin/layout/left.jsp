@@ -18,6 +18,7 @@
 						<li><ul class="gn-menu">
 								<li><a class="gn-icon gn-icon-article" href="">매출관리</a></li>
 								<li><a class="gn-icon gn-icon-pictures" href="${pageContext.request.contextPath}/admin/couponManage/list">쿠폰관리</a></li>
+								<li><a class="gn-icon gn-icon-pictures" href="${pageContext.request.contextPath}/admin/contactUs/list">Contact Us</a></li>
 							</ul></li>
 					</ul>
 				</div>

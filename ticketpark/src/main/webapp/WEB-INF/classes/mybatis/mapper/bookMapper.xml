@@ -38,4 +38,20 @@
 		WHERE bNum = #{bNum}
 		GROUP BY subject
 	</select>
+	
+	<select id="readComplete" parameterType="map" resultType="com.sp.tp.book.Book">
+		SELECT hallName hName, t.tNum tNum, t.name tName, seat_num
+	    FROM book b
+	    JOIN book2 b2 ON b.bNum = b2.bNum
+	    JOIN schedule s ON s.sdNum = b2.sdNum
+	    JOIN performance p ON p.perfNum = s.perfNum
+	    JOIN theater t ON t.tNum = p.tNum
+	    JOIN hall h ON h.hNum = t.hallNo
+	    WHERE userId = #{userId} AND b.bNum = #{bNum}
+	</select>
+	
+	<update id="updateBook" parameterType="map">
+		UPDATE book SET price = #{price}, amount = #{amount}, state = #{state}
+		WHERE bNum = #{bNum}
+	</update>
 </mapper>

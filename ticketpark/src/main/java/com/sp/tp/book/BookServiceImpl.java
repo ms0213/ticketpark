@@ -2,6 +2,7 @@ package com.sp.tp.book;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,6 +113,28 @@ public class BookServiceImpl implements BookService {
 			e.printStackTrace();
 		}
 		return dto;
+	}
+
+	@Override
+	public List<Book> readComplete(Map<String, Object> map) {
+		List<Book> list = null;
+		try {
+			list = dao.selectList("book.readComplete", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public void updateBook(Map<String, Object> map) {
+		try {
+			map.put("state", "예매완료");
+			dao.updateData("book.updateBook", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 
