@@ -23,4 +23,7 @@ public interface MemberService {
 	public boolean userChoiced(Map<String, Object> map);
 	public void insertChoice(Map<String, Object> map) throws Exception;
 	public void deleteChoice(Map<String, Object> map) throws Exception;
+	
+	public List<MyBookList> listMyBook(String userId);
+	public MyBookList openModal(Map<String, Object> map);
 }

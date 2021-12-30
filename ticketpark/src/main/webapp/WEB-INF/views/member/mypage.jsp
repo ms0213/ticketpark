@@ -58,6 +58,15 @@
 .owl-nav button.owl-next {
   right: 0;
 }
+
+.bNum {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.bNum:hover {
+	color: #0B7903;
+}
 </style>
 
 <script>
@@ -164,6 +173,22 @@ $(function() {
 		ajaxFun(url,"post",query,"json",fn);
 	});
 });
+
+$(function() {
+	$("body").on("click", ".bNum", function() {
+		$("#bookModal").modal("show");
+		
+		var url="${pageContext.request.contextPath}/member/openBook";
+		
+		var bNum = $(this).attr("data-bNum");
+		
+		var query = "bNum=" + bNum;
+		var fn = function(data){
+			$(".modal-list").html(data);
+		};
+		ajaxFun(url, "get", query, "html", fn)
+	});
+});
 </script>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
@@ -188,7 +213,33 @@ $(function() {
 			<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
 				<div class="mypage-content">
 					<h4 id="list-item-1">예매내역</h4>
-						<p>Ex consequat commodo adipisicing exercitation aute excepteur occaecat ullamco duis aliqua id magna ullamco eu. Do aute ipsum ipsum ullamco cillum consectetur ut et aute consectetur labore. Fugiat laborum incididunt tempor eu consequat enim dolore proident. Qui laborum do non excepteur nulla magna eiusmod consectetur in. Aliqua et aliqua officia quis et incididunt voluptate non anim reprehenderit adipisicing dolore ut consequat deserunt mollit dolore. Aliquip nulla enim veniam non fugiat id cupidatat nulla elit cupidatat commodo velit ut eiusmod cupidatat elit dolore.</p>
+					<div class="book">
+						<table class="table board-list">
+							<thead class="table-light">
+								<tr>
+									<th class="bw-auto">예매일</th>
+									<th class="bw-auto">예약번호</th>
+									<th class="bw-auto">상품명</th>
+									<th class="bw-auto">이용일/매수</th>
+									<th class="bw-auto">취소가능일</th>
+									<th class="bw-auto">상태</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="dto" items="${myBookList}" >
+									<tr>
+										<td>${dto.bookDate}</td>
+										<td class="bNum" data-bNum="${dto.bNum}">${dto.bNum}</td>
+										<td>${dto.subject}</td>
+										<td>${dto.perf_date}<br>${dto.amount}매</td>
+										<td>${dto.cancel_date}</td>
+										<td>${dto.state}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+						<c:if test="${empty myBookList}"><p class="text-center">예매하신 정보가 없습니다.</p></c:if>
+					</div>	
 				</div>
 				<div class="mypage-content">
 					<h4 id="list-item-2">찜목록</h4>
@@ -257,4 +308,47 @@ $(function() {
 </div>
 
 
+
+<!-- 예매내역 Modal -->
+<div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> 예매 상세정보 </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table style="width: 100%; border-spacing: 1px; background: #ccc;">
+	        <thead>
+	        	<tr height="30" bgcolor="#eee" align="center">
+	        		<th>Poster</th>
+	        	</tr>
+				<tr height="30" bgcolor="#eee" align="center">
+					<th>공연장 이름</th>			
+				</tr>
+				<tr height="30" bgcolor="#eee" align="center">
+					<th>상영관 이름</th>
+				</tr>
+				<tr height="30" bgcolor="#eee" align="center">
+					<th>상영관 위치</th>
+				</tr>
+				<tr height="30" bgcolor="#eee" align="center">
+					<th>공연 이름</th>
+				</tr>
+				<tr height="30" bgcolor="#eee" align="center">
+					<th>공연 시간</th>
+				</tr>
+				<tr height="30" bgcolor="#eee" align="center">
+					<th>예약 좌석</th>
+				</tr>
+	        </thead>
+	        <tbody class="modal-list"></tbody>
+			
+		</table>
+      </div>
+    </div>
+  </div>
+</div>
 

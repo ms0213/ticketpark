@@ -181,4 +181,26 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public List<MyBookList> listMyBook(String userId) {
+		List<MyBookList> list = null;
+		try {
+			list = dao.selectList("member.listMyBook", userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public MyBookList openModal(Map<String, Object> map) {
+		MyBookList dto = null;
+		try {
+			dto = dao.selectOne("member.openModal", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+
 }

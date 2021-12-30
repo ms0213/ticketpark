@@ -162,7 +162,7 @@ a:active, a:hover {
 $(function(){
 	$("body").on("click", ".seat", function(){
 		var selectSeatCount = $("form[name=seatSelectForm] input[name=seats]").length;
-		if(selectSeatCount >= 2 && $(this).hasClass("seat-select") == false) {
+		if(selectSeatCount > ${generalSeat} + ${vipSeat} && $(this).hasClass("seat-select") == false) {
 			alert("좌석 선택이 완료 되었습니다.");
 			return false;
 		}
@@ -264,6 +264,7 @@ function sendOk() {
 				<button type="button" class="btn" onclick="sendOk();"> 좌석 선택 완료 </button>
 				<button type="button" class="btn"> 좌석 선택 취소 </button>
 				<input type="hidden" name="cinemaCode" value="${cinemaCode}">
+				<input type="hidden" name="selectSeatCount" value="${selectSeatCount}">
 			</form>
 		</div>
 	</div>

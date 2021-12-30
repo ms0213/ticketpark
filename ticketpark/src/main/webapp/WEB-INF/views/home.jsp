@@ -6,11 +6,21 @@
 <script>
 $(function(){
 	$(".owl-carousel").owlCarousel({
-        items: 5,
+		center: true,
+        items: 3,
         margin: 10,
+        responsive:{
+        	600:{
+        		items:6
+        	}
+        },
         loop: true,
         nav: true,
-        autoplay: false,
+        navText: [
+            "<i class='ti-angle-left'></i>",
+            "<i class='ti-angle-right'></i>"
+            ],
+        autoplay: true,
         autoplayTimeout: 3000,
         autoplayHoverPause: true
     });
@@ -128,31 +138,19 @@ $(function(){
 }
 </style>
 	<!--top place start-->
-    <section class="event_part section_padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-	               	<ol class="carousel-indicators">
-						<c:forEach var="vo" items="${listPerformance}" varStatus="status">
-							<li data-target="#carouselExampleIndicators" 
-								data-slide-to="${status.index}" class="${status.index ==0 ? 'active' : '' }"></li>
-						</c:forEach>
-					</ol>
-					
-					<div class="owl-carousel" >
+    <section class="event_part" style="padding: 50px 0;">
+			
+					<div class="owl-carousel owl-theme owl-loaded" >
 						<c:forEach var="vo" items="${listPerformance}" varStatus="status">
 							<div class="single_event_slider">
 							<a class="link" href="${pageContext.request.contextPath}/performance/article?perfNum=${vo.perfNum}&page=1&category=${vo.category}" title="${vo.subject}">
-	                            <img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}" class="d-block w-100" alt="${vo.subject}" style="height: 300px; width: 200px;">
+	                            <img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}" class="d-block" alt="${vo.subject}" >
 	                            <span>${vo.subject}</span>
 							</a>
 	                        </div>
                         </c:forEach>
                     </div>
-                    
-				</div>
-            </div>
-        </div>
+                   
     </section>
     <!--top place end-->
     

@@ -282,10 +282,11 @@ public class MemberController {
 		}
 		List<myCoupon> myCouponList = service.listMyCoupon(info.getUserId());
 		List<myChoice> myChoiceList = service.listMyChoice(info.getUserId());
-		
+		List<MyBookList> myBookList = service.listMyBook(info.getUserId());
 		model.addAttribute("dto", dto);
 		model.addAttribute("myCouponList", myCouponList);
 		model.addAttribute("myChoiceList", myChoiceList);
+		model.addAttribute("myBookList", myBookList);
 		
 		return ".member.mypage";
 	}
@@ -349,5 +350,24 @@ public class MemberController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("state",state);
 		return model;
+	}
+	
+	@RequestMapping(value = "openBook", method = RequestMethod.GET)
+	public String openBook(
+			@RequestParam int bNum,
+			HttpSession session,
+			Model model) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", info.getUserId());
+		map.put("bNum", bNum);
+		MyBookList dto = new MyBookList();
+		try {
+			dto = service.openModal(map);
+			model.addAttribute("dto", dto);
+		} catch (Exception e) {
+		}
+		
+		return "member/listModal";
 	}
 }
