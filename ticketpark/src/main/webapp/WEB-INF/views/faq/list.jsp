@@ -25,6 +25,7 @@
 
 </style>
 
+
 <c:if test="${list.size() > 0}">
 	<div class="accordion" id="accordionExample"> 
 		<c:forEach var="dto" items="${list}" varStatus="status">
@@ -66,7 +67,7 @@
 
 <div class="row py-3">
 	<div class="col">
-		<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/faq/main';">새로고침</button>
+		<button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/faq/main';">새로고침</button>
 	</div>
 	<div class="col-6 text-center">
 	
@@ -75,7 +76,7 @@
 	</div>
 	<div class="col text-end">
 		<c:if test="${sessionScope.member.membership>50}">
-			<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/faq/write';">글올리기</button>
+			<button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/faq/write';">글올리기</button>
 		</c:if>
 	</div>
 </div>

@@ -15,6 +15,7 @@
 	
 }
 
+
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
@@ -118,18 +119,18 @@ function deleteFaq(num, page) {
 <div class="container">
 	<div class="body-container">	
 		<div class="body-title">
-			<h3><i class="bi bi-question-octagon"></i> 자주하는 질문 </h3>
+			<h3>&nbsp;FAQ</h3>
 		</div>
 		
 	<br>
 	<div class="body-top">
 		<form class="row" name="searchForm" method="post">
-			<div class="col-2">
+			<div class="col">
 				<select name="condition" id="condition" class="form-select" hidden="hidden">
 					
 				</select>
 			</div>
-			<div class="col-7">
+			<div class="col-6">
 				<input type="text" name="keyword" id="keyword" value="${keyword}" class="form-control" placeholder="궁금하신 내용을 입력해주세요 !">
 				
 	

@@ -5,7 +5,7 @@
 
 <style type="text/css">
 .body-container {
-	max-width: 900px;
+	max-width: 1000px;
 }
 
 .table-category input, .table-category select {
@@ -18,6 +18,11 @@
 .table-category th, .table-category td {
 	border: 1px solid #eee;
 }
+
+#content {
+	min-height: 250px;
+}
+
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
@@ -243,7 +248,7 @@ $(function(){
 <div class="container">
 	<div class="body-container">	
 		<div class="body-title">
-			<h3><i class="bi bi-question-octagon"></i> 자주하는 질문 </h3>
+			<h3>&nbsp;자주하는 질문 </h3>
 		</div>
 		
 		<div class="body-main">
@@ -294,8 +299,8 @@ $(function(){
  					<tr>
 						<td class="text-center">
 							<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
-							<button type="reset" class="btn btn-light">다시입력</button>
-							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/faq/main?pageNo=${pageNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+							<button type="reset" class="btn btn-outline-secondary">다시입력</button>
+							<button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/faq/main?pageNo=${pageNo}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 							<c:if test="${mode=='update'}">
 								<input type="hidden" name="num" value="${dto.num}">
 								<input type="hidden" name="pageNo" value="${pageNo}">

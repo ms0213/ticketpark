@@ -8,10 +8,18 @@
 	font-size: 15px;
 }
 
+.noticeForm {
+	 max-width: 1000px;
+	 margin: 0 auto;
+}
+
+#content {
+	min-height: 300px;
+}
+
 </style>
 
-
-<form name="noticeForm" method="post" enctype="multipart/form-data"> 
+<form name="noticeForm" class="noticeForm" method="post" enctype="multipart/form-data"> 
 	<table class="table write-form mt-5">
 		
 		<tr>
@@ -39,7 +47,7 @@
 			<td class="table-light col-sm-2" scope="row">공지여부</td>
 			<td class="py-3">
 				<input type="checkbox" name="notice" id="notice" class="form-check-input" value="1" ${dto.notice==1 ? "checked='checked' ":"" } >
-				<label class="form-check-label" for="notice">&nbsp;공지</label>
+					<label class="form-check-label" for="notice">공지</label>
 			</td>
 		</tr>        
      
@@ -83,8 +91,8 @@
 			<tr>
 			<td class="text-center">
 				<button type="button" class="btn btn-dark" onclick="sendOk('${mode}', '${pageNo}');">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
-				<button type="reset" class="btn btn-light">다시입력</button>
-				<button type="button" class="btn btn-light" onclick="sendCancel('${pageNo}');">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+				<button type="reset" class="btn btn-outline-secondary">다시입력</button>
+				<button type="button" class="btn btn-outline-secondary" onclick="sendCancel('${pageNo}');">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 				<c:if test="${mode=='update'}">
 					<input type="hidden" name="num" value="${dto.num}">
 				</c:if>

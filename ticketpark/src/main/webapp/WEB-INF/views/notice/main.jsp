@@ -11,7 +11,7 @@
 <div class="container">
 	<div class="body-container">	
 		<div class="body-title">
-			<h3><i class="bi bi-clipboard"></i> 공지사항 </h3>
+			<h3>&nbsp;공지사항</h3>
 		</div>
 		
 		<div class="body-main content-frame">
@@ -143,6 +143,7 @@ function articleBoard(num, page) {
 	};
 	ajaxFun(url, "get", query, "html", fn);
 }
+
 
 <c:if test="${sessionScope.member.membership>50}">
 	

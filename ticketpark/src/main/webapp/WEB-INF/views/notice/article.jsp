@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
 <table class="table mb-0">
 	<thead>
 		<tr>
@@ -66,24 +67,24 @@
 		<td width="50%">
 			<c:choose>
 				<c:when test="${sessionScope.member.userId==dto.userId}">
-					<button type="button" class="btn btn-light" onclick="updateForm('${dto.num}', '${pageNo}');">수정</button>
+					<button type="button" class="btn btn-outline-secondary" onclick="updateForm('${dto.num}', '${pageNo}');">수정</button>
 				</c:when>
 				<c:otherwise>
-					<button type="button" class="btn btn-light" disabled="disabled">수정</button>
+					<button type="button" class="btn btn-outline-secondary" disabled="disabled">수정</button>
 				</c:otherwise>
 			</c:choose>
 	    	
 			<c:choose>
 	    		<c:when test="${sessionScope.member.membership>50}">
-	    			<button type="button" class="btn btn-light" onclick="deleteOk('${dto.num}', '${pageNo}');">삭제</button>
+	    			<button type="button" class="btn btn-outline-secondary" onclick="deleteOk('${dto.num}', '${pageNo}');">삭제</button>
 	    		</c:when>
 	    		<c:otherwise>
-	    			<button type="button" class="btn btn-light" disabled="disabled">삭제</button>
+	    			<button type="button" class="btn btn-outline-secondary" disabled="disabled">삭제</button>
 	    		</c:otherwise>
 	    	</c:choose>
 		</td>
 		<td class="text-end">
-			<button type="button" class="btn btn-light" onclick="listPage('${pageNo}');">리스트</button>
+			<button type="button" class="btn btn-outline-secondary" onclick="listPage('${pageNo}');">리스트</button>
 		</td>
 	</tr>
 </table>

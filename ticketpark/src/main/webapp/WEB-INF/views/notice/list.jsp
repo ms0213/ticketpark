@@ -9,6 +9,10 @@
     margin: 0 auto;
 }
 
+.bg-primary {
+    background-color: #AAFFA3!important;
+}
+
 </style>
 
 <div class="row board-list-header">
@@ -75,7 +79,7 @@
 
 <div class="row board-list-footer">
 	<div class="col">
-		<button type="button" class="btn btn-light" onclick="reloadBoard();">새로고침</button>
+		<button type="button" class="btn btn-outline-secondary" onclick="reloadBoard();">새로고침</button>
 	</div>
 	<div class="col-6 text-center">
 		<div class="row justify-content-md-center">
@@ -92,13 +96,13 @@
 				<input type="text" name="keyword" id="keyword" value="${keyword}" class="form-control">
 			</div>
 			<div class="col-auto p-1">
-				<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i></button>
+				<button type="button" class="btn btn-outline-secondary" onclick="searchList()"> <i class="bi bi-search"></i></button>
 			</div>
 		</div>
 	</div>
 	<div class="col text-end">
 		<c:if test="${sessionScope.member.membership>50}">
-			<button type="button" class="btn btn-light" onclick="insertForm();">글올리기</button>
+			<button type="button" class="btn btn-outline-secondary" onclick="insertForm();">글올리기</button>
 		</c:if>
 	</div>
 </div>
