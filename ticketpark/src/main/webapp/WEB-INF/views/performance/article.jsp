@@ -41,13 +41,25 @@
   padding: 0;
 }
 .float-table {width: 50%; clear: both; float:left;}
-.calendar-nav{width: 47%; float: left;border: 1px solid #dee2e6; padding: 10px; margin-left: 30px;}
+.calendar-nav{
+	width: 47%;
+	float: left;
+	border: 1px solid #dee2e6; 
+	border-radius: 0.5rem;
+	padding: 15px; 
+	margin-left: 30px;}
 .nav-tabs{clear: both;}
 .choicetrue{color: red;}
 .cal{float: left;}
-.sch-list{float: left;}
+.sch-list{
+	float: left;
+	border: 1px solid #dee2e6;
+    width: 45%;
+    height: 330px;
+    margin: 10px 0 10px 20px;
+}
 .bookdiv{clear: both;}
-
+.perfList{margin: 10px;}
 
 #calendarLayout {
 	width: 280px;
@@ -66,7 +78,7 @@
 	border-spacing: 0;
 }
 #calendarLayout table tr:first-child{
-	background: #eee;
+	background: #f3f2f3;
 }
 
 #calendarLayout table td{
@@ -74,10 +86,10 @@
 	text-align: center;
 }
 #calendarLayout table td:nth-child(7n+1){
-	color: red;
+	color: #fd7e7e;
 }
 #calendarLayout table td:nth-child(7n){
-	color: blue;
+	color: #8282ff;
 }
 #calendarLayout table td.gray {
 	color: #ccc;
@@ -93,7 +105,11 @@
 	text-align: right;
 	font-size: 12px;
 }
-
+#calendarLayout .footer>span{
+	background: #f3f2f3;
+	border-radius: 0.25rem;
+	padding: 3px 10px;
+}
 .subject>span, .footer>span{
 	cursor: pointer;
 }
@@ -120,9 +136,9 @@ function calendar(y, m) {
 	var nd = now.getDate();
 	
 	var out ="<div class='subject'>";
-	out+="<span onclick='calendar("+y+","+(m-1)+")'>&lt;</span>&nbsp;&nbsp;";
+	out+="<span onclick='calendar("+y+","+(m-1)+")'><i class='icofont-rounded-left'></i></span>&nbsp;&nbsp;&nbsp;&nbsp;";
 	out+="<label>"+y+"년 "+m+"월</label>";
-	out+="&nbsp;&nbsp;<span onclick='calendar("+y+","+(m+1)+")'>&gt;</span>";
+	out+="&nbsp;&nbsp;&nbsp;&nbsp;<span onclick='calendar("+y+","+(m+1)+")'><i class='icofont-rounded-right'></i></span>";
 	out+="</div>"
 	
 	out+="<table>";
@@ -233,7 +249,7 @@ $(function() {
 	$("body").on("click", ".choiceBtn", function() {
 		var $i = $(this).find("i");
 		var userChoiced = $i.hasClass("choicetrue");
-		var msg = userChoiced ? "찜취소 ? " : "찜하시겠습니까 ? ";
+		var msg = userChoiced ? "찜을 취소하시겠습니까? " : "해당 공연을 찜하시겠습니까 ? ";
 		
 		if(! confirm( msg )) {
 			return false;
@@ -253,9 +269,9 @@ $(function() {
 				}
 				
 			} else if(state==="liked") {
-				alert("찜은 한번만 가능함");
+				alert("찜은 한번만 가능합니다.");
 			} else if(state==="false") {
-				alert("게시물 공감 여부 처리가 실패했습니다. !!!");
+				alert("공연 찜 추가에 실패했습니다.");
 			}
 		};
 		
@@ -263,6 +279,7 @@ $(function() {
 	});
 });
 </script>
+
 
 
 
@@ -327,7 +344,10 @@ $(function() {
 					<div id="calendarLayout"></div>
 				</div>
 				<div class="sch-list">
-					선택 가능 시간 없음
+					<div class="text-center" style="line-height: 2rem; border-bottom: 1px solid #dee2e6;">시간 선택</div>
+					<div class="perfList">
+						선택 가능 시간 없음
+					</div>
 				</div>
 				<div class="text-right pr-4 bookdiv">
 					<button type="button" class="btn btn-outline-secondary">예매하기</button>
