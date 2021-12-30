@@ -160,7 +160,7 @@
 	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
 	    SELECT p.perfNum, subject, po.saveFilename postFileName,
 	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
-	        hallName, genre, category, time, rate, th.name as theater, p.content, rating
+	        hallName, genre, category, time showTime, price, rate, th.name as theater, p.content, rating
 	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r
 	    WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum AND c.cNum = g.cNum
 	        AND r.rNum = p.rNum

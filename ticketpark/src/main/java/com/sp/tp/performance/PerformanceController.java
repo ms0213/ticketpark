@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sp.tp.common.MyUtil;
+import com.sp.tp.member.MemberService;
 import com.sp.tp.member.SessionInfo;
 
 @Controller("performance.performanceController")
 @RequestMapping("/performance/*")
 public class PerformanceController {
+	@Autowired
+	private MemberService servicem;
 	
 	@Autowired
 	private PerformanceService service;
@@ -213,6 +216,7 @@ public class PerformanceController {
 			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam String category,
+			HttpSession session,
 			Model model) throws Exception {
 
 		
@@ -244,10 +248,17 @@ public class PerformanceController {
 
 		List<Performance> listFile = service.listFile(perfNum);
 
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		Map<String , Object> map = new HashMap<String, Object>();
+		map.put("userId", info.getUserId());
+		map.put("perfNum", perfNum);
+		boolean userChoiced = servicem.userChoiced(map);
+		
 		model.addAttribute("dto", dto);
 		model.addAttribute("listFile", listFile);
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
+		model.addAttribute("userChoiced", userChoiced);
 
 		return ".performance.article";
 	}

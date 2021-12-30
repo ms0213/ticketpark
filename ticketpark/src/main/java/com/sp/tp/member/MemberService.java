@@ -20,5 +20,7 @@ public interface MemberService {
 	public List<myCoupon> listMyCoupon(String userId);
 	
 	public List<myChoice> listMyChoice(String userId);
+	public boolean userChoiced(Map<String, Object> map);
+	public void insertChoice(Map<String, Object> map) throws Exception;
 	public void deleteChoice(Map<String, Object> map) throws Exception;
 }

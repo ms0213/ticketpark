@@ -6,6 +6,7 @@
 <style type="text/css">
 .card img { width: 200px; cursor: pointer;}
 </style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
 <div class="container">
 	<div class="body-container">
@@ -24,7 +25,7 @@
 	        </div>
 
 			<div class="row">
-				<div class="container">
+				<div class="container m-3">
 					<c:forEach var="dto" items="${list}" varStatus="status">
 						<div class="card text-center mb-3">
 							<a href="${articleUrl}&hNum=${dto.hNum}">

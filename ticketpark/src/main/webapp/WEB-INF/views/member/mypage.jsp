@@ -123,9 +123,6 @@ $(document).ready(function(){
     })
 });
 
-function deleteZzim() {
-	alert("해당 공연의 찜을 해제하시겠습니까?");ㄹ
-};
 </script>
 
 <script type="text/javascript">

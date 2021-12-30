@@ -157,4 +157,28 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
+	@Override
+	public void insertChoice(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("member.insertChoice", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean userChoiced(Map<String, Object> map) {
+		boolean result = false;
+		try {
+			myChoice dto = dao.selectOne("member.userChoiced", map);
+			if(dto!= null) {
+				result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

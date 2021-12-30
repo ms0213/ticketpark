@@ -102,6 +102,10 @@
 		AND ps.poster_main = 1
     </select>
     
+    <select id="userChoiced" parameterType="map" resultType="com.sp.tp.member.myChoice">
+    	SELECT userId, perfNum FROM choice WHERE userId=#{userId} AND perfNum=#{perfNum}
+    </select>
+    
     <insert id="insertChoice" parameterType="map">
     	INSERT INTO choice (userId, perfNum) VALUES(#{userId}, #{perfNum})
     </insert>

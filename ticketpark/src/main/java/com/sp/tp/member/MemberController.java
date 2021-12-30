@@ -305,6 +305,33 @@ public class MemberController {
 		return ".member.coupon";
 	}
 	
+	@RequestMapping(value = "insertChoice")
+	@ResponseBody
+	public Map<String, Object> insertChoice(@RequestParam int perfNum,
+			@RequestParam boolean userChoiced,
+			HttpSession session) throws Exception{
+		String state = "true";
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", info.getUserId());
+		map.put("perfNum", perfNum);
+		try {
+			if(userChoiced) {
+				service.deleteChoice(map);
+			} else {
+				service.insertChoice(map);
+			}
+		} catch (DuplicateKeyException e) {
+			state = "liked";
+		} catch (Exception e) {
+			state = "false";
+		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state",state);
+		return model;
+	}
+	
+	
 	@RequestMapping(value = "deleteChoice")
 	@ResponseBody
 	public Map<String, Object> deleteChoice(@RequestParam int perfNum,
