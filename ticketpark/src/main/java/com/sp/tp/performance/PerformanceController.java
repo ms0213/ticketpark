@@ -99,14 +99,11 @@ public class PerformanceController {
 			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
 		}
 		
-		String listUrl = cp + "/performance/list"; 
+		String listUrl = cp + "/performance/list?"+query;
 		String articleUrl = cp + "/performance/article?page=" + current_page;
 		
-		query = "condiDate=" + condiDate + "&condiAddr=" + condiAddr + 
-				"&condiGenre=" + condiGenre;
 		
 		if (query.length() != 0) {
-			listUrl = cp + "/performance/list?" + query;
 			articleUrl = cp + "/performance/article?page=" + current_page + "&" + query;
 		}
 		

@@ -178,7 +178,7 @@ $("body").on("change", "#condiGenre", function(){
 								<button type="button" class="btn btn-light" onclick="searchList()" style="margin-top: 10px;">
 									<i class="bi bi-search"></i>
 								</button>
-								<input type="hidden" name="${category}" value="${category}">
+								<input type="hidden" name="category" value="${category}">
 								<input type="hidden" name="keyGenre" id="keyGenre" value="${keyGenre}">
 							</div>
 						</div>

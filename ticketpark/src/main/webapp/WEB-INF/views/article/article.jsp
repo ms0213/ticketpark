@@ -281,7 +281,6 @@ $(function(){
 						${dto.reg_date} | 조회 ${dto.hitCount}
 					</td>
 				</tr>
-				
 				<tr style="border: none;">
 					<c:forEach var="vo" items="${listFile}">
 						<td style="border: none; size: ">

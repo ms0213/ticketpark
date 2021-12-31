@@ -23,6 +23,7 @@ public class HomeController {
 	public String home(Locale locale, Model model) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		map.put("start", 1);
 		map.put("end", 10);
 		

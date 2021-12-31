@@ -60,15 +60,16 @@
 	<!-- 공연 개수(메인) -->
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
-		FROM performance p, genre g, category c, theater th, hall h, schedule s
-		WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
+		FROM performance p, genre g, category c, theater th, hall h
+		WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno
 		
 			<if test="category != null and category != ''">
 	            AND <include refid="category-list"/>
 	        </if>
 			
 			<if test=" keyDate!=null and keyDate!=''">
-				AND s.perf_date = #{keyDate}
+				AND 
+				#{keyDate} &gt;= startDate AND #{keyDate} &lt;= endDate
 			</if>	
 			<if test=" keyGenre!=null and keyGenre!=''">
 				AND g.gnum = #{keyGenre}
@@ -83,12 +84,12 @@
 	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.performance.Performance">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT p.perfNum, subject, po.saveFilename postFileName, 
-		        	s.perf_date, hallName, g.genre, h.addr,
+		        SELECT p.perfNum, subject, po.saveFilename postFileName, hallName, g.genre, h.addr,
 		        	TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
 		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate
-		        FROM performance p, genre g, category c, theater th, hall h, schedule s,  poster po
-		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND s.perfnum=p.perfNum
+		        FROM performance p, genre g, category c, theater th, hall h, poster po
+		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND th.tnum=p.tnum AND h.hnum=th.hallno AND 
+		        	SYSDATE &gt;= startDate AND SYSDATE &lt;= endDate
 		            AND p.perfNum = po.perfNum AND poster_main = 1 
 					
 						<if test="category != null and category != ''">
@@ -96,7 +97,8 @@
 						</if>
 						
 						<if test=" keyDate!=null and keyDate!=''">
-							AND s.perf_date = #{keyDate}
+							AND 
+							#{keyDate} &gt;= startDate AND #{keyDate} &lt;= endDate
 						</if>	
 						<if test=" keyGenre!=null and keyGenre!=''">
 							AND g.gnum = #{keyGenre}
