@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hallManage">
+
+	<select id="seq" resultType="Integer">
+		SELECT hall_seq.NEXTVAL FROM dual
+	</select>
+	
+	<insert id="insertHall" parameterType="com.sp.tp.admin.hallManage.Hall">
+		INSERT INTO hall(hNum, hallName, latitude, longitude, tel, content, link, addr)
+			VALUES(#{hNum}, #{hallName}, #{latitude}, #{longitude}, #{tel}, #{content}, #{link}, #{addr})
+	</insert>
+	
+	<select id="dataCount" resultType="Integer">
+		SELECT NVL(COUNT(*),0)
+		FROM hall
+	</select>
+	
+	<select id="listHall" parameterType="map" resultType="com.sp.tp.admin.hallManage.Hall">
+		SELECT * FROM (
+			SELECT ROWNUM rnum, tb.* FROM (
+				SELECT h.hNum, hallName, saveFilename, 
+					latitude, longitude, tel, content, link, addr
+				FROM hall h
+				LEFT OUTER JOIN (
+					SELECT fileNum, hNum, saveFilename FROM (
+						SELECT fileNum, hNum, saveFilename, 
+							ROW_NUMBER() OVER(PARTITION BY hNum ORDER BY fileNum ASC) rank
+						 FROM hallFile
+					) WHERE rank = 1
+				) f ON h.hNum = f.hNum
+		      ORDER BY hNum DESC			
+		    ) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start} 
+	</select>
+	
+	<select id="readHall" parameterType="Integer" resultType="com.sp.tp.admin.hallManage.Hall">
+		SELECT hNum, hallName, latitude, longitude, tel, content, link, addr
+		FROM hall
+		WHERE hNum = #{hNum}
+	</select>
+	
+	<update id="updateHall" parameterType="com.sp.tp.admin.hallManage.Hall">
+		UPDATE hall SET hallName = #{hallName}, latitude = #{latitude}, longitude = #{longitude},
+						tel = #{tel}, content = #{content}, link = #{link}, addr = #{addr}
+		WHERE hNum = #{hNum}
+	</update>
+	
+	<delete id="deleteHall" parameterType="Integer">
+		DELETE FROM hall WHERE hNum = #{hNum}
+	</delete>
+	
+	<insert id="insertFile" parameterType="com.sp.tp.admin.hallManage.Hall">
+		INSERT INTO hallFile(fileNum, hNum, saveFilename) 
+			VALUES (hallFile_seq.NEXTVAL, #{hNum}, #{saveFilename})
+	</insert>
+
+	<select id="listFile" parameterType="Integer" resultType="com.sp.tp.admin.hallManage.Hall">
+		SELECT fileNum, hNum, saveFilename
+		FROM hallFile
+		WHERE hNum = #{hNum}
+	</select>
+	
+	<select id="readFile" parameterType="Integer" resultType="com.sp.tp.admin.hallManage.Hall">
+		SELECT fileNum, hNum, saveFilename
+		FROM hallFile
+	    WHERE hNum = #{hNum}
+	</select>
+	
+	<delete id="deleteFile" parameterType="map">
+		DELETE FROM hallFile WHERE ${field} = #{hNum}
+	</delete>
+
+
+
+
+
+</mapper>

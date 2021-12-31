@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-<div class="container">
 	<div class="body-container">
 		<div class="body-title">
 			<h3> Contact Us </h3>
@@ -40,4 +39,3 @@
 			</table>
 		</div>
 	</div>
-</div>

@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
-.card img { width: 200px; cursor: pointer;}
+.card img { width: 200px; height:150px; cursor: pointer; padding-top: 20px;}
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
@@ -24,10 +24,11 @@
 	            <div class="col-auto">&nbsp;</div>
 	        </div>
 
-			<div class="row">
-				<div class="container m-3">
+			<div class="container m-3">
+				<div class="row">
 					<c:forEach var="dto" items="${list}" varStatus="status">
-						<div class="card text-center mb-3">
+					<div class="col-md-4 col-lg-3 p-3 item">
+						<div class="card text-center" style="width: 18rem;">
 							<a href="${articleUrl}&hNum=${dto.hNum}">
 								<img src="${pageContext.request.contextPath}/uploads/hall/${dto.saveFilename}" class="card-img-top">
 							</a>
@@ -35,6 +36,7 @@
 								<h6 class="card-title">${dto.hallName}</h6>
 							</div>
 						</div>
+					</div>
 					</c:forEach>
 				</div>
 			</div>

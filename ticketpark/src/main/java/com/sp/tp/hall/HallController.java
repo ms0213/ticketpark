@@ -38,7 +38,7 @@ public class HallController {
 			) throws Exception {
 		String cp = req.getContextPath();
 		
-		int rows = 9;
+		int rows = 8;
 		int total_page;
 		int dataCount;
 		
