@@ -275,4 +275,24 @@ public class PerformanceServiceImpl implements PerformanceService {
 		}
 		return listGenreMain;
 	}
+
+	@Override
+	public List<PerformanceBook> listSchedule(int perfNum) {
+		List<PerformanceBook> listSchedule = null;
+		try {
+			listSchedule = dao.selectList("performance.listSchedule", perfNum);
+		} catch (Exception e) {
+		}
+		return listSchedule;
+	}
+
+	@Override
+	public List<PerformanceBook> listTime(int sdNum) {
+		List<PerformanceBook> listTime = null;
+		try {
+			listTime = dao.selectList("performance.listTime", sdNum);
+		} catch (Exception e) {
+		}
+		return listTime;
+	}
 }

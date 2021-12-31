@@ -174,4 +174,19 @@
 		SELECT postNum, perfNum, saveFileName FROM poster
 		WHERE poster_main = 1 AND perfNum = #{perfNum}
 	</select>
+	
+	<!-- 공연 날짜 -->
+	<select id="listSchedule" parameterType="Integer" resultType="com.sp.tp.performance.PerformanceBook">
+		SELECT sdNum, TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY-MM-DD') perfDate
+		FROM schedule
+		WHERE perfNum = #{perfNum}
+	</select>
+	
+	<!-- 공연 시간 -->
+	<select id="listTime" parameterType="Integer" resultType="com.sp.tp.performance.PerformanceBook">
+		SELECT sdNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
+		FROM cast c, actor a, performanceTime pt
+		WHERE a.actorNum = c.actorNum AND c.ptNum = pt.ptNum and pt.sdNum = #{sdNum}
+		GROUP BY performanceTime, sdNum
+	</select>
 </mapper>

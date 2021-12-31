@@ -48,8 +48,9 @@
 	border-radius: 0.5rem;
 	padding: 15px; 
 	margin-left: 30px;}
+
 .nav-tabs{clear: both;}
-.choicetrue{color: red;}
+.choicetrue{color: red;}	
 .cal{float: left;}
 .sch-list{
 	float: left;
@@ -85,12 +86,16 @@
 	padding: 10px;
 	text-align: center;
 }
+
 #calendarLayout table td:nth-child(7n+1){
 	color: #fd7e7e;
+	opacity: 50%;
 }
 #calendarLayout table td:nth-child(7n){
 	color: #8282ff;
+	opacity: 50%;
 }
+
 #calendarLayout table td.gray {
 	color: #ccc;
 }
@@ -116,8 +121,10 @@
 .subject>span:hover, .footer>span:hover {
 	color: tomato;
 }
-.date{cursor: pointer;}
+.date{cursor: pointer; color: black; opacity: 50%;}
 .date:hover{background-color: #eee;}
+
+.date-red{opacity: 100%;}
 </style>
 
 <script type="text/javascript">
@@ -162,6 +169,15 @@ function calendar(y, m) {
 	
 	var cls;
 	var lastDay = (new Date(y, m, 0)).getDate();
+    
+    var listsdNum = new Array();
+    var listperfDate = new Array();
+
+    <c:forEach items="${listSchedule}" var="item1">
+    listsdNum.push("${item1.sdNum}");
+    listperfDate.push("${item1.perfDate}");
+    </c:forEach>
+    
 	for(var i=1; i<=lastDay; i++) {
 		
 		var pickDay = new Date(y, m, i);
@@ -170,7 +186,17 @@ function calendar(y, m) {
         day = day >= 10 ? day : '0' + day;
 
 	    var pickdayFormat =  y + "-" + month + "-" + day;
-		out+="<td class=' date ' data-date='"+pickdayFormat+"'>"+i+"</td>";
+	    
+		var red = "";
+		var sdNum = 0;
+	    for(var j = 0; j < listperfDate.length; j++) {
+			if(pickdayFormat == listperfDate[j]) {
+				sdNum = listsdNum[j];
+				red = "date-red";
+			}
+		}
+	    
+	    out+="<td class=' date "+red+"' data-date='"+pickdayFormat+"' data-sdNum='"+sdNum+"'>"+i+"</td>";
 		if(i != lastDay && ++w%7==0) {
 			row++;
 			out+="</tr><tr>";
@@ -209,12 +235,7 @@ window.onload=function(){
 	todayDisp()
 };
 
-$(function() {
-	$("body").on("click",".date", function() {
-		var date = $(this).attr("data-date");
-		alert(date);
-	});
-});
+
 </script>
 
 <script type="text/javascript">
@@ -274,6 +295,21 @@ $(function() {
 				alert("공연 찜 추가에 실패했습니다.");
 			}
 		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
+
+$(function() {
+	$("body").on("click",".date", function() {
+		var sdNum = $(this).attr("data-sdNum");
+		
+		var url = "${pageContext.request.contextPath}/performance/listTime";
+		var query = "sdNum="+sdNum;
+		
+		var fn = function(data) {
+			
+		}
 		
 		ajaxFun(url, "post", query, "json", fn);
 	});
@@ -390,7 +426,9 @@ $(function() {
 					</td>
 				</tr>
 			</table>
-
+			<form name="hiddenForm">
+				<input type="hidden" value="${list}">
+			</form>
 		</div>
 	</div>
 </div>

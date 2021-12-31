@@ -244,6 +244,8 @@ public class PerformanceController {
 		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 
 		List<Performance> listFile = service.listFile(perfNum);
+		
+		List<PerformanceBook> listSchedule = service.listSchedule(perfNum);
 
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
@@ -257,7 +259,13 @@ public class PerformanceController {
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
 		model.addAttribute("userChoiced", userChoiced);
+		model.addAttribute("listSchedule", listSchedule);
 
 		return ".performance.article";
+	}
+	
+	public String listTime(@RequestParam int sdNum) throws Exception {
+		List<PerformanceBook> listTime = service.listTime(sdNum);
+		return "redirect:/performance/article";
 	}
 }
