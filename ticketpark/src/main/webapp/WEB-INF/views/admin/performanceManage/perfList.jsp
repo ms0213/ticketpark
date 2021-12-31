@@ -12,7 +12,6 @@
     overflow:hidden;
 	white-space : nowrap;
 	text-overflow: ellipsis;
-	cursor: pointer;
 }
 .form-select {
     padding: 0.375rem 2.25rem 0.375rem 0.75rem;
@@ -31,9 +30,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css1/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/icons/icon/bootstrap-icons.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/icons/icofont/icofont.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/icons/icofont/icofont.min.css">
 
 <script type="text/javascript">
+
 
 function ajaxFun(url, method, query, dataType, fn) {
 	$.ajax({
@@ -99,6 +99,28 @@ function detailedPerformance(perfNum) {
 	};
 	ajaxFun(url, "post", query, "html", fn);
 }
+
+function scheduleDetailView() {
+	$("#scheduleDetail").dialog({
+		modal: true,
+		minHeight: 300,
+		maxHeight: 500,
+		width: 750,
+		title: '공연일정상세',
+		close: function(event, ui) {
+		  $(this).dialog("destroy"); // 이전 대화상자가 남아 있으므로 필요
+		}
+	});
+}
+
+
+function deleteOk(userId) {
+	if(confirm("선택한 계정을 삭제 하시겠습니까 ?")) {
+
+	}
+	
+	$('#performance-dialog').dialog("close");
+}
 </script>
 
 <main>
@@ -129,17 +151,19 @@ function detailedPerformance(perfNum) {
 						<th style="width: 30%;">공연기간</th>
 						<th style="width: 10%;">카테고리</th>
 						<th style="width: 15%;">공연장</th>
+						<th style="width: 15%;">일정등록</th>
 					</tr>
 				</thead>
 				
 				<tbody>
 					<c:forEach var="dto" items="${list}">
-						<tr class="list-tr" onclick="detailedPerformance('${dto.perfNum}')"> 
+						<tr class="list-tr"> 
 							<td>${dto.listNum}</td>
-							<td>${dto.subject}</td>
+							<td style="cursor: pointer;" onclick="detailedPerformance('${dto.perfNum}')">${dto.subject}</td>
 							<td>${dto.startDate} ~ ${dto.endDate}</td>
 							<td>${dto.category}</td>
 							<td>${dto.hallName}</td>
+							<td><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/addSchedule?perfNum=${dto.perfNum}';">일정등록</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>

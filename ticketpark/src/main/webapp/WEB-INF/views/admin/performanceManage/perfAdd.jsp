@@ -264,7 +264,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 		},
 		error:function(jqXHR) {
 			if(jqXHR.status === 403) {
-				login();
+				location.href="${pageContext.request.contextPath}/member/login";
 				return false;
 			} else if(jqXHR.status === 400) {
 				alert("요청 처리가 실패했습니다.");
@@ -501,7 +501,7 @@ $(function(){
 						<td class="table-light col-sm-2" scope="row">공연 장소</td>
 						<td>
 							<div class="row">
-								<div class="col-sm-3 pe-1">
+								<div class="col-sm-5 pe-1">
 									<select name="hallNum" class="selectField">
 										<option value="">:: 공연장 선택 ::</option>
 										<c:forEach var="vo" items="${hallList}">

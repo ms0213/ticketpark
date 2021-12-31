@@ -271,7 +271,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 		},
 		error:function(jqXHR) {
 			if(jqXHR.status === 403) {
-				login();
+				location.href="${pageContext.request.contextPath}/member/login";
 				return false;
 			} else if(jqXHR.status === 400) {
 				alert("요청 처리가 실패했습니다.");

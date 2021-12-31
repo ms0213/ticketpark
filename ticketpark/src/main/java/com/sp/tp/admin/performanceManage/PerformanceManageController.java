@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -202,9 +203,66 @@ public class PerformanceManageController {
 			Model model) throws Exception {
 		
 		PerformanceManage dto=service.readPerformance(perfNum);
-
+		
+		List<PerformanceManage> list = service.listSchedule(perfNum);
+		
+		model.addAttribute("list", list);
 		model.addAttribute("dto", dto);
 		
 		return "/admin/performanceManage/perfDetail";
 	}
+	
+	@GetMapping(value = "time")
+	@ResponseBody
+	public Map<String, Object> timeList(PerformanceManage dto,
+			@RequestParam int sdNum) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sdNum", sdNum);
+		
+		List<PerformanceManage> timeList = service.listTime(map);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("timeList", timeList);
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "addSchedule", method = RequestMethod.GET)
+	public String addForm(Model model, 
+			HttpSession session,
+			@RequestParam int perfNum) throws Exception {
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		List<PerformanceManage> actorList = service.listActor(perfNum);
+		
+		if (info.getMembership() < 51) {
+			return "redirect:/";
+		}
+		
+		model.addAttribute("actorList", actorList);
+		model.addAttribute("perfNum", perfNum);
+		
+		return ".admin.performanceManage.perfAddSchedule";
+
+	}
+	
+	@RequestMapping(value = "addSchedule", method = RequestMethod.POST)
+	public String addSubmit(PerformanceManage dto, HttpSession session) throws Exception {
+
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if (info.getMembership() < 51) {
+			return "redirect:/";
+		}
+
+		try {
+			service.insertPerfDate(dto);
+		} catch (Exception e) {
+		}
+
+		return "redirect:/admin/performanceManage/perfList";
+	}
+	
 }

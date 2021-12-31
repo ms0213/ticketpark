@@ -249,6 +249,7 @@ public class PerformanceController {
 		List<Performance> listFile = service.listFile(perfNum);
 
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
 		Map<String , Object> map = new HashMap<String, Object>();
 		map.put("userId", info.getUserId());
 		map.put("perfNum", perfNum);

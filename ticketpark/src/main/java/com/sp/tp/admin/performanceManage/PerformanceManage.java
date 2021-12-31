@@ -44,12 +44,29 @@ public class PerformanceManage {
 	private MultipartFile actorFile;
 	private List<String> actorsName;
 	private List<String> rolesName;
+	private List<Integer> actorsNum;
 	private List<MultipartFile> actorsFile;
 	
 	private int postNum;
 	private String postFileName;
 	private MultipartFile postFile;
 	
+	private int ptNum;
+	
+	
+	
+	public List<Integer> getActorsNum() {
+		return actorsNum;
+	}
+	public void setActorsNum(List<Integer> actorsNum) {
+		this.actorsNum = actorsNum;
+	}
+	public int getPtNum() {
+		return ptNum;
+	}
+	public void setPtNum(int ptNum) {
+		this.ptNum = ptNum;
+	}
 	public int getListNum() {
 		return listNum;
 	}

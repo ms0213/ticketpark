@@ -163,6 +163,44 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	}
 	
 	@Override
+	public List<PerformanceManage> listSchedule(int perfNum) {
+		List<PerformanceManage> listSchedule = null;
+		
+		try {
+			listSchedule = dao.selectList("performanceManage.listSchedule", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listSchedule;
+	}
+	
+	@Override
+	public List<PerformanceManage> listTime(Map<String, Object> map) {
+		List<PerformanceManage> listTime = null;
+		
+		try {
+			listTime = dao.selectList("performanceManage.listTime", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listTime;
+	}
+	
+	@Override
+	public List<PerformanceManage> listActor(int perfNum) {
+		List<PerformanceManage> listActor = null;
+		
+		try {
+			listActor = dao.selectList("performanceManage.listActor", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listActor;
+	}
+	
+	@Override
 	public void insertActor(PerformanceManage dto) throws Exception {
 		try {
 			dao.insertData("performanceManage.insertActor", dto);
@@ -170,5 +208,49 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+	
+	@Override
+	public void insertPerfDate(PerformanceManage dto) throws Exception {
+		int seq = dao.selectOne("performanceManage.scheduleSeq");
+		dto.setSdNum(seq);
+		
+		try {
+			dao.insertData("performanceManage.insertperfDate", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		insertPerfTime(dto);
+	}
+	
+	@Override
+	public void insertPerfTime(PerformanceManage dto) throws Exception {
+		int seq = dao.selectOne("performanceManage.ptSeq");
+		dto.setPtNum(seq);
+		try {
+			dao.insertData("performanceManage.insertperfTime", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		for(int i = 0; i < dto.getActorsNum().size(); i++) {
+			dto.setActorNum(dto.getActorsNum().get(i));
+			
+			insertCast(dto);
+		}
+	}
+	
+	@Override
+	public void insertCast(PerformanceManage dto) throws Exception {
+		try {
+			dao.insertData("performanceManage.insertCast", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
 	}
 }

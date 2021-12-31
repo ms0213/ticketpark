@@ -7,6 +7,14 @@
 		SELECT performance_seq.NEXTVAL FROM dual
 	</select>
 	
+	<select id="scheduleSeq" resultType="Integer">
+		SELECT schedule_seq.NEXTVAL FROM dual
+	</select>
+	
+	<select id="ptSeq" resultType="Integer">
+		SELECT performanceTime_seq.NEXTVAL FROM dual
+	</select>
+	
 	<select id="actorSeq" resultType="Integer">
 		SELECT actor_seq.NEXTVAL FROM dual
 	</select>
@@ -38,7 +46,7 @@
 		</if>
 	</sql>
 
-	<!-- 공연 갯수 -->
+	<!-- 공연 개수 -->
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM performance p, genre g, category c, theater t, hall h
@@ -78,6 +86,24 @@
 			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum},#{rateNum}, #{rating}, #{price}, #{showTime}, #{startDate}, #{endDate})
 	</insert>
 	
+	<!-- 공연날짜등록 -->
+	<insert id="insertperfDate" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		INSERT INTO schedule (sdNum, perf_date, perfNum)
+		VALUES (#{sdNum}, #{perfDate}, #{perfNum})
+	</insert>
+	
+	<!-- 공연시간등록 -->
+	<insert id="insertperfTime" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		INSERT INTO performanceTime (ptNum, sdNum, performanceTime)
+		VALUES (#{ptNum}, #{sdNum}, #{perfTime})
+	</insert>
+	
+	<!-- 출연진 등록 -->
+	<insert id="insertCast" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		INSERT INTO cast (castNum, actorNum, ptNum)
+		VALUES (cast_seq.NEXTVAL, #{actorNum}, #{ptNum})
+	</insert>
+	
 	<!-- 파일 -->
 	<insert id="insertPoster" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
 		INSERT INTO poster(postNum, perfNum, saveFilename, poster_main) 
@@ -92,7 +118,7 @@
 	
 	<!-- 공연 정보 -->
 	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-	    SELECT p.perfNum, subject, po.saveFilename postFileName,
+		 SELECT p.perfNum, subject, po.saveFilename postFileName,
 	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
 	        hallName, genre, category, time, rate, th.name as theater, p.content, rating, price, actorName
 	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r, 
@@ -104,10 +130,31 @@
 	        AND r.rNum = p.rNum AND p.perfNum = po.perfNum AND poster_main = 1 AND p.perfNum = #{perfNum}
 	</select>
 	
+	<!-- 공연 날짜 -->
+	<select id="listSchedule" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT sdNum, TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY"년 "MM"월" DD"일" DAY') perfDate
+		FROM schedule
+		WHERE perfNum = #{perfNum}
+	</select>
+	
+	<!-- 공연 시간 -->
+	<select id="listTime" parameterType="map" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT sdNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
+		FROM cast c, actor a, performanceTime pt
+		WHERE a.actorNum = c.actorNum AND c.ptNum = pt.ptNum and pt.sdNum = #{sdNum}
+		GROUP BY performanceTime, sdNum
+	</select>
+	
 	<!-- 카테고리 -->
 	<select id="listCategory" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
 		SELECT cNum categoryNum, category
 		FROM category
+	</select>
+	
+	<select id="listActor" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT actorNum, name actorName
+		FROM actor
+		WHERE perfNum = ${perfNum}
 	</select>
 	
 	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
