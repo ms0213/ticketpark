@@ -7,11 +7,13 @@
 	<div class='border-bottom mb-2'>
 		<div class='row py-1'>
 			<div class='col-6'><i class="bi bi-person-circle text-muted"></i> <span class="bold">${vo.userName}</span></div>
-			<div class='col text-end'>
+			<div class='col text-end' align="right">
 				<span class="text-muted">${vo.reg_date}</span> |
 				<c:choose>
 					<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.membership>50}">
+
 						<span class='deleteReplyAnswer' data-replyNum='${vo.replyNum}' data-answer='${vo.answer}'>삭제</span>
+					
 					</c:when>
 					<c:otherwise>
 						<span class='notifyReply'>신고</span>

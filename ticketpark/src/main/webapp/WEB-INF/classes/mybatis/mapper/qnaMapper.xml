@@ -5,13 +5,14 @@
 	
 	<!-- 댓글 -->
 	<insert id="insertReply" parameterType="com.sp.tp.qna.Reply">
-		INSERT INTO qna(replynum, userId, content, answer, reg_date)
+		INSERT INTO qna(replyNum, userId, content, answer, reg_date)
 		VALUES (qna_seq.NEXTVAL, #{userId}, #{content}, #{answer}, SYSDATE)
 	</insert>
 
 	<!-- 댓글 개수 -->
 	<select id="replyCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0) FROM qna
+		WHERE answer=0
 		
 	</select>
 
@@ -19,7 +20,7 @@
 	<select id="listReply" parameterType="map" resultType="com.sp.tp.qna.Reply">
 	SELECT * FROM (
 			SELECT ROWNUM rnum, tb.* FROM (
-				SELECT q.replyNum, q.userId, userName, content, q.reg_date, 
+				SELECT q.replyNum, q.userId, userName, content, TO_CHAR(q.reg_date, 'YYYY-MM-DD') reg_date, 
 				       NVL(answerCount, 0) answerCount,
 				       NVL(likeCount, 0) likeCount,
 				       NVL(disLikeCount, 0) disLikeCount
@@ -44,18 +45,18 @@
 	<delete id="deleteReply" parameterType="map">
 		DELETE FROM qna
 		WHERE replyNum=#{replyNum}
-		<if test="mode=='reply'">
+		
 			OR answer=#{replyNum}
-		</if>
+		
 	</delete>
 	
 	<!-- 댓글의 답글 리스트 -->
 	<select id="listReplyAnswer" parameterType="Integer" resultType="com.sp.tp.qna.Reply">
-		SELECT replyNum, q.userId, userName, content, q.reg_date, answer
+		SELECT replyNum, q.userId, userName, content, TO_CHAR(q.reg_date, 'YYYY-MM-DD') reg_date, answer
 		FROM qna q
 		JOIN member1 m ON q.userId = m.userId
 		WHERE answer = #{answer}
-		ORDER BY replyNum DESC
+		ORDER BY replyNum 
 	</select>
 	
 	<!-- 댓글의 답글 개수 -->
@@ -76,5 +77,11 @@
 			   COUNT(DECODE(replyLike, 0, 1)) disLikeCount
 		FROM qnaLike WHERE replyNum = #{replyNum}
 	</select>
+	
+	<!-- 게시 글 좋아요 삭제 -->
+	<delete id="deleteBoardLike" parameterType="map">
+		DELETE FROM qnaLike WHERE replyNum = #{replyNum} AND userId = #{userId}
+	</delete>
+	
 </mapper>
 	

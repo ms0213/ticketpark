@@ -7,12 +7,31 @@
 .body-container {
 	max-width: 1000px;
 }
+
+.reply-answer {
+	display: none;
+}
+
+.num {
+	color: #1eb19e;
+}
+
+.listReply {
+	max-width: 970px;
+	margin: 0 auto;
+}
+
+.border {
+    border: 1px solid #FFFFFF!important;
+}
 </style>
 
+<div class='listReply'>
+
 <div class='reply-info'>
-	<span class='reply-count'>댓글 ${replyCount}개</span>
-	<span>[목록, ${pageNo}/${total_page} 페이지]</span>
-</div>
+	<span class='reply-count' style="font-weight:bold; font-size:16px">총 <span class="num">${replyCount}</span>개의 문의글이 있습니다.</span>
+
+</div><br>
 
 <table class='table table-borderless'>
 	<c:forEach var="vo" items="${listReply}">
@@ -38,7 +57,7 @@
 
 		<tr>
 			<td>
-				<button type='button' class='btn btn-light btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
+				<button type='button' class='btn btn-outline-success btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
 			</td>
 			<td align='right'>
 				<button type='button' class='btn btn-light btnSendReplyLike' data-replyNum='${vo.replyNum}' data-replyLike='1' title="좋아요"><i class="bi bi-hand-thumbs-up"></i> <span>${vo.likeCount}</span></button>
@@ -63,6 +82,7 @@
 	    </tr>
 	</c:forEach>
 </table>
+</div>
 
 <div class="page-box">
 	${paging}

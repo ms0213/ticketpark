@@ -4,8 +4,30 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
-.body-container {
-	max-width: 1000px;
+.alert-info {
+	max-width: 980px;
+	margin: 0 auto;
+	min-height: 120px;
+	background-color: #f8f9fa;
+	color: #000000;
+	border: none;
+	font-size: 16px;
+} 
+
+.form-control {
+	line-height: 2;
+	width: 880px;
+	margin: 0 auto;
+}
+
+.deleteReply, .deleteReplyAnswer {
+	cursor: pointer;
+}
+
+.btnSendReply {
+	width: 75px;
+	height: 77px;
+	margin: 0 auto;
 }
 </style>
 
@@ -178,8 +200,7 @@ function countReplyAnswer(answer) {
 $(function(){
 	$("body").on("click", ".btnReplyAnswerLayout", function(){
 		var $trReplyAnswer = $(this).closest("tr").next();
-		// var $trReplyAnswer = $(this).parent().parent().next();
-		// var $answerList = $trReplyAnswer.children().children().eq(0);
+	
 		
 		var isVisible = $trReplyAnswer.is(':visible');
 		var replyNum = $(this).attr("data-replyNum");
@@ -253,28 +274,34 @@ $(function(){
 });
 </script>
 
+
+
 <div class="container">
-	<div class="body-container">	
+		<br>
 		<div class="body-title">
 			<h3>&nbsp;QnA </h3>
 		</div>
+	<div class="body-container">	
 		
-		
+		 <div class="alert alert-info" role="alert">
+	    		<br>공연에 대해서 고객간에 자유롭게 질문/답변을 하는 공간입니다.<br>
+				예매, 결제, 취소 등의 정확한 답변이 필요한 문의는 티켓파크 고객센터  <strong>1234-5678</strong> 를 이용해주시기 바랍니다.<br>
+	    </div>
 			<div class="reply">
 				<form name="replyForm" method="post">
 					<div class='form-header'>
-						<span class="bold">댓글</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
+						<span class="bold"></span><span> </span>
 					</div>
 					
 					<table class="table table-borderless reply-form">
 						<tr>
 							<td>
-								<textarea class='form-control' name="content"></textarea>
+								<textarea class='form-control' name="content" placeholder="&nbsp;게시판 운영 규정에 어긋난다고 판단되는 글은 사전 통보없이 삭제 처리될 수 있습니다."></textarea>
 							</td>
-						</tr>
-						<tr>
+						
+						
 						   <td align='right'>
-						        <button type='button' class='btn btn-light btnSendReply'>QnA 등록</button>
+						        <button type='button' class='btn btn-success btnSendReply'>등록</button>
 						    </td>
 						 </tr>
 					</table>

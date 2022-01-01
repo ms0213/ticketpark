@@ -11,12 +11,14 @@
 }
 
 .text-primary {
-    color: #3E9D37!important;
+    color: #23A41A!important;
+    font-size:15px;
+ 
  }
  
-.expect-form textarea { width: 100%; height: 75px; resize: none; }
+.expect-form textarea { width: 100%; height: 80px; resize: none; }
 
-.expect-list tr:nth-child(3n+1) { border: 1px solid #ccc; background: #f8f9fa; }
+.expect-list tr:nth-child(3n+1) { border: 1px solid #FFFFFF; background: #f8f9fa; }
 
 .expect-list .deleteExpect, .expect-list .notifyExpect, .updateExpect, .deleteExpect { cursor: pointer; }
 
@@ -244,13 +246,14 @@ $(function(){
 			<form name="expectForm" method="post">
 				<div class="expect-form border border-secondary mt-5 p-3">
 					<div class="p-1">
-						<span class="fw-bold">기대평 작성하기</span>
+						<span class="fw-bold"></span>
 					</div>
 					<div class="p-1">
 						<textarea name="content" id="content" class="form-control" placeholder="${empty sessionScope.member ? '로그인 후 등록 가능합니다.':'해당 공연과 무관한 댓글, 악플은 사전통보 없이 삭제될 수 있습니다.'}"></textarea>
 					</div>
-					<div class="p-1 text-end">
-						<button type="button" class="btnSend btn btn-outline-secondary" ${empty sessionScope.member ? "disabled='disabled'":""}> 등록하기 <i class="bi bi-check2"></i> </button>
+					<br>
+					<div align="right">
+						<button type="button" class="btnSend btn btn-outline-success" ${empty sessionScope.member ? "disabled='disabled'":""}> 등록하기 <i class="bi bi-check2"></i> </button>
 					</div>
 				</div>
 			</form>
@@ -265,7 +268,7 @@ $(function(){
 				</table>
 	
 				<div class='more-box mt-2 text-end'>
-					<span class="more btn btn-light">&nbsp;더보기&nbsp;<i class="bi bi-chevron-down"></i>&nbsp;</span>
+					<span class="more btn btn-outline-success">&nbsp;더보기&nbsp;<i class="bi bi-chevron-down"></i>&nbsp;</span>
 				</div>
 			</div>
 

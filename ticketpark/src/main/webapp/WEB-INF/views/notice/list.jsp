@@ -100,7 +100,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col text-end">
+	<div class="col text-end" align="right">
 		<c:if test="${sessionScope.member.membership>50}">
 			<button type="button" class="btn btn-outline-secondary" onclick="insertForm();">글올리기</button>
 		</c:if>

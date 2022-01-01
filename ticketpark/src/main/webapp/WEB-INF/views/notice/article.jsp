@@ -3,6 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style type="text/css">
+.table {
+    
+    max-width: 1000px;
+    margin: 0 auto;
+}
+</style>
 
 <table class="table mb-0">
 	<thead>
@@ -83,7 +90,7 @@
 	    		</c:otherwise>
 	    	</c:choose>
 		</td>
-		<td class="text-end">
+		<td class="text-end" align="right">
 			<button type="button" class="btn btn-outline-secondary" onclick="listPage('${pageNo}');">리스트</button>
 		</td>
 	</tr>

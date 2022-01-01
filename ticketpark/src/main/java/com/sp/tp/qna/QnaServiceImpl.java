@@ -121,4 +121,15 @@ public class QnaServiceImpl implements QnaService {
 		return countMap;
 
 	}
+	
+	@Override
+	public void deleteBoardLike(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("qna.deleteBoardLike", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
 }
