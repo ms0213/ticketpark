@@ -153,7 +153,6 @@ function deleteOk(perfNum) {
 						<th style="width: 35%;">공연 제목</th>
 						<th style="width: 30%;">공연기간</th>
 						<th style="width: 10%;">카테고리</th>
-						<th style="width: 15%;">공연장</th>
 						<th style="width: 15%;">일정등록</th>
 					</tr>
 				</thead>
@@ -165,7 +164,6 @@ function deleteOk(perfNum) {
 							<td style="cursor: pointer;" onclick="detailedPerformance('${dto.perfNum}')">${dto.subject}</td>
 							<td>${dto.startDate} ~ ${dto.endDate}</td>
 							<td>${dto.category}</td>
-							<td>${dto.hallName}</td>
 							<td><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/addSchedule?perfNum=${dto.perfNum}';">일정등록</button></td>
 						</tr>
 					</c:forEach>
@@ -185,7 +183,6 @@ function deleteOk(perfNum) {
 							<select name="condition" class="form-select">
 								<option value="subject" ${condition=="subject"?"selected='selected'":""}>제목</option>
 								<option value="date" ${condition=="date"?"selected='selected'":""}>공연기간</option>
-								<option value="hall" ${condition=="hall"?"selected='selected'":""}>공연장</option>
 							</select>
 						</div>
 						<input type="hidden" name="category" value="${category}">

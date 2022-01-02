@@ -14,6 +14,9 @@
     font-family: "맑은 고딕", 나눔고딕, 돋움, sans-serif;
     vertical-align: baseline;
 }
+.boxTF {
+	font-size: 11px;
+}
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
@@ -143,8 +146,8 @@ function sendOk(){
 							<td>
 								<input type="time" name="perfsTime" id="form-perfTime" class="form-control" value="${dto.perfTime}">
 							</td>
-							<td class="cast" style="width: 30%;">
-								<p style="margin: 12px;">
+							<td class="cast" style="width: 26%;">
+								<p style="margin: 12px 0 12px 0;">
 									<select name="actorsNum" class="selectField">
 										<option value="">:: 출연진 선택 ::</option>
 										<c:forEach var="vo" items="${actorList}">
@@ -155,10 +158,13 @@ function sendOk(){
 								</p>
 							</td>
 							<td>
-								<button type="button" class="boxTF btn timeRemoveBtn" style="text-align: center;">삭제</button>
+								<button type="button" class="btn timeRemoveBtn" style="text-align: center;">삭제</button>
 							</td>
 							<td>
-								<button type="button" class="boxTF btn castAddBtn" style="text-align: center;">출연진 추가</button>
+								<button type="button" class="btn castAddBtn" style="text-align: center;">출연진<br>추가</button>
+							</td>
+							<td>
+								<button type="button" class="btn" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
 							</td>
 						</tr>
 						
@@ -168,7 +174,7 @@ function sendOk(){
 				<table class="table table-borderless">
  					<tr>
 						<td class="text-center">
-							<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
+							
 							<button type="button" class="btn btn-light timeAddBtn">공연시간추가</button>
 							<button type="reset" class="btn btn-light">다시입력</button>
 							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfList';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>

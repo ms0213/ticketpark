@@ -146,19 +146,13 @@ $(function(){
 <h3 style="font-size: 15px; padding-top: 10px;"><i class="icofont-double-right"></i> 공연 정보</h3>
 <table class="table border mx-auto my-10" style="table-layout: fixed;">
 	<tr>
-		<td rowspan="6" style="width: 23%; text-align:center;">
+		<td rowspan="5" style="width: 23%; text-align:center;">
 			<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 		</td>
 		<td class="wp-15 text-right pe-7 bg">공연제목</td>
 		<td class="wp-25 ps-5" title="${dto.subject}">${dto.subject}</td>
 		<td class="text-right pe-7 bg">평점</td>
 		<td class="ps-5">${dto.rating}</td>
-	</tr>
-	<tr>
-		<td class="text-right pe-7 bg">공연장</td>
-		<td class="ps-5">${dto.hallName}</td>
-		<td class="text-right pe-7 bg">상영관</td>
-		<td class="ps-5">${dto.theater}</td>
 	</tr>
 	<tr>
 		<td class="text-right pe-7 bg">공연기간</td>
