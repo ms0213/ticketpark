@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rank">
+
+	<!-- 예매 랭킹 -->
+	<select id="bookRank" resultType="com.sp.tp.rank.Rank">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT b2.ptNum, COUNT(*), p.subject, p.perfNum,
+		            p.rating, po.saveFileName postFilename,
+		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.hallName
+		        FROM book2 b2, book b, performanceTime pt, poster po,
+		            schedule s, performance p, theater th, hall h
+		        WHERE b2.bNum = b.bNum AND b2.ptNum=pt.ptNum 
+		            AND s.perfNum2=pt.perfNum2 AND s.perfNum2=p.perfNum
+		            AND po.perfNum=p.perfNum AND th.tnum=p.tnum AND h.hnum=th.hallno
+		        GROUP BY b2.ptnum, p.subject, p.perfNum, p.rating, po.saveFileName, startDate, endDate, h.hallName
+		        ORDER BY COUNT(*) DESC
+			) tb WHERE ROWNUM &lt;= 10
+		) WHERE rnum &gt;= 1
+	</select>
+	
+	<!-- 평점 랭킹 -->
+	<select id="ratingRank" resultType="com.sp.tp.rank.Rank">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT subject, rating, p.perfNum, po.saveFilename postFilename,
+		        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		        TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.hallName
+		        FROM performance p, poster po, theater th, hall h
+		        WHERE po.perfNum=p.perfNum AND th.tnum=p.tnum AND h.hnum=th.hallno
+        ORDER BY rating DESC
+			) tb WHERE ROWNUM &lt;= 10
+		)WHERE rnum &gt;= 1
+	</select>
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="saleManage">
+	
+	<sql id="category-list">
+		<if test="category == 'musical'">
+			ct.cNum = 1
+		</if>
+		<if test="category == 'drama'">
+			ct.cNum = 2
+		</if>
+		<if test="category == 'concert'">
+			ct.cNum = 3
+		</if>
+		<if test="category=='all'">
+			ct.cNum IS NOT NULL
+		</if>
+	</sql>
+	
+	<!-- 월별, 공연별 매출 데이터 개수 -->
+	<select id="perfMonthCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM book2 b2, book b, performanceTime pt, schedule s, performance p
+		WHERE b2.bNum = b.bNum AND b2.ptNum=pt.ptNum AND 
+			s.perfNum2=pt.perfNum2 AND s.perfNum2=p.perfNum
+	</select>
+	
+	<!-- 월별 매출 현황 -->
+	<select id="monthSale" parameterType="Integer" resultType="com.sp.tp.admin.saleManage.Sale">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT TO_CHAR(b.bookDate, 'YY-MM') month, COUNT(*) monthCount, SUM(b.price) total
+		        FROM book2 b2, book b, performanceTime pt, 
+		            schedule s, performance p
+		        WHERE b2.bNum = b.bNum AND b2.ptNum=pt.ptNum 
+		            AND s.perfNum2=pt.perfNum2 AND s.perfNum2=p.perfNum
+		        GROUP BY TO_CHAR(b.bookDate, 'YY-MM')
+		    ) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= 1
+	</select>
+		
+	<!-- 공연별 매출 현황 -->
+	<select id="performSale" parameterType="Integer" resultType="com.sp.tp.admin.saleManage.Sale">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.* FROM (
+		        SELECT p.subject, SUM(b.price) total, COUNT(*) perfCount
+		        FROM book2 b2, book b, performanceTime pt, 
+		            schedule s, performance p
+		        WHERE b2.bNum = b.bNum AND b2.ptNum=pt.ptNum 
+		            AND s.perfNum2=pt.perfNum2 AND s.perfNum2=p.perfNum
+		        GROUP BY p.subject
+		    ) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= 1
+	</select>
+	
+	<!-- 카테고리별 매출 데이터 개수 -->
+	<select id="categoryDataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM book b, book2 b2, performanceTime pt, schedule s, performance p, genre g, category ct
+		WHERE b.bNum=b2.bNum AND pt.ptNum=b2.ptNum AND s.perfNum2=pt.perfNum2 
+		    AND s.perfNum2=p.perfNum AND p.gmNum=g.gNum AND g.cNum=ct.cNum
+		    <if test="category != null and category != ''">
+				AND <include refid="category-list"/>
+			</if>
+	</select>
+	
+	<!-- 카테고리별 매출 현황 -->
+	<select id="categorySale" parameterType="map" resultType="com.sp.tp.admin.saleManage.Sale">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.*FROM (
+		        SELECT ct.category category, SUM(b.price) total, COUNT(*) cateCount, TO_CHAR(b.bookDate, 'YY-MM') month
+		        FROM book b, book2 b2, performanceTime pt, schedule s,
+		            performance p, genre g, category ct
+		        WHERE b.bNum=b2.bNum AND pt.ptNum=b2.ptNum AND s.perfNum2=pt.perfNum2
+		            AND s.perfNum2=p.perfNum AND p.gmNum=g.gNum AND g.cNum=ct.cNum
+		            
+		            <if test="category != null and category != ''">
+						AND <include refid="category-list"/>
+					</if>
+					
+		        GROUP BY ct.category, TO_CHAR(b.bookDate, 'YY-MM')
+		    ) tb WHERE ROWNUM &lt;= #{categoryDataCount}
+		) WHERE rnum &gt;=1
+	</select>
+	
+	<!-- 카테고리별 병합 데이터 개수 -->
+	<select id="categoryAllCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM book b, book2 b2, performanceTime pt, schedule s, performance p, genre g, category ct
+		WHERE b.bNum=b2.bNum AND pt.ptNum=b2.ptNum AND s.perfNum2=pt.perfNum2 
+		    AND s.perfNum2=p.perfNum AND p.gmNum=g.gNum AND g.cNum=ct.cNum
+		    AND (ct.cNum=1 OR ct.cNum=2 OR ct.cNum=3)
+	</select>
+	
+	
+	<!-- 카테고리별 병합 쿼리 -->
+	<select id="categoryAll" parameterType="Integer" resultType="com.sp.tp.admin.saleManage.Sale">
+		SELECT * FROM (
+		    SELECT ROWNUM rnum, tb.*FROM (
+		        SELECT ct.category category, SUM(b.price) total, COUNT(*) cateAllCount
+		        FROM book b, book2 b2, performanceTime pt, schedule s,
+		            performance p, genre g, category ct
+		        WHERE b.bNum=b2.bNum AND pt.ptNum=b2.ptNum AND s.perfNum2=pt.perfNum2
+		            AND s.perfNum2=p.perfNum AND p.gmNum=g.gNum AND g.cNum=ct.cNum
+		            AND (ct.cNum=1 OR ct.cNum=2 OR ct.cNum=3)
+		        GROUP BY ct.category
+		    ) tb WHERE ROWNUM &lt;= #{categoryAllCount}
+		) WHERE rnum &gt;= 1
+	</select>
+</mapper>

@@ -111,6 +111,17 @@ $(function(){
 	ajaxFun(url, "get", query, "json", fn);
 
 });
+
+$(function(){
+	$(this).find('.po-title-date').hide();
+	
+	$('.single_event_slider').mouseenter(function(){
+	  $(this).find('.po-title-date').show();
+	});
+	$('.single_event_slider').mouseleave(function(){
+	 $(this).find('.po-title-date').hide();
+	});
+});
 </script>
 <style>
 .form-select {
@@ -151,22 +162,40 @@ $(function(){
 .event_part .owl-nav button.owl-next {
   right: 166px;
 }
+.po-title {
+	max-width: 100%;
+	font-size: 20px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	text-align: center;
+	font-family: 'tp' !important;
+	color: #212529;
+}
+.po-title-date {
+	text-align: center;
+	font-family: 'tp' !important;
+	color: #212529;
+	font-size: 16px;
+}
 </style>
 	<!--top place start-->
-    <section class="event_part" style="padding: 50px 0;">
-			
-					<div class="owl-carousel owl-theme owl-loaded" >
-						<c:forEach var="vo" items="${listPerformance}" varStatus="status">
-							<div class="single_event_slider">
-							<a class="link" href="${pageContext.request.contextPath}/performance/article?perfNum=${vo.perfNum}&page=1&category=${vo.category}" title="${vo.subject}">
-	                            <img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}" class="d-block" alt="${vo.subject}" >
-	                            <span>${vo.subject}</span>
-							</a>
-	                        </div>
-                        </c:forEach>
-                    </div>
-                   
-    </section>
+    <section class="event_part" style="padding: 50px 0; min-height: 600px;">
+
+	<div class="owl-carousel owl-theme owl-loaded">
+		<c:forEach var="vo" items="${listPerformance}" varStatus="status">
+			<div class="single_event_slider">
+				<a class="link" href="${pageContext.request.contextPath}/performance/article?perfNum=${vo.perfNum}&page=1&category=${vo.category}" title="${vo.subject}">
+				<img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}"
+					class="d-block" alt="${vo.subject}">
+				</a>
+				<p class="po-title">${vo.subject}</p>
+				<p class="po-title-date">${vo.startDate}-${vo.endDate}</p>
+			</div>
+		</c:forEach>
+	</div>
+
+</section>
     <!--top place end-->
     
     <!-- banner part start-->
