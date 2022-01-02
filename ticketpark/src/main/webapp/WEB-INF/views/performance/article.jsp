@@ -369,10 +369,7 @@ $(function() {
 					<tr>
 						<td colspan="2">공연 기간 : ${dto.startDate} ~ ${dto.endDate}</td>
 					</tr>
-					<tr>
-						<td>공연장 : ${dto.hallName}</td>
-						<td>상영관 : ${dto.theater}</td>
-					</tr>
+
 					<tr>
 						<td colspan="2">상영시간 : ${dto.showTime} 분</td>
 					</tr>

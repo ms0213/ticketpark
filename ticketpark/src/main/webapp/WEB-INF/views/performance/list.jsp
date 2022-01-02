@@ -200,7 +200,6 @@ $("body").on("change", "#condiGenre", function(){
 			 			</a>
 			 			<div class="box_info">
 			 				<p class="day" style="text-align: center;"><span>${dto.startDate} ~ ${dto.endDate} </span> </p>
-			 				<p class="hall" style="text-align: center;"><span>${dto.hallName} </span> </p>
 			 			</div>
 					</div>
 			 	</c:forEach>

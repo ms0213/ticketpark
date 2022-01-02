@@ -2,7 +2,6 @@ package com.sp.tp.performance;
 
 import java.io.File;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +36,8 @@ public class PerformanceController {
 	@RequestMapping(value = "list")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "") String condiDate,
-			@RequestParam(defaultValue = "") String condiAddr,
 			@RequestParam(defaultValue = "") String condiGenre,
 			@RequestParam(defaultValue = "") String keyDate,
-			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam(defaultValue = "all") String category,
 			HttpServletRequest req,
@@ -55,16 +52,15 @@ public class PerformanceController {
 
 		if (req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
 			keyGenre = URLDecoder.decode(keyGenre, "utf-8");
-			keyAddr = URLDecoder.decode(keyAddr, "utf-8");
+			
 		}
 
 		// 전체 페이지 수
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("condiDate", condiDate);
-		map.put("condiAddr", condiAddr);
 		map.put("condiGenre", condiGenre);
 		map.put("keyDate", keyDate);
-		map.put("keyAddr", keyAddr);
+		
 		map.put("keyGenre", keyGenre);
 		map.put("category", category);
 
@@ -91,9 +87,7 @@ public class PerformanceController {
 			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
 		}
 		
-		if(keyAddr.length()!=0) {
-			query += "&condiAddr="+condiAddr+"&keyAddr=" + URLEncoder.encode(keyAddr, "utf-8");
-		}
+
 		
 		if(keyDate.length()!=0) {
 			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
@@ -120,10 +114,8 @@ public class PerformanceController {
 		model.addAttribute("category", category);
 
 		model.addAttribute("condiDate", condiDate);
-		model.addAttribute("condiAddr", condiAddr);
 		model.addAttribute("condiGenre", condiGenre);
 		model.addAttribute("keyDate", keyDate);
-		model.addAttribute("keyAddr", keyAddr);
 		model.addAttribute("keyGenre", keyGenre);
 		
 		return ".performance.list";
@@ -207,10 +199,8 @@ public class PerformanceController {
 	public String article(@RequestParam int perfNum,
 			@RequestParam String page,
 			@RequestParam(defaultValue = "") String condiDate,
-			@RequestParam(defaultValue = "") String condiAddr,
 			@RequestParam(defaultValue = "") String condiGenre,
 			@RequestParam(defaultValue = "") String keyDate,
-			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam(defaultValue = "") String keyGenre,
 			@RequestParam String category,
 			HttpSession session,
@@ -218,7 +208,6 @@ public class PerformanceController {
 
 		
 		keyGenre = URLDecoder.decode(keyGenre, "utf-8");
-		keyAddr = URLDecoder.decode(keyAddr, "utf-8");
 		
 
 		String query = "page=" + page;
@@ -228,9 +217,6 @@ public class PerformanceController {
 			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
 		}
 		
-		if(keyAddr.length()!=0) {
-			query += "&condiAddr="+condiAddr+"&keyAddr=" + URLEncoder.encode(keyAddr, "utf-8");
-		}
 		
 		if(keyDate.length()!=0) {
 			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
