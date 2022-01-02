@@ -265,6 +265,8 @@ function sendOk() {
 				<button type="button" class="btn"> 좌석 선택 취소 </button>
 				<input type="hidden" name="cinemaCode" value="${cinemaCode}">
 				<input type="hidden" name="selectSeatCount" value="${selectSeatCount}">
+				<input type="hidden" name="sdNum" value="${sdNum}">
+				<input type="hidden" name="seat_price" value="${seat_price}">
 			</form>
 		</div>
 	</div>

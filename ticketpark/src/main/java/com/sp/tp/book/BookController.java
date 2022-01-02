@@ -29,6 +29,8 @@ public class BookController {
 	
 	@RequestMapping(value = "seatchoice", method = RequestMethod.GET)
 	public String seatChoice(
+			@RequestParam int ptNum,
+			@RequestParam int seat_price,
 			Model model) {
 		int tNum = 7;
 		Book dto = service.listTheater2(tNum);
@@ -59,20 +61,22 @@ public class BookController {
 		model.addAttribute("seats", seats);
 		model.addAttribute("reservedSeat", reservedSeat);
 		
+		model.addAttribute("ptNum", ptNum);
+		model.addAttribute("seat_price", seat_price);
+		
 		return ".book.seatchoice";
 	}
 	
 	@RequestMapping(value = "seatchoice", method = RequestMethod.POST)
 	public String seatChoiceOk(	
 			Book dto,
+			@RequestParam int ptNum,
+			@RequestParam int seat_price,
 			HttpSession session) {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
-	
-		int sdNum = 49;
-		int seat_price = 30000;
 		
 		dto.setUserId(info.getUserId());
-		dto.setSdNum(sdNum);
+		dto.setSdNum(ptNum);
 		dto.setSeat_price(seat_price);
 		try {
 			service.insertBook(dto);			

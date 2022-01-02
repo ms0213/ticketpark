@@ -136,6 +136,21 @@ $(function(){
     flex: 0 0 auto;
     width: 100%;
 }
+
+.event_part .owl-nav button {
+	width:100px;
+	height:100px;
+	top: 36%;
+	background-color: RGBA(255,255,255,0.5) !important;
+	color: black !important;
+	margin: 0;
+}
+.event_part .owl-nav button.owl-prev {
+  left: 166px;
+}
+.event_part .owl-nav button.owl-next {
+  right: 166px;
+}
 </style>
 	<!--top place start-->
     <section class="event_part" style="padding: 50px 0;">

@@ -287,10 +287,10 @@ public class PerformanceServiceImpl implements PerformanceService {
 	}
 
 	@Override
-	public List<PerformanceBook> listTime(int sdNum) {
+	public List<PerformanceBook> listTime(Map<String, Object> map) {
 		List<PerformanceBook> listTime = null;
 		try {
-			listTime = dao.selectList("performance.listTime", sdNum);
+			listTime = dao.selectList("performance.listTime", map);
 		} catch (Exception e) {
 		}
 		return listTime;

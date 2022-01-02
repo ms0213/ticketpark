@@ -118,8 +118,9 @@
     	SELECT TO_CHAR(bookDate, 'YYYY-MM-DD') bookDate, b.bNum, subject, perf_date, amount, state, TO_CHAR((TO_DATE(perf_date, 'YYYY-MM-DD') - 3), 'YYYY-MM-DD') cancel_date, LISTAGG(seat_num,',') WITHIN GROUP(ORDER BY seat_num) AS seat_num, t.name, t.location, h.hallName, h.hNum, po.saveFilename
 		FROM book b
 		JOIN book2 bo ON bo.bNum = b.bNum
-		JOIN schedule s ON bo.sdNum = s.sdNum
-		JOIN performance p ON p.perfNum = s.perfNum
+		JOIN performanceTime pt ON pt.ptNum = b.ptNum
+		JOIN schedule s ON s.perf_date = pt.perf_date
+		JOIN performance p ON p.perfNum = s.perfNum2
 		JOIN theater t ON p.tNum = t.tNum
 		JOIN hall h ON t.hallNo = h.hNum
 		JOIN poster po ON p.perfNum = po.perfNum
@@ -131,8 +132,9 @@
     	SELECT bookDate, b.bNum, subject, perf_date, amount, state, TO_CHAR((TO_DATE(perf_date, 'YYYY-MM-DD') - 3), 'YYYY-MM-DD') cancel_date, LISTAGG(seat_num,',') WITHIN GROUP(ORDER BY seat_num) AS seat_num, t.name, t.location, h.hallName, h.hNum, po.saveFilename
 		FROM book b
 		JOIN book2 bo ON bo.bNum = b.bNum
-		JOIN schedule s ON bo.sdNum = s.sdNum
-		JOIN performance p ON p.perfNum = s.perfNum
+		JOIN performanceTime pt ON pt.ptNum = b.ptNum
+		JOIN schedule s ON s.perf_date = pt.perf_date
+		JOIN performance p ON p.perfNum = s.perfNum2
 		JOIN theater t ON p.tNum = t.tNum
 		JOIN hall h ON t.hallNo = h.hNum
 		JOIN poster po ON p.perfNum = po.perfNum

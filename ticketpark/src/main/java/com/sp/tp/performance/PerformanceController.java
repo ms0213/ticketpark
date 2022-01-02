@@ -264,8 +264,15 @@ public class PerformanceController {
 		return ".performance.article";
 	}
 	
-	public String listTime(@RequestParam int sdNum) throws Exception {
-		List<PerformanceBook> listTime = service.listTime(sdNum);
-		return "redirect:/performance/article";
+	@RequestMapping("listTime")
+	@ResponseBody
+	public Map<String, Object> listTime(@RequestParam String perf_date) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("perf_date", perf_date);
+		List<PerformanceBook> listTime = service.listTime(map);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("listTime", listTime);
+		return model;
 	}
 }

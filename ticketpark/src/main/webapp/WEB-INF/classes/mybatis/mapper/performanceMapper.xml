@@ -162,7 +162,7 @@
 	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.performance.Performance">
 	    SELECT p.perfNum, subject, po.saveFilename postFileName,
 	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
-	        hallName, genre, category, time showTime, price, rate, th.name as theater, p.content, rating
+	        hallName, genre, category, time showTime, price, rate, th.name as theater, p.content, rating, th.tNum theaterNum
 	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r
 	    WHERE p.tnum = th.tnum AND th.hallno = h.hnum AND p.gmnum = g.gnum AND c.cNum = g.cNum
 	        AND r.rNum = p.rNum
@@ -177,16 +177,20 @@
 	
 	<!-- 공연 날짜 -->
 	<select id="listSchedule" parameterType="Integer" resultType="com.sp.tp.performance.PerformanceBook">
-		SELECT sdNum, TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY-MM-DD') perfDate
-		FROM schedule
-		WHERE perfNum = #{perfNum}
+		SELECT TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY-MM-DD') perf_date
+		FROM schedule s
+        JOIN performance p ON s.perfNum2 = p.perfNum
+		WHERE s.perfNum2 = #{perfNum}
 	</select>
 	
 	<!-- 공연 시간 -->
-	<select id="listTime" parameterType="Integer" resultType="com.sp.tp.performance.PerformanceBook">
-		SELECT sdNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
-		FROM cast c, actor a, performanceTime pt
-		WHERE a.actorNum = c.actorNum AND c.ptNum = pt.ptNum and pt.sdNum = #{sdNum}
-		GROUP BY performanceTime, sdNum
+	<select id="listTime" parameterType="map" resultType="com.sp.tp.performance.PerformanceBook">
+		SELECT pt.ptNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
+		FROM schedule s
+		JOIN performanceTime pt ON s.perfNum2 = pt.perfNum2
+		JOIN cast c ON pt.ptNum = c.ptNum
+		JOIN actor a ON a.actorNum = c.actorNum
+		WHERE pt.perf_date = #{perf_date}
+		GROUP BY performanceTime, pt.ptNum
 	</select>
 </mapper>

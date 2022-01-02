@@ -27,7 +27,7 @@ public interface PerformanceService {
 	public void deleteCast(Map<String, Object> map) throws Exception;
 	
 	public List<PerformanceBook> listSchedule(int perfNum);
-	public List<PerformanceBook> listTime(int sdNum);
+	public List<PerformanceBook> listTime(Map<String, Object> map);
 	
 }
 

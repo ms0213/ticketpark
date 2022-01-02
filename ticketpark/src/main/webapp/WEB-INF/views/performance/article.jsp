@@ -89,11 +89,11 @@
 
 #calendarLayout table td:nth-child(7n+1){
 	color: #fd7e7e;
-	opacity: 50%;
+
 }
 #calendarLayout table td:nth-child(7n){
 	color: #8282ff;
-	opacity: 50%;
+
 }
 
 #calendarLayout table td.gray {
@@ -124,7 +124,9 @@
 .date{cursor: pointer; color: black; opacity: 50%;}
 .date:hover{background-color: #eee;}
 
-.date-red{opacity: 100%;}
+.date-red{opacity: 100%; font-weight: 700;}
+
+.bcd .time_btn{border: 1px solid red;}
 </style>
 
 <script type="text/javascript">
@@ -170,33 +172,33 @@ function calendar(y, m) {
 	var cls;
 	var lastDay = (new Date(y, m, 0)).getDate();
     
-    var listsdNum = new Array();
-    var listperfDate = new Array();
-
+    var listperf_date = new Array();
+    
     <c:forEach items="${listSchedule}" var="item1">
-    listsdNum.push("${item1.sdNum}");
-    listperfDate.push("${item1.perfDate}");
+    listperf_date.push("${item1.perf_date}");
     </c:forEach>
+	console.log(listperf_date);
     
 	for(var i=1; i<=lastDay; i++) {
 		
-		var pickDay = new Date(y, m, i);
+		var pickDay = new Date(y, m-1, i);
 		var month = m >= 10 ? m : '0' + m;
         var day = pickDay.getDate();
         day = day >= 10 ? day : '0' + day;
 
 	    var pickdayFormat =  y + "-" + month + "-" + day;
-	    
 		var red = "";
-		var sdNum = 0;
-	    for(var j = 0; j < listperfDate.length; j++) {
-			if(pickdayFormat == listperfDate[j]) {
-				sdNum = listsdNum[j];
+		var ptNum = 0;
+		var perf_date = "";
+	    for(var j = 0; j < listperf_date.length; j++) {
+			if(pickdayFormat == listperf_date[j]) {
+				perf_date = listperf_date[j];
 				red = "date-red";
 			}
+
 		}
 	    
-	    out+="<td class=' date "+red+"' data-date='"+pickdayFormat+"' data-sdNum='"+sdNum+"'>"+i+"</td>";
+	    out+="<td class=' date "+red+"' data-perf_date='"+perf_date+"' >"+i+"</td>";
 		if(i != lastDay && ++w%7==0) {
 			row++;
 			out+="</tr><tr>";
@@ -235,6 +237,9 @@ window.onload=function(){
 	todayDisp()
 };
 
+function bookOk() {
+	var url = "${pageContext.request.contextPath}/book/seatchoice";
+}
 
 </script>
 
@@ -301,17 +306,33 @@ $(function() {
 });
 
 $(function() {
-	$("body").on("click",".date", function() {
-		var sdNum = $(this).attr("data-sdNum");
+	$("body").on("click",".date-red", function() {
+		var perf_date = $(this).attr("data-perf_date");
+		$(".perfList").find("#selectPlz").remove();
+		$(".perfList").find("div").remove().end();
 		
 		var url = "${pageContext.request.contextPath}/performance/listTime";
-		var query = "sdNum="+sdNum;
+		var query = "perf_date="+perf_date;
 		
 		var fn = function(data) {
-			
+			$.each(data.listTime, function(index, item){
+				var perfTime = item.perfTime;
+				var actorName = item.actorName;
+				var s = "<div class='abc'><button type='button' class='btn btn-light time_btn'>"
+						+ "<span class='time'>" + perfTime + "</span>"
+						+ "<p class='cast'>출연: " + actorName + "</p></button></div>";
+				$(".perfList").append(s);
+			});
 		}
 		
-		ajaxFun(url, "post", query, "json", fn);
+		ajaxFun(url, "get", query, "json", fn);
+	});
+});
+
+$(function() {
+	$("body").on("click",".time_btn", function() {
+		$('div').removeClass('bcd');
+		$(this).parent().addClass('bcd');			
 	});
 });
 </script>
@@ -382,11 +403,11 @@ $(function() {
 				<div class="sch-list">
 					<div class="text-center" style="line-height: 2rem; border-bottom: 1px solid #dee2e6;">시간 선택</div>
 					<div class="perfList">
-						선택 가능 시간 없음
+						<p id="selectPlz">선택 가능 시간 없음</p>
 					</div>
 				</div>
 				<div class="text-right pr-4 bookdiv">
-					<button type="button" class="btn btn-outline-secondary">예매하기</button>
+					<button type="button" class="btn btn-outline-secondary" onclick="bookOk();">예매하기</button>
 				</div>
 			</div>
 			

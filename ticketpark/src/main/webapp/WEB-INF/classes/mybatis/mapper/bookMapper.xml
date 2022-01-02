@@ -12,8 +12,8 @@
 	</insert>
 	
 	<insert id="insertBook2" parameterType="com.sp.tp.book.Book">
-		INSERT INTO book2(b2Num, bNum, sdNum, seat_num, seat_price)
-		VALUES(book2_seq.NEXTVAL, #{bNum}, #{sdNum}, #{seat_num}, #{seat_price})
+		INSERT INTO book2(b2Num, bNum, ptNum, seat_num, seat_price)
+		VALUES(book2_seq.NEXTVAL, #{bNum}, #{ptNum}, #{seat_num}, #{seat_price})
 	</insert>
 	
 	<select id="readBook" parameterType="String" resultType="com.sp.tp.book.Book">
@@ -33,8 +33,9 @@
 	<select id="readPay" parameterType="Integer" resultType="com.sp.tp.book.Book">
 		SELECT SUM(seat_price) amount, subject
 		FROM book2 b
-		JOIN schedule s ON s.sdNum = b.sdNum
-		JOIN performance p ON p.perfNum = s.perfnum
+		JOIN performanceTime pt ON pt.ptNum = b.ptNum
+		JOIN schedule s ON s.perf_date = pt.perf_date
+		JOIN performance p ON p.perfNum = s.perfNum2
 		WHERE bNum = #{bNum}
 		GROUP BY subject
 	</select>
@@ -43,8 +44,9 @@
 		SELECT hallName hName, t.tNum tNum, t.name tName, seat_num
 	    FROM book b
 	    JOIN book2 b2 ON b.bNum = b2.bNum
-	    JOIN schedule s ON s.sdNum = b2.sdNum
-	    JOIN performance p ON p.perfNum = s.perfNum
+	    JOIN performanceTime pt ON pt.ptNum = b.ptNum
+		JOIN schedule s ON s.perf_date = pt.perf_date
+	    JOIN performance p ON p.perfNum = s.perfNum2
 	    JOIN theater t ON t.tNum = p.tNum
 	    JOIN hall h ON h.hNum = t.hallNo
 	    WHERE userId = #{userId} AND b.bNum = #{bNum}

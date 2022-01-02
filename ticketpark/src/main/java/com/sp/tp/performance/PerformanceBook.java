@@ -1,22 +1,22 @@
 package com.sp.tp.performance;
 
 public class PerformanceBook {
-	private int sdNum;
-	private String perfDate;
+	private int ptNum;
+	private String perf_date;
 	private String perfTime;
 	private String actorName;
 	
-	public int getSdNum() {
-		return sdNum;
+	public String getPerf_date() {
+		return perf_date;
 	}
-	public void setSdNum(int sdNum) {
-		this.sdNum = sdNum;
+	public void setPerf_date(String perf_date) {
+		this.perf_date = perf_date;
 	}
-	public String getPerfDate() {
-		return perfDate;
+	public int getPtNum() {
+		return ptNum;
 	}
-	public void setPerfDate(String perfDate) {
-		this.perfDate = perfDate;
+	public void setPtNum(int ptNum) {
+		this.ptNum = ptNum;
 	}
 	public String getPerfTime() {
 		return perfTime;
