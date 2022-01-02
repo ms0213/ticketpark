@@ -74,6 +74,7 @@ public class MemberController {
 	@RequestMapping(value = "member", method = RequestMethod.GET)
 	public String memberForm(Model model) {
 		model.addAttribute("mode", "member");
+		model.addAttribute("title", "회원가입");
 		return ".member.member";
 	}
 	
@@ -187,6 +188,7 @@ public class MemberController {
 		// 회원정보수정폼
 		model.addAttribute("dto", dto);
 		model.addAttribute("mode", "update");
+		model.addAttribute("title", "정보수정");
 		return ".member.member";
 	}
 

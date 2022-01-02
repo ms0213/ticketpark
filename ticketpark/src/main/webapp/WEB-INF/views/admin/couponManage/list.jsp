@@ -127,7 +127,7 @@ $(function() {
 
 			<div class="container">
 				<div class="row">
-				 	<table class="table table-border table-list" style="width: 900px;">
+				 	<table class="table table-border table-list">
 					<thead>
 						<tr> 
 							<th class="w-auto">쿠폰 할인가격</th>
@@ -151,7 +151,7 @@ $(function() {
 			</div>
 			
 			<div class="row board-list-footer mt-3 mb-3">
-				<div class="col text-left" style="width: 900px;">
+				<div class="col text-left">
 					<button type="button" class="btn btn-light btnModal" onclick="detailedCoupon();">관리</button>
 					<button type="button" class="btn btn-light btnright" onclick="location.href='${pageContext.request.contextPath}/admin/couponManage/write';" >쿠폰등록</button>
 				</div>

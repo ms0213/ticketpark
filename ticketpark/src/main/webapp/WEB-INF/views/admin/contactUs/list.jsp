@@ -20,7 +20,6 @@ function checked(cNum, chk) {
 
 <style type="text/css">
 .search_wrapper {
-	display: flex;
 	align-items: center;
 	margin:0;
 	min-width : 350px;
@@ -49,16 +48,16 @@ td {
 					<!-- Search -->
 					<section id="search" class="alt">
 						<form method="post" class="search_wrapper" 
-						name="searchForm" action="${pageContext.request.contextPath}/contactUs/list">
-							<select name="condition" style="width:60%">
+						name="searchForm" action="${pageContext.request.contextPath}/admin/contactUs/list">
+							<select name="condition" id="condition" style="width:60%">
 								<option value="all" ${condition=="all"?"selected='selected'":"" }>제목+내용</option>
 								<option value="title"  ${condition=="title"?"selected='selected'":"" }>제목</option>
 								<option value="content"  ${condition=="content"?"selected='selected'":"" }>내용</option>
 								<option value="name"  ${condition=="name"?"selected='selected'":"" }>이름</option>
 								<option value="reg_date"  ${condition=="reg_date"?"selected='selected'":"" }>등록일</option>
 							</select>
-							<input type="text" name="keyword" id="query" value="${keyword}" placeholder="Search" 
-									onkeyup="if(window.event.keyCode==13){searchList()}"/>
+							<input type="text" name="keyword" id="keyword" value="${keyword}" placeholder="Search">
+								<button type="button" class="btn btn-outline-secondary" onclick="searchList()">검색</button>
 						</form>		
 					</section>
 					<input type="hidden" name="page" value="${page}">

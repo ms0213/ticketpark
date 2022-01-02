@@ -240,26 +240,26 @@ function sendOk(){
 					<ul style="float: left; ">
 						<li class="col-title">Name</li>
 						<li class="col-input" >
-							<input type="text" style="width: 90%;" name="name" id="name" required="required" placeholder="이름" style="width: 40%;">
+							<input class="form-control" type="text" style="width: 90%;" name="name" id="name" required="required" placeholder="이름" style="width: 40%;">
 						</li>
 					</ul>
 					<ul style="float: left; ">
 						<li class="col-title">Title</li>
 						<li class="col-input">
-							<input type="text" style="width: 90%;" name="title" id="title" required="required" placeholder="제목" style="width:40%;">
+							<input class="form-control" type="text" style="width: 90%;" name="title" id="title" required="required" placeholder="제목" style="width:40%;">
 						</li>
 					</ul>
 				</div>
 				<ul style="float: left; ">
 					<li class="col-title">Email Address *</li>
 					<li class="col-input">
-						<input type="email" name="email" id="email" placeholder="id@example.com" style="width:60%;" required="required">
+						<input class="form-control" type="email" name="email" id="email" placeholder="id@example.com" style="width:60%;" required="required">
 					</li>
 				</ul>
 				<ul style="float: left; ">
 					<li class="col-title">Content</li>
 					<li class="col-input">
-						<textarea name="content" placeholder="고객님의 소중한 의견을 들려주세요" required="required" ></textarea>
+						<textarea class="form-control" name="content" placeholder="고객님의 소중한 의견을 들려주세요" required="required" style="height: 300px;" ></textarea>
 					</li>
 				</ul>
 			</div>

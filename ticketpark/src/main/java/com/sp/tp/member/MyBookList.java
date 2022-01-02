@@ -14,7 +14,14 @@ public class MyBookList {
 	private String hallName;
 	private int hNum;
 	private String saveFilename;
+	private int perfNum;
 	
+	public int getPerfNum() {
+		return perfNum;
+	}
+	public void setPerfNum(int perfNum) {
+		this.perfNum = perfNum;
+	}
 	public String getSaveFilename() {
 		return saveFilename;
 	}

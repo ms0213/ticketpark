@@ -223,6 +223,7 @@ $(function() {
 									<th class="bw-auto">이용일/매수</th>
 									<th class="bw-auto">취소가능일</th>
 									<th class="bw-auto">상태</th>
+									<th class="bw-auto">후기작성</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -234,6 +235,8 @@ $(function() {
 										<td>${dto.perf_date}<br>${dto.amount}매</td>
 										<td>${dto.cancel_date}</td>
 										<td>${dto.state}</td>
+										<td><button type="button" class="btn btn-success btn-outline-secondary"
+											onclick="location.href='${pageContext.request.contextPath}/article?perfNum=${dto.perfNum}';">Go!</button></td>
 									</tr>
 								</c:forEach>
 							</tbody>

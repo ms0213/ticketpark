@@ -146,7 +146,7 @@ function userIdCheck() {
 <div class="container">
 	<div class="body-container">	
 		<div class="body-title">
-			<h3><i class="bi bi-person-square"></i> ${title} </h3>
+			<h3> ${title} </h3>
 		</div>
 		
 	    <div class="alert alert-info" role="alert">
@@ -314,7 +314,7 @@ function userIdCheck() {
 					</div>
 			    </div>
 			     
-			    <div class="row mb-3">
+			    <div class="row mb-3 justify-content-center">
 			        <div class="text-center">
 			            <button type="button" name="sendButton" class="btn btn-primary" onclick="memberOk();"> ${mode=="member"?"회원가입":"정보수정"} <i class="bi bi-check2"></i></button>
 			            <button type="button" class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/';"> ${mode=="member"?"가입취소":"수정취소"} <i class="bi bi-x"></i></button>

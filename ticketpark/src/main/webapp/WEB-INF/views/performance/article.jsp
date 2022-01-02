@@ -126,7 +126,9 @@
 
 .date-red{opacity: 100%; font-weight: 700;}
 
-.bcd .time_btn{border: 1px solid red;}
+.bcd .time_btn{color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;}
 </style>
 
 <script type="text/javascript">
@@ -318,7 +320,7 @@ $(function() {
 			$.each(data.listTime, function(index, item){
 				var perfTime = item.perfTime;
 				var actorName = item.actorName;
-				var s = "<div class='abc'><button type='button' class='btn btn-light time_btn'>"
+				var s = "<div class='abc mb-2'><button type='button' class='btn btn-light time_btn' style='width:240px;'>"
 						+ "<span class='time'>" + perfTime + "</span>"
 						+ "<p class='cast'>출연: " + actorName + "</p></button></div>";
 				$(".perfList").append(s);
