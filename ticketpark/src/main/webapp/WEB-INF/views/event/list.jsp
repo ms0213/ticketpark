@@ -64,6 +64,16 @@
 	margin-left: 20px;
 	margin-right: 20px;
 }
+.card-img-overlay{
+	height: 120px;
+	background-color: RGBA(0,0,0,0.5);
+	color: white;
+}
+.card-img-overlay span{
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 5rem;
+}
 </style>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
@@ -77,7 +87,7 @@ function searchList() {
 <div class="event-container">
 	<div class="body-container">
 		<div class="body-title">
-			<h3><i class="bi bi-image"></i> 이벤트 </h3>
+			<h3>이벤트 </h3>
 		</div>
 		
 		<div class="body-main">
@@ -108,10 +118,16 @@ function searchList() {
 			</div>
 	        
 	         <div class="row">
+	         	<c:set var="today" value="<%=new java.util.Date()%>" />
+				<!-- 현재날짜 -->
+				<c:set var="date"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd" /></c:set> 
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
 			 			<a class="link" href="${articleUrl}&eventNum=${dto.eventNum}" title="${dto.eventName}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/event/${dto.saveFilename}">
+				 			<c:if test="${dto.endDate<date}">
+				 				<div class="card-img-overlay text-center"><span>종료된 이벤트</span></div>
+				 			</c:if>
 			 				<span class="event_name">${dto.eventName}</span>
 			 			</a>
 			 			<div class="box_info">
