@@ -23,7 +23,7 @@ ul {
     cursor: pointer;
 }
 
-.date_btn, .time_btn {
+.date_btn, .deleteTime_btn, .deleteDate_btn{
 	margin-top: 1rem;
 	max-width: 250px;
 }
@@ -111,22 +111,29 @@ function ajaxFun(url, method, query, dataType, fn) {
 }
 
 $(function(){
-	$("button[name=sdNum]").click(function(){
-		var sdNum = $(this).val();
+	$("button[name=perfDate]").click(function(){
+		var perfDate = $(this).val();
+		var perfNum = $("input[name=perfNum]").val();
+		
 		$(".cast_time").find("#selectPlz").remove();
 		$(".cast_time").find("div").remove().end();
 		
-		if(! sdNum){
+		if(! perfDate){
+			return false;
+		}
+		
+		if(! perfNum) {
 			return false;
 		}
 		
 		var url = "${pageContext.request.contextPath}/admin/performanceManage/time";
-		var query = "sdNum=" + sdNum;
+		var query = "perfDate=" + perfDate + "&perfNum=" + perfNum;
 		var fn = function(data) {
 			$.each(data.timeList, function(index, item){
 				var perfTime = item.perfTime
 				var actorName = item.actorName
-				var s = "<div><button type='button' class='btn btn-light time_btn'>"
+				var s = "<div><button type='button'"
+						+ "class='btn btn-light deleteTime_btn'>"
 						+ "<span class='time'>" + perfTime + "</span>"
 						+ "<p class='cast'>출연: " + actorName + "</p></button></div>";
 				$(".cast_time").append(s);
@@ -186,10 +193,15 @@ $(function(){
 				<h5 style="margin-bottom: 0px;">공연날짜</h5>
 			</div>
 			<c:forEach items="${list}" var="dto">
-				<button name="sdNum" type="button" class="btn btn-light date_btn" value="${dto.sdNum}">
-					<span>${dto.perfDate}</span>
+				<button name="perfDate" type="button" class="btn btn-light date_btn" value="${dto.perfDate}">
+					<span>${dto.perfDateDay}</span>
 				</button>
+				<button type="button" class="btn btn-light deleteDate_btn" style="margin-left: 10px;">
+					<span>삭제</span>
+				</button>
+				<hr style="margin-bottom: 0px;">
 			</c:forEach>
+			<input type="hidden" name="perfNum" value="${dto.perfNum}">
 		</div>
 		
 		<div class="time_choice border">

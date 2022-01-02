@@ -26,13 +26,12 @@
 $(function(){
 	$(".castRemoveBtn").hide();
 	
-	$(".castAddBtn").click(function(){
+	$("body").on("click", ".castAddBtn", function(){
 		$(".castRemoveBtn").show();
 		
 		var p=$(this).parent().parent().find("p:first").clone();
 		$(p).find("input").each(function(){
 			$(this).val("");
-			$(p).find(".cast-img").css("background-image", "url(/tp/resources/images1/add_photo.png)");
 		});
 		
 		$(this).parent().parent().find(".cast").append(p);
@@ -53,6 +52,31 @@ $(function(){
 	});
 });
 
+$(function(){
+	$(".timeRemoveBtn").hide();
+	
+	$(".timeAddBtn").click(function(){
+		$(".timeRemoveBtn").show();
+		
+		var p=$(this).parent().parent().parent().parent().parent().find(".timeCastTable").find("tr:first").clone();
+		$(p).find("input").each(function(){
+			$(this).val("");
+		});
+		$(this).parent().parent().parent().parent().parent().find(".timeCastTable").append(p);
+	});
+	
+	$("body").on("click", ".timeRemoveBtn", function(){
+		if($(".timeRemoveBtn").closest("tr").length<=1) {
+			return;
+		}
+		$(this).closest("tr").remove();
+		
+		if($(".timeRemoveBtn").closest("tr").length<=1) {
+            $(".timeRemoveBtn").hide();
+        } 
+	});
+});
+
 function sendOk(){
 	var f = document.scheduleAddForm;
 	var str;
@@ -64,12 +88,19 @@ function sendOk(){
         return;
     }
     
-    str = f.perfTime.value.trim();
-    if(!str) {
-        alert("시간을 입력하세요. ");
-        f.perfTime.focus();
-        return;
-    }
+    var b = true;
+    $("input[name=perfsTime]").each(function(index) {
+    	if(! $(this).val()) {
+			b = false;
+    	}
+    	if(! b) return false;
+    	
+    });
+	
+	if(! b) {
+		alert("시간을 선택하세요");
+		return;
+	}
     
     var b = true;
     $("select[name=actorsNum]").each(function(index) {
@@ -101,38 +132,44 @@ function sendOk(){
 								<div class="col-5 pe-0">
 									<input type="date" name="perfDate" id="form-perfDate" class="form-control" value="${dto.perfDate}">
 								</div>
-								<div class="col-4">
-									<input type="time" name="perfTime" id="form-perfTime" class="form-control" value="${dto.perfTime}">
-								</div>
 							</div>
 						</td>
 					</tr>
 				</table>
-				
-				<table class="table write-form mt-5">
-					<tr>
-						<td class="table-light col-sm-2" scope="row">출연진</td>
+				<div class="timeCast">
+					<table class="table write-form mt-5 timeCastTable">
+						<tr>
+							<td class="table-light col-sm-2" scope="row">공연시간 <br> 및 출연진</td>
+							<td>
+								<input type="time" name="perfsTime" id="form-perfTime" class="form-control" value="${dto.perfTime}">
+							</td>
+							<td class="cast" style="width: 30%;">
+								<p style="margin: 12px;">
+									<select name="actorsNum" class="selectField">
+										<option value="">:: 출연진 선택 ::</option>
+										<c:forEach var="vo" items="${actorList}">
+											<option value="${vo.actorNum}">${vo.actorName}</option>
+										</c:forEach>
+									</select>
+									<span class="castRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px; cursor: pointer"><i class="far fa-minus-square"></i></span>
+								</p>
+							</td>
+							<td>
+								<button type="button" class="boxTF btn timeRemoveBtn" style="text-align: center;">삭제</button>
+							</td>
+							<td>
+								<button type="button" class="boxTF btn castAddBtn" style="text-align: center;">출연진 추가</button>
+							</td>
+						</tr>
 						
-						<td class="cast" style="width: 70%;">
-							<p style="margin: 12px;">
-								<select name="actorsNum" class="selectField">
-									<option value="">:: 출연진 선택 ::</option>
-									<c:forEach var="dto" items="${actorList}">
-										<option value="${dto.actorNum}">${dto.actorName}</option>
-									</c:forEach>
-								</select>
-								<span class="castRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
-							</p>
-						</td>
-						<td>
-							<button type="button" class="boxTF btn castAddBtn" style="text-align: center;">추가</button>
-						</td>
-					</tr>
-				</table>
+						
+					</table>
+				</div>
 				<table class="table table-borderless">
  					<tr>
 						<td class="text-center">
 							<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
+							<button type="button" class="btn btn-light timeAddBtn">공연시간추가</button>
 							<button type="reset" class="btn btn-light">다시입력</button>
 							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfList';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 							<input type="hidden" name="perfNum" value="${perfNum}">

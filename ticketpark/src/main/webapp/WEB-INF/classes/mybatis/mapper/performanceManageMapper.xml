@@ -7,10 +7,6 @@
 		SELECT performance_seq.NEXTVAL FROM dual
 	</select>
 	
-	<select id="scheduleSeq" resultType="Integer">
-		SELECT schedule_seq.NEXTVAL FROM dual
-	</select>
-	
 	<select id="ptSeq" resultType="Integer">
 		SELECT performanceTime_seq.NEXTVAL FROM dual
 	</select>
@@ -88,14 +84,14 @@
 	
 	<!-- 공연날짜등록 -->
 	<insert id="insertperfDate" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		INSERT INTO schedule (sdNum, perf_date, perfNum)
-		VALUES (#{sdNum}, #{perfDate}, #{perfNum})
+		INSERT INTO schedule (perf_date, perfNum2)
+		VALUES (#{perfDate}, #{perfNum})
 	</insert>
 	
 	<!-- 공연시간등록 -->
 	<insert id="insertperfTime" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		INSERT INTO performanceTime (ptNum, sdNum, performanceTime)
-		VALUES (#{ptNum}, #{sdNum}, #{perfTime})
+		INSERT INTO performanceTime (ptNum, performanceTime, perf_Date, perfNum2)
+		VALUES (#{ptNum}, #{perfTime}, #{perfDate}, #{perfNum})
 	</insert>
 	
 	<!-- 출연진 등록 -->
@@ -118,9 +114,9 @@
 	
 	<!-- 공연 정보 -->
 	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		 SELECT p.perfNum, subject, po.saveFilename postFileName,
-	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
-	        hallName, genre, category, time, rate, th.name as theater, p.content, rating, price, actorName
+		 SELECT p.perfNum, subject, po.saveFilename postFileName, rating, price,  r.rnum rateNum, g.gnum genreNum,
+	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, hNum hallNum, p.time showTime,
+	        hallName, genre, category, time, rate, th.name as theater, p.content, actorName, c.cNum categoryNum, th.tnum theaterNum
 	    FROM performance p, theater th, hall h, genre g, poster po, category c, rate r, 
             (SELECT p.perfNum, LISTAGG(a.name,',') WITHIN GROUP(ORDER BY a.name) AS actorName
             FROM performance p, actor a
@@ -132,29 +128,30 @@
 	
 	<!-- 공연 날짜 -->
 	<select id="listSchedule" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		SELECT sdNum, TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY"년 "MM"월" DD"일" DAY') perfDate
+		SELECT TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY"년 "MM"월" DD"일" DAY') perfDateDay, perf_date perfDate
 		FROM schedule
+		WHERE perfNum2 = #{perfNum}
+	</select>
+	
+	<!-- 출연진 -->
+	<select id="listActor" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT actorNum, perfNum, name actorName, roleName, imageFileName actorFileName
+		FROM actor
 		WHERE perfNum = #{perfNum}
 	</select>
 	
 	<!-- 공연 시간 -->
 	<select id="listTime" parameterType="map" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		SELECT sdNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
+		SELECT performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
 		FROM cast c, actor a, performanceTime pt
-		WHERE a.actorNum = c.actorNum AND c.ptNum = pt.ptNum and pt.sdNum = #{sdNum}
-		GROUP BY performanceTime, sdNum
+		WHERE a.actorNum = c.actorNum AND c.ptNum = pt.ptNum and pt.perf_Date = #{perfDate} and pt.perfNum2 = #{perfNum}
+		GROUP BY performanceTime
 	</select>
 	
 	<!-- 카테고리 -->
 	<select id="listCategory" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
 		SELECT cNum categoryNum, category
 		FROM category
-	</select>
-	
-	<select id="listActor" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		SELECT actorNum, name actorName
-		FROM actor
-		WHERE perfNum = ${perfNum}
 	</select>
 	
 	<select id="listGenre" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
@@ -178,5 +175,12 @@
 		FROM theater
 		WHERE hallNo = #{hallNum}
 	</select>
+	
+	<!-- 공연 수정 -->
+	<update id="updatePerformance" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		UPDATE performance SET subject=#{subject}, content=#{content}, gmNum=#{gmNum}, tNum=#{tNum}, rNum=#{rNum}, 
+			rating=#{rating}, price=#{price}, time=#{showTime}, startDate = #{startDate}, endDate = #{endDate}
+		WHERE perfNum = #{perfNum}
+	</update>
 
 </mapper>

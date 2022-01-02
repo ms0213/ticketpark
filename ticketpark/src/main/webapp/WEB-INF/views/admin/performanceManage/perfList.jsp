@@ -74,7 +74,7 @@ function detailedPerformance(perfNum) {
 		  modal: true,
 		  buttons: {
 		       " 수정 " : function() {
-		    	   updateOk(); 
+		    	  location.href = "${pageContext.request.contextPath}/admin/performanceManage/update?perfNum=" + perfNum;
 		       },
 		       " 삭제 " : function() {
 		    	   deleteOk(perfNum);
@@ -113,9 +113,12 @@ function scheduleDetailView() {
 	});
 }
 
+function updateOk(perfNum) {
+	
+}
 
-function deleteOk(userId) {
-	if(confirm("선택한 계정을 삭제 하시겠습니까 ?")) {
+function deleteOk(perfNum) {
+	if(confirm("선택한 공연을 삭제 하시겠습니까 ?")) {
 
 	}
 	

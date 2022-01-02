@@ -128,7 +128,7 @@ public class PerformanceManageController {
 		
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
-		List<PerformanceManage> groupList = service.listCategory();
+		List<PerformanceManage> categoryList = service.listCategory();
 		List<PerformanceManage> rateList = service.listRate();
 		List<PerformanceManage> hallList = service.listHall();
 		
@@ -137,7 +137,7 @@ public class PerformanceManageController {
 		}
 
 		model.addAttribute("mode", "perfAdd");
-		model.addAttribute("groupList", groupList);
+		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("rateList", rateList);
 		model.addAttribute("hallList", hallList);
 		
@@ -214,11 +214,13 @@ public class PerformanceManageController {
 	
 	@GetMapping(value = "time")
 	@ResponseBody
-	public Map<String, Object> timeList(PerformanceManage dto,
-			@RequestParam int sdNum) throws Exception {
+	public Map<String, Object> timeList(
+			@RequestParam String perfDate,
+			@RequestParam int perfNum) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("sdNum", sdNum);
+		map.put("perfDate", perfDate);
+		map.put("perfNum", perfNum);
 		
 		List<PerformanceManage> timeList = service.listTime(map);
 		
@@ -259,9 +261,64 @@ public class PerformanceManageController {
 
 		try {
 			service.insertPerfDate(dto);
+			
 		} catch (Exception e) {
 		}
 
+		return "redirect:/admin/performanceManage/perfList";
+	}
+	
+	@RequestMapping(value = "update", method = RequestMethod.GET)
+	public String updateForm(@RequestParam int perfNum,
+			HttpSession session,
+			Model model) throws Exception {
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		PerformanceManage dto = service.readPerformance(perfNum);
+		
+		if(dto == null) {
+			return "redirect:/admin/performanceManage/perfList";
+		}
+		
+		List<PerformanceManage> categoryList = service.listCategory();
+		List<PerformanceManage> rateList = service.listRate();
+		List<PerformanceManage> hallList = service.listHall();
+		List<PerformanceManage> actorList = service.listActor(perfNum);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("categoryNum", dto.getCategoryNum());
+		List<PerformanceManage> genreList = service.listGenre(map);
+		
+		map.put("hallNum", dto.getHallNum());
+		List<PerformanceManage> theaterList = service.listTheater(map);
+		
+		if (info.getMembership() < 51) {
+			return "redirect:/admin/performanceManage/perfList";
+		}
+
+		model.addAttribute("mode", "update");
+		model.addAttribute("dto", dto);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("rateList", rateList);
+		model.addAttribute("hallList", hallList);
+		model.addAttribute("actorList", actorList);
+		model.addAttribute("genreList", genreList);
+		model.addAttribute("theaterList", theaterList);
+		
+		return ".admin.performanceManage.perfAdd";
+	}
+	
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	public String updateSubmit(PerformanceManage dto) throws Exception {
+		
+
+		try {
+			service.updatePerformance(dto);
+		} catch (Exception e) {
+
+		}
 		return "redirect:/admin/performanceManage/perfList";
 	}
 	

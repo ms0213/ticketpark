@@ -212,8 +212,6 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	
 	@Override
 	public void insertPerfDate(PerformanceManage dto) throws Exception {
-		int seq = dao.selectOne("performanceManage.scheduleSeq");
-		dto.setSdNum(seq);
 		
 		try {
 			dao.insertData("performanceManage.insertperfDate", dto);
@@ -221,8 +219,10 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 			e.printStackTrace();
 			throw e;
 		}
-		
-		insertPerfTime(dto);
+		for(int i = 0; i < dto.getPerfsTime().size(); i++) {
+			dto.setPerfTime(dto.getPerfsTime().get(i));
+			insertPerfTime(dto);
+		}
 	}
 	
 	@Override
@@ -252,5 +252,25 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 			throw e;
 		}
 		
+	}
+	
+	@Override
+	public void updatePerformance(PerformanceManage dto) throws Exception {
+		try {
+			dao.updateData("performanceManage.updatePerformance", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
+	public void updateActor(PerformanceManage dto) throws Exception {
+		try {
+			dao.updateData("performanceManage.updateActor", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

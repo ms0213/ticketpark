@@ -32,22 +32,6 @@
     font-family: "맑은 고딕", 나눔고딕, 돋움, sans-serif;
     vertical-align: baseline;
 }
-.img-box {
-	max-width: 600px;
-
-	box-sizing: border-box;
-	display: flex; /* 자손요소를 flexbox로 변경 */
-	flex-direction: row; /* 정방향 수평나열 */
-	flex-wrap: nowrap;
-	overflow-x: auto;
-}
-
-.img-box img {
-	width: 65px; height: 65px;
-	margin-right: 5px;
-	flex: 0 0 auto;
-	cursor: pointer;
-}
 
 .body-container {
 	margin: 0 auto 10px;
@@ -328,6 +312,7 @@ $(function(){
 
 $(function() {
 	var actorImg = "${dto.actorFileName}";
+	
 	if( actorImg ) {
 		actorImg = "${pageContext.request.contextPath}/uploads/performance/" + actorImg;
 		$(".write-form .actor-img").empty();
@@ -370,7 +355,12 @@ $(function() {
 $(function(){
 	$(".actorRemoveBtn").hide();
 	
+	if($(".actorRemoveBtn").closest("p").length > 1) {
+        $(".actorRemoveBtn").show();
+    }
+	
 	$(".actorAddBtn").click(function(){
+		
 		$(".actorRemoveBtn").show();
 		
 		var p=$(this).parent().parent().find("p:first").clone();
@@ -468,14 +458,17 @@ $(function(){
 								<div class="col-sm-3 pe-1">
 									<select name="categoryNum" class="selectField">
 										<option value="">:: 카테고리 선택 ::</option>
-										<c:forEach var="vo" items="${groupList}">
-											<option value="${vo.categoryNum}">${vo.category}</option>
+										<c:forEach var="vo" items="${categoryList}">
+											<option value="${vo.categoryNum}" ${dto.categoryNum==vo.categoryNum? "selected='selected'":""}>${vo.category}</option>
 										</c:forEach>
 									</select>
 								</div>
 								<div class="col-sm-3 ps-1">
 									<select name="genreNum" class="selectField">
 										<option value="">:: 장르 선택 ::</option>
+										<c:forEach var="vo" items="${genreList}">
+											<option value="${vo.genreNum}" ${dto.genreNum==vo.genreNum? "selected='selected'":""}>${vo.genre}</option>
+										</c:forEach>
 									</select>
 								</div>
 							</div>
@@ -505,13 +498,16 @@ $(function(){
 									<select name="hallNum" class="selectField">
 										<option value="">:: 공연장 선택 ::</option>
 										<c:forEach var="vo" items="${hallList}">
-											<option value="${vo.hallNum}">${vo.hallName}</option>
+											<option value="${vo.hallNum}" ${dto.hallNum==vo.hallNum?"selected='selected'":""}>${vo.hallName}</option>
 										</c:forEach>
 									</select>
 								</div>
 								<div class="col-sm-3 ps-1">
 									<select name="theaterNum" class="selectField">
 										<option value="">:: 상영관 선택 ::</option>
+										<c:forEach var="vo" items="${theaterList}">
+											<option value="${vo.theaterNum}" ${dto.theaterNum==vo.theaterNum? "selected='selected'":""}>${vo.theater}</option>
+										</c:forEach>
 									</select>
 								</div>
 							</div>
@@ -526,7 +522,7 @@ $(function(){
 									<select name="rateNum" class="selectField">
 										<option value="">:: 관람연령 선택 ::</option>
 										<c:forEach var="vo" items="${rateList}">
-											<option value="${vo.rateNum}">${vo.rate}</option>
+											<option value="${vo.rateNum}" ${dto.rateNum==vo.rateNum? "selected='selected'":""}>${vo.rate}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -540,19 +536,34 @@ $(function(){
 						</td>
 					</tr>
 				</table>
-				
 				<table class="table write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">출연진 정보</td>
 						<td class="actor" style="width: 70%;">
-							<p style="margin: 12px;">
-								<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${dto.actorName}">
-								<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${dto.roleName}">
-								<img class="actor-img">
-								<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control">
-								
-								<span class="actorRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
-							</p>
+							<c:choose>
+								<c:when test="${mode == 'perfAdd'}">
+									<p style="margin: 12px;">
+										<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${vo.actorName}">
+										<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${vo.roleName}">
+										<img class="actor-img">
+										<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control">
+										
+										<span class="actorRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
+									</p>
+								</c:when>
+								<c:when test="${mode == 'update'}">
+									<c:forEach var="vo" items="${actorList}">
+										<p style="margin: 12px;">
+											<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${vo.actorName}">
+											<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${vo.roleName}">
+											
+											<img class="actor-img" style="background-image: url('${pageContext.request.contextPath}/uploads/performance/${vo.actorFileName}');">
+											<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control">
+											<span class="actorRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
+										</p>
+									</c:forEach>
+								</c:when>
+							</c:choose>
 						</td>
 						
 						<td>
@@ -589,7 +600,6 @@ $(function(){
 								<input type="hidden" name="perfNum" value="${dto.perfNum}">
 								<input type="hidden" name="postFileName" value="${dto.postFileName}">
 								<input type="hidden" name="actorFileName" value="${dto.actorFileName}">
-								<input type="hidden" name="page" value="${page}">
 							</c:if>
 						</td>
 					</tr>

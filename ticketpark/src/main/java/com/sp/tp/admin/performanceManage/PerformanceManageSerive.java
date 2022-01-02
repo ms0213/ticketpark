@@ -23,4 +23,6 @@ public interface PerformanceManageSerive {
 	public void insertPerfDate(PerformanceManage dto) throws Exception;
 	public void insertPerfTime(PerformanceManage dto) throws Exception;
 	public void insertCast(PerformanceManage dto) throws Exception;
+	public void updatePerformance(PerformanceManage dto) throws Exception;
+	public void updateActor(PerformanceManage dto) throws Exception;
 }

@@ -17,6 +17,7 @@ public class PerformanceManage {
 	
 	private int sdNum;
 	private String perfDate;
+	private String perfDateDay;
 	private String perfTime;
 	private List<String> perfsDate;
 	private List<String> perfsTime;
@@ -53,8 +54,12 @@ public class PerformanceManage {
 	
 	private int ptNum;
 	
-	
-	
+	public String getPerfDateDay() {
+		return perfDateDay;
+	}
+	public void setPerfDateDay(String perfDateDay) {
+		this.perfDateDay = perfDateDay;
+	}
 	public List<Integer> getActorsNum() {
 		return actorsNum;
 	}
