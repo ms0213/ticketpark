@@ -340,7 +340,7 @@ $(function(){
 				<table class="table reply-form">
 					<tr>
 						<td style="border-bottom: none;">
-							<textarea class='boxTA' name="content" style="width: 700px; min-height: 100px;"></textarea>
+							<textarea class='form-control' name="content"></textarea>
 						</td>
 					</tr>
 					<tr>

@@ -15,9 +15,6 @@
 						<span class='deleteReplyAnswer' data-replyNum='${vo.replyNum}' data-answer='${vo.answer}'>삭제</span>
 					
 					</c:when>
-					<c:otherwise>
-						<span class='notifyReply'>신고</span>
-					</c:otherwise>
 				</c:choose>
 			</div>
 		</div>

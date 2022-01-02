@@ -46,7 +46,7 @@
       					</div>
       					<c:if test="${sessionScope.member.membership>50}">
 							<div class="row py-1">
-								<div class="col text-end">
+								<div class="col text-end" align="right">
 								<a href="#" onclick="javascript:location.href='${pageContext.request.contextPath}/faq/update?num=${dto.num}&pageNo=${pageNo}';">수정</a>&nbsp;|
 								<a href="#" onclick="deleteFaq('${dto.num}', '${pageNo}');">삭제</a>
 							</div>

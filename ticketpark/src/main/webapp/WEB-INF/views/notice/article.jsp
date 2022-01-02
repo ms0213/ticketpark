@@ -15,7 +15,7 @@
 	<thead>
 		<tr>
 			<td colspan="2" align="center">
-				${dto.subject}
+				<h3>${dto.subject}</h3>
 			</td>
 		</tr>
 	</thead>

@@ -45,9 +45,6 @@
 					<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.membership > 50 }">
 						<span class='deleteReply' data-replyNum='${vo.replyNum}' data-pageNo='${pageNo}'>삭제</span>
 					</c:when>
-					<c:otherwise>
-						<span class='notifyReply'>신고</span>
-					</c:otherwise>
 				</c:choose>
 			</td>
 		</tr>

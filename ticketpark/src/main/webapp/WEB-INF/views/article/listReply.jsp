@@ -3,6 +3,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style type="text/css">
+.reply-answer {
+	display: none;
+}
+
+.deleteReply, .deleteReplyAnswer {
+	cursor: pointer;
+}
+
+
+</style>
+
 
 <div class='reply-info'>
 	<span class='reply-count'>댓글 ${replyCount}개</span>
@@ -42,9 +54,10 @@
 	            <div id='listReplyAnswer${vo.replyNum}' class='answer-list'></div>
 	            <div class="answer-form">
 	                <div class='answer-left'>└</div>
-	                <div class='answer-right'><textarea class='boxTA' style="width: 500px; min-height: 70px;"></textarea></div>
+	                <div class='answer-right'><textarea class='form-control'></textarea></div>
 	            </div>
-	             <div class='answer-footer'>
+	            <br>
+	             <div class='answer-footer' align='right'>
 	                <button type='button' class='btn btn-outline-secondary fh rhclrh btnSendReplyAnswer' data-replyNum='${vo.replyNum}'>답글 등록</button>
 	            </div>
 			</td>

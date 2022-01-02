@@ -52,7 +52,7 @@
 
 	<select id="readSchedule" parameterType="Integer" resultType="com.sp.tp.sch.Schedule">
 		SELECT num, subject, sday, eday, stime, etime, c.categoryNum, category,
-			color, repeat, repeat_cycle, memo, reg_date 
+			color, repeat, repeat_cycle, memo, TO_CHAR(c.reg_date, 'YYYY-MM-DD') reg_date 
 		FROM calendar c
 		LEFT OUTER JOIN calendarCategory cc ON c.categoryNum = cc.categoryNum
 		WHERE num = #{num}

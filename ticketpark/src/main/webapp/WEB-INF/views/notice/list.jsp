@@ -13,6 +13,10 @@
     background-color: #AAFFA3!important;
 }
 
+.badge {
+    font-size: 90%;
+}
+
 </style>
 
 <div class="row board-list-header">
