@@ -7,16 +7,18 @@
 	<select id="bookRank" resultType="com.sp.tp.rank.Rank">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT b2.ptNum, COUNT(*), p.subject, p.perfNum,
-		            p.rating, po.saveFileName postFilename,
-		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
-		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.hallName
-		        FROM book2 b2, book b, performanceTime pt, poster po,
-		            schedule s, performance p, theater th, hall h
-		        WHERE b2.bNum = b.bNum AND b2.ptNum=pt.ptNum 
-		            AND s.perfNum2=pt.perfNum2 AND s.perfNum2=p.perfNum
-		            AND po.perfNum=p.perfNum AND th.tnum=p.tnum AND h.hnum=th.hallno
-		        GROUP BY b2.ptnum, p.subject, p.perfNum, p.rating, po.saveFileName, startDate, endDate, h.hallName
+		        SELECT b2.ptNum, COUNT(*), subject, rating, 
+		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate,
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
+		            po.saveFilename postFilename, h.hallName, p.perfNum
+		        FROM book2 b2, performanceTime pt, schedule s, performance p, poster po, hall h
+		        WHERE b2.ptNum=pt.ptNum AND pt.perf_date=s.perf_date 
+		            AND s.perfNum2=p.perfNum AND po.perfNum=p.perfNum
+		            AND s.hNum=h.hNum
+		        GROUP BY b2.ptNum, subject, rating, 
+		            TO_CHAR(startDate, 'YYYY-MM-DD'),
+		            TO_CHAR(endDate, 'YYYY-MM-DD'), 
+		            po.saveFilename, h.hallName, p.perfNum
 		        ORDER BY COUNT(*) DESC
 			) tb WHERE ROWNUM &lt;= 10
 		) WHERE rnum &gt;= 1
@@ -26,12 +28,13 @@
 	<select id="ratingRank" resultType="com.sp.tp.rank.Rank">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT subject, rating, p.perfNum, po.saveFilename postFilename,
-		        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
-		        TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.hallName
-		        FROM performance p, poster po, theater th, hall h
-		        WHERE po.perfNum=p.perfNum AND th.tnum=p.tnum AND h.hnum=th.hallno
-        ORDER BY rating DESC
+		        SELECT rating, subject, p.perfNum, TO_CHAR(startDate, 'YYYY-MM-DD') startDate,
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.hallName, po.saveFilename postFilename
+		        FROM performance p, schedule s, hall h, poster po
+		        WHERE p.perfNum=s.perfNum2 AND h.hNum=s.hNum AND po.perfNum=p.perfNum
+		        GROUP BY p.perfNum,rating, subject, p.perfNum, TO_CHAR(startDate, 'YYYY-MM-DD'),
+		            TO_CHAR(endDate, 'YYYY-MM-DD'), h.hallName, po.saveFilename
+		        ORDER BY rating DESC
 			) tb WHERE ROWNUM &lt;= 10
 		)WHERE rnum &gt;= 1
 	</select>

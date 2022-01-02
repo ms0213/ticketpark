@@ -193,7 +193,7 @@ function sendOk(){
                                         <a class="nav-link" href="${pageContext.request.contextPath}/hall/list">공연장 정보</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">랭킹</a>
+                                        <a class="nav-link" href="${pageContext.request.contextPath}/rank/rank">랭킹</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="${pageContext.request.contextPath}/schedule/main">공연일정</a>

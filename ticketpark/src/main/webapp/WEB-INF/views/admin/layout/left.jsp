@@ -16,7 +16,7 @@
 						<li><a href="${pageContext.request.contextPath}/admin/hallManage/list"><i class="fas fa-map-marker-alt"></i>공연장 관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/theaterManage/main"><i class="fas fa-map-marker-alt"></i>상영관 관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/performanceManage/perfList"><i class="fas fa-video"></i>공연관리</a></li>
-						<li><a href=""><i class="fas fa-coins"></i>매출관리</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/saleManage/main"><i class="fas fa-coins"></i>매출관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/couponManage/list"><i class="fas fa-ticket-alt"></i>쿠폰관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/contactUs/list"><i class="fas fa-envelope"></i>Contact Us</a></li>
 					</ul>
