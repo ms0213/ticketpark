@@ -22,15 +22,23 @@
 $(function(){
 	var url = "${pageContext.request.contextPath}/admin/saleManage/monthSale"
 	$.getJSON(url, function(data){
+		console.log(data);
 		var monthCount=[];
 		var monthTotal=[];
+		var month=[];
 		for(var idx = 0; idx < data.monthSale.length; idx++) {
 			var a=[];
 			var b=[];
+			var c=[];
+			
 			a.push(data.monthSale[idx].monthCount);
 			b.push(data.monthSale[idx].total);
+			c.push(data.monthSale[idx].month);
+			
 			monthCount.push(a);
 			monthTotal.push(b);
+			month.push(c);
+			console.log(c);
 		}
 		Highcharts.chart('barContainer', {
 		    chart: {
@@ -40,8 +48,7 @@ $(function(){
 		        text: '월별 매출 현황'
 		    },
 		    xAxis: [{
-		        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-		            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		        categories: month,
 		        crosshair: true
 		    }],
 		    yAxis: [{ // Primary yAxis
@@ -251,10 +258,10 @@ $(function(){
 
 </script>
 
-<div class="container">
+
 	<div class="body-container">
 		<div class="body-title">
-			<h3> 제목  </h3>
+			<h2> 매출관리  </h2>
 		</div>
 		
 		<div class="box-container" style="margin-top: 15px;">
@@ -267,4 +274,3 @@ $(function(){
 
 		</div>
 	</div>
-</div>

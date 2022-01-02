@@ -4,6 +4,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style>
+.star-ratings {
+  color: #aaa9a9; 
+  position: relative;
+  unicode-bidi: bidi-override;
+  width: max-content;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #2b2a29;
+}
+ 
+.star-ratings-fill {
+  color: #fff58c;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-text-fill-color: gold;
+}
+
+.star-ratings .icofont-star {font-size: 1.5rem;}
+
+.star-ratings-base {
+  z-index: 0;
+  padding: 0;
+}
+
 .click {
 	cursor: pointer;
 }
@@ -23,16 +52,15 @@
 .nav-link {
 	font-size: 18px;
 }
-.nav-item {
-	width: 120px;
-	text-align: center;
+.table td {
+	vertical-align: middle;
 }
 </style>
 
 <div class="container">
 	<div class="body-container">
 		<div class="body-title">
-			<h3><i class="bi bi-trophy-fill"></i> 랭킹 </h3>
+			<h3> 랭킹 </h3>
 		</div>
 		
 		<div class="body-main">
@@ -40,10 +68,10 @@
                 <div class="col-lg-12">
                     <div class="booking_menu">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
+                            <li class="nav-item" style="width: 120px; text-align: center;">
                             <a class="nav-link active" id="book-tab" data-toggle="tab" href="#book" role="tab" aria-controls="book" aria-selected="true">예매랭킹</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" style="width: 120px; text-align: center;">
                             <a class="nav-link" id="rating-tab" data-toggle="tab" href="#rating" role="tab" aria-controls="rating" aria-selected="false">평점랭킹</a>
                             </li>
                         </ul>
@@ -60,13 +88,11 @@
 											<td style="min-width: 300px; text-align: center;">공연명</td>
 											<td style="text-align: center;">공연기간</td>
 											<td style="text-align: center;">공연장</td>
-											<td>평점</td>
+											<td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;평점</td>
 										</tr>
 										<c:forEach var="vo" items="${bookRank}">
 											<tr class="click" onclick="location.href='${articleUrl}&perfNum=${vo.perfNum}&category=all'">
 											<td>
-											<br>
-											<br>
 												${vo.rnum}
 											</td>
 											<td>
@@ -75,19 +101,20 @@
 												${vo.subject}
 											</td>
 											<td style="text-align: center;">
-											<br>
-											<br>
 												${vo.startDate} ~ ${vo.endDate}
 											</td>
 											<td style="text-align: center;">
-											<br>
-											<br>
 												${vo.hallName}
 											</td>
-											<td style="text-align: center;">
-											<br>
-											<br>
-												${vo.rating}
+											<td style="align-content: center;">
+												<div class="star-ratings mb-3 ml-3" style="float: left; text-align: center;">
+													<div class="star-ratings-fill space-x-2 text-lg" style=" width: ${vo.rating*20}% ">
+														<span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span>
+													</div>
+													<div class="star-ratings-base space-x-2 text-lg">
+														<span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span>
+													</div>
+												</div>
 											</td>
 											</tr>
 										</c:forEach>
@@ -102,13 +129,11 @@
 											<td style="min-width: 300px; text-align: center;">공연명</td>
 											<td style="text-align: center;">공연기간</td>
 											<td style="text-align: center;">공연장</td>
-											<td>평점</td>
+											<td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;평점</td>
 										</tr>
 										<c:forEach var="vo" items="${ratingRank}">
 											<tr class="click" onclick="location.href='${articleUrl}&perfNum=${vo.perfNum}&category=all'">
 											<td>
-											<br>
-											<br>
 												${vo.rnum}
 											</td>
 											<td>
@@ -117,19 +142,20 @@
 												${vo.subject}
 											</td>
 											<td style="text-align: center;">
-											<br>
-											<br>
 												${vo.startDate} ~ ${vo.endDate}
 											</td>
 											<td style="text-align: center;">
-											<br>
-											<br>
 												${vo.hallName}
 											</td>
 											<td style="text-align: center;">
-											<br>
-											<br>
-												${vo.rating}
+												<div class="star-ratings mb-3 ml-3" style="float: left;">
+													<div class="star-ratings-fill space-x-2 text-lg" style=" width: ${vo.rating*20}% ">
+														<span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span>
+													</div>
+													<div class="star-ratings-base space-x-2 text-lg">
+														<span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span>
+													</div>
+												</div>
 											</td>
 											</tr>
 										</c:forEach>

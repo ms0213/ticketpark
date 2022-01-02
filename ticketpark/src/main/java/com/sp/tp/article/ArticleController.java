@@ -46,7 +46,7 @@ public class ArticleController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		String cp = req.getContextPath();
 		
-		int rows = 10;
+		int rows = 6;
 		int total_page;
 		int dataCount;
 		
