@@ -174,27 +174,24 @@ public class HallManageController {
 		return "redirect:/admin/hallManage/list?page="+page;
 	}
 	
-	@RequestMapping(value = "delete", method = RequestMethod.GET)
-	public String deleteHall(
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteHall(
 			@RequestParam int hNum,
-			@RequestParam String page,
 			HttpSession session
 			) throws Exception {
-		
+		String state = "false";
 		String root = session.getServletContext().getRealPath("/");
 		String pathname = root+"uploads"+File.separator+"hall";
 		
-		Hall dto = service.readHall(hNum);
-		if(dto == null) {
-			return "redirect:/admin/hallManage/list?page="+page;
-		}
-		
 		try {
 			service.deletHall(hNum, pathname);
+			state = "true";
 		} catch (Exception e) {
 		}
-		
-		return "redirect:/admin/hallManage/list?page="+page;
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
 	}
 	
 	@RequestMapping(value = "deleteFile", method = RequestMethod.POST)

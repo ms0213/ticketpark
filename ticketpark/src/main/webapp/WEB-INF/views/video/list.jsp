@@ -118,7 +118,7 @@ $(function() {
 								<iframe src="${dto.link}">지원X</iframe>
 								<div class="card-body" onclick="location.href='${dto.link}'">
 									<h5 class="card-title">${dto.subject}</h5>
-									<p class="card-text">${dto.content}</p>
+									<p class="card-text text-truncate">${dto.content}</p>
 								</div>
 							</div>
 				 		</div>

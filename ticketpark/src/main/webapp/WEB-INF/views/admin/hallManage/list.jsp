@@ -13,14 +13,45 @@ img{width: 100px;}
 </style>
 
 <script type="text/javascript">
-function deleteOk(hNum) {
-
-    if(confirm("공연장을 삭제하시겠습니까 ? ")) {
-		var query = "hNum="+hNum+"&page=${page}";
-	    var url = "${pageContext.request.contextPath}/admin/hallManage/delete?" + query;
-  	  location.href=url;
-    }
+function ajaxFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		data:query,
+		dataType:dataType,
+		success:function(data) {
+			fn(data);
+		},
+		beforeSend:function(jqXHR) {
+		},
+		error:function(jqXHR) {
+			console.log(jqXHR.responseText);
+		}
+	});
 }
+
+$(function() {
+	$("body").on("click", ".btnDelete", function() {
+		if(! confirm("공연장을 삭제하시겠습니까?")){
+			return false;
+		}
+		var hNum = $(this).attr("data-hNum");
+		var query = "hNum="+hNum;
+	    var url = "${pageContext.request.contextPath}/admin/hallManage/delete?" + query;
+		
+		var fn = function(data) {
+			var state = data.state;
+			if(data.state==="false"){
+				alert("삭제에 실패했습니다");
+				return false;
+			}
+			url="${pageContext.request.contextPath}/admin/hallManage/list?page="+${page};
+			location.reload();
+		};
+		ajaxFun(url, "post", query, "json", fn);
+		
+	});
+});
 </script>
 
 <div class="body-container">
@@ -59,7 +90,7 @@ function deleteOk(hNum) {
 							<td>${dto.tel}</td>
 							<td><button type="button" class="btn btn-outline-secondary"
 								onclick="location.href='${pageContext.request.contextPath}/admin/hallManage/update?hNum=${dto.hNum}&page=${page}';">수정</button>
-								<button type="button" class="btn btn-outline-secondary" onclick="deleteOk(${dto.hNum});">삭제</button>
+								<button type="button" class="btn btn-outline-secondary  btnDelete" data-hNum="${dto.hNum}">삭제</button>
 								</td>
 						</tr>
 						</c:forEach>

@@ -105,12 +105,12 @@ public class HallManageServiceImpl implements HallManageService{
 	@Override
 	public void deletHall(int hNum, String pathname) throws Exception {
 		try {
-			List<Hall> listFile = listFile(hNum);
-			if(listFile != null) {
-				for(Hall dto : listFile) {
-					fileManager.doFileDelete(dto.getSaveFilename(), pathname);
-				}
-			}
+//			List<Hall> listFile = listFile(hNum);
+//			if(listFile != null) {
+//				for(Hall dto : listFile) {
+//					fileManager.doFileDelete(dto.getSaveFilename(), pathname);
+//				}
+//			}
 			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("field", "hNum");
