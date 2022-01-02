@@ -40,16 +40,6 @@
 .hall-img{width: 300px;}
 </style>
 
-<script type="text/javascript">
-function deleteOk() {
-
-    if(confirm("공연장을 삭제하시겠습니까 ? ")) {
-		var query = "hNum=${dto.hNum}&${query}";
-	    var url = "${pageContext.request.contextPath}/hall/delete?" + query;
-  	  location.href=url;
-    }
-}
-</script>
 
 <div class="container">
 	<div class="body-container">
@@ -115,22 +105,6 @@ function deleteOk() {
 
 		<table class="table table-borderless">
 			<tr>
-				<td width="50%"><c:choose>
-						<c:when test="${sessionScope.member.membership>50}">
-							<button type="button" class="btn btn-outline-secondary"
-								onclick="location.href='${pageContext.request.contextPath}/hall/update?hNum=${dto.hNum}&page=${page}';">수정</button>
-						</c:when>
-						<c:otherwise>
-							<button type="button" class="btn btn-outline-secondary" hidden="hidden">수정</button>
-						</c:otherwise>
-					</c:choose> <c:choose>
-						<c:when test="${sessionScope.member.membership>50}">
-							<button type="button" class="btn btn-outline-secondary" onclick="deleteOk();">삭제</button>
-						</c:when>
-						<c:otherwise>
-							<button type="button" class="btn btn-outline-secondary" hidden="hidden">삭제</button>
-						</c:otherwise>
-					</c:choose></td>
 				<td class="text-right">
 					<button type="button" class="btn btn-outline-secondary"
 						onclick="location.href='${pageContext.request.contextPath}/hall/list?${query}';">리스트</button>

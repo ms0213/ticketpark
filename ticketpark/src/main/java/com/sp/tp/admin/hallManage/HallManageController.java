@@ -171,7 +171,7 @@ public class HallManageController {
 			service.updateHall(dto, pathname);
 		} catch (Exception e) {
 		}
-		return "redirect:/admin/hallManage/article?hNum="+dto.gethNum()+"&page="+page;
+		return "redirect:/admin/hallManage/list?page="+page;
 	}
 	
 	@RequestMapping(value = "delete", method = RequestMethod.GET)

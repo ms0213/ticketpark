@@ -46,13 +46,6 @@
 				${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
 			</div>
 			
-			<div class="row board-list-footer mt-3 mb-3">
-				<div class="col text-right">
-					<c:if test="${sessionScope.member.membership>50}">
-						<button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/hall/write';">등록</button>
-					</c:if>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>

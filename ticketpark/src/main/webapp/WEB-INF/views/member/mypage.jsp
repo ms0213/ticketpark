@@ -320,33 +320,7 @@ $(function() {
         </button>
       </div>
       <div class="modal-body">
-        <table style="width: 100%; border-spacing: 1px; background: #ccc;">
-	        <thead>
-	        	<tr height="30" bgcolor="#eee" align="center">
-	        		<th>Poster</th>
-	        	</tr>
-				<tr height="30" bgcolor="#eee" align="center">
-					<th>공연장 이름</th>			
-				</tr>
-				<tr height="30" bgcolor="#eee" align="center">
-					<th>상영관 이름</th>
-				</tr>
-				<tr height="30" bgcolor="#eee" align="center">
-					<th>상영관 위치</th>
-				</tr>
-				<tr height="30" bgcolor="#eee" align="center">
-					<th>공연 이름</th>
-				</tr>
-				<tr height="30" bgcolor="#eee" align="center">
-					<th>공연 시간</th>
-				</tr>
-				<tr height="30" bgcolor="#eee" align="center">
-					<th>예약 좌석</th>
-				</tr>
-	        </thead>
-	        <tbody class="modal-list"></tbody>
-			
-		</table>
+	        <table class="modal-list"style="width: 100%; border-spacing: 1px; background: #ccc;"></table>
       </div>
     </div>
   </div>

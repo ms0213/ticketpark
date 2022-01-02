@@ -2,10 +2,6 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css1/owl.carousel.min.css">
-<script src="${pageContext.request.contextPath}/resources/js1/owl.carousel.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/tabs.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/board.css" type="text/css">
 <style type="text/css">
 .map {
 	width: 70%;

@@ -2,8 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/board.css" type="text/css">
 
 <style type="text/css">
 .img-grid {
@@ -34,6 +33,9 @@
 	flex: 0 0 auto;
 	cursor: pointer;
 }
+input{width: 100%;}
+textarea{width:100%; min-height: 300px;}
+.table td{line-height: 2rem;}
 </style>
 
 <script type="text/javascript">
@@ -189,13 +191,13 @@ $(function(){
 <div class="container">
 	<div class="body-container">
 		<div class="body-title">
-			<h3>공연장 등록</h3>
+			<h3>${mode=='update'?'공연장 수정':'공연장 등록'}</h3>
 		</div>
 		
 		<div class="body-main">
 			${mode=='update'?'공연장을 수정합니다.':'새로운 공연장을 등록합니다.'}
 			<form name="hallForm" method="post" enctype="multipart/form-data">
-				<table class="table write-form mt-5">
+				<table class="table table-border table-list write-form mt-5">
 					<tr>
 						<td class="table-light col-sm-2" scope="row">이 름</td>
 						<td colspan="3">
