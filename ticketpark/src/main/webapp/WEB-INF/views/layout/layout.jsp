@@ -118,7 +118,7 @@
 </script>
 <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
-		<div class="modal-content">
+		<div class="modal-content" style="width: 400px; margin: 0 auto;">
 			<div class="modal-header">
 				<h5 class="modal-title text-center">회원 로그인</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -115,30 +115,30 @@
     </delete>
     
     <select id="listMyBook" parameterType="String" resultType="com.sp.tp.member.MyBookList">
-    	SELECT TO_CHAR(bookDate, 'YYYY-MM-DD') bookDate, b.bNum, subject, perf_date, amount, state, TO_CHAR((TO_DATE(perf_date, 'YYYY-MM-DD') - 3), 'YYYY-MM-DD') cancel_date, LISTAGG(seat_num,',') WITHIN GROUP(ORDER BY seat_num) AS seat_num, t.name, t.location, h.hallName, h.hNum, po.saveFilename
+    	SELECT TO_CHAR(bookDate, 'YYYY-MM-DD') bookDate, b.bNum, subject, pt.perf_date, amount, state, TO_CHAR((TO_DATE(pt.perf_date, 'YYYY-MM-DD') - 3), 'YYYY-MM-DD') cancel_date, LISTAGG(seat_num,',') WITHIN GROUP(ORDER BY seat_num) AS seat_num, po.saveFilename, pt.perfNum2 perfNum, category
 		FROM book b
 		JOIN book2 bo ON bo.bNum = b.bNum
-		JOIN performanceTime pt ON pt.ptNum = b.ptNum
+		JOIN performanceTime pt ON pt.ptNum = bo.ptNum
 		JOIN schedule s ON s.perf_date = pt.perf_date
 		JOIN performance p ON p.perfNum = s.perfNum2
-		JOIN theater t ON p.tNum = t.tNum
-		JOIN hall h ON t.hallNo = h.hNum
 		JOIN poster po ON p.perfNum = po.perfNum
+        JOIN genre g ON g.gNum = p.gmNum
+        JOIN category c ON g.cNum = c.cNum
 		WHERE userId = #{userId} AND po.poster_main = 1
-		GROUP BY bookDate, b.bNum, subject, perf_date, amount, state, perf_date, t.name, t.location, h.hallName, h.hNum, po.saveFilename
+		GROUP BY bookDate, b.bNum, subject, pt.perf_date, amount, state, po.saveFilename, pt.perfNum2, category
     </select>
     
     <select id="openModal" parameterType="map" resultType="com.sp.tp.member.MyBookList">
-    	SELECT bookDate, b.bNum, subject, perf_date, amount, state, TO_CHAR((TO_DATE(perf_date, 'YYYY-MM-DD') - 3), 'YYYY-MM-DD') cancel_date, LISTAGG(seat_num,',') WITHIN GROUP(ORDER BY seat_num) AS seat_num, t.name, t.location, h.hallName, h.hNum, po.saveFilename
+    	SELECT bookDate, b.bNum, subject, performanceTime, pt.perf_date, amount, state, TO_CHAR((TO_DATE(pt.perf_date, 'YYYY-MM-DD') - 3), 'YYYY-MM-DD') cancel_date, LISTAGG(seat_num,',') WITHIN GROUP(ORDER BY seat_num) AS seat_num,  po.saveFilename, t.name, t.location, h.hallName, h.addr
 		FROM book b
 		JOIN book2 bo ON bo.bNum = b.bNum
-		JOIN performanceTime pt ON pt.ptNum = b.ptNum
+		JOIN performanceTime pt ON pt.ptNum = bo.ptNum
 		JOIN schedule s ON s.perf_date = pt.perf_date
 		JOIN performance p ON p.perfNum = s.perfNum2
-		JOIN theater t ON p.tNum = t.tNum
-		JOIN hall h ON t.hallNo = h.hNum
 		JOIN poster po ON p.perfNum = po.perfNum
+        JOIN hall h ON h.hNum = s.hNum
+        JOIN theater t ON t.tNum = pt.tNum
 		WHERE userId = #{userId} AND po.poster_main = 1 AND b.bNum = #{bNum}
-		GROUP BY bookDate, b.bNum, subject, perf_date, amount, state, perf_date, t.name, t.location, h.hallName, h.hNum, po.saveFilename
+		GROUP BY bookDate, b.bNum, subject, pt.perf_date, amount, state, po.saveFilename, t.name, t.location, h.hallName, h.addr, performanceTime
     </select>
 </mapper>

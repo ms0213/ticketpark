@@ -76,7 +76,7 @@ public class BookController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		dto.setUserId(info.getUserId());
-		dto.setSdNum(ptNum);
+		dto.setPtNum(ptNum);
 		dto.setSeat_price(seat_price);
 		try {
 			service.insertBook(dto);			

@@ -15,7 +15,22 @@ public class MyBookList {
 	private int hNum;
 	private String saveFilename;
 	private int perfNum;
+	private String category;
+	private String performanceTime;
 	
+	
+	public String getPerformanceTime() {
+		return performanceTime;
+	}
+	public void setPerformanceTime(String performanceTime) {
+		this.performanceTime = performanceTime;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public int getPerfNum() {
 		return perfNum;
 	}

@@ -240,7 +240,11 @@ window.onload=function(){
 };
 
 function bookOk() {
-	var url = "${pageContext.request.contextPath}/book/seatchoice";
+	var ptNum = $(".bcd").attr("data-ptNum");
+	var seat_price = ${dto.price};
+	var query = "?ptNum="+ptNum+"&seat_price="+ seat_price;
+	var url = "${pageContext.request.contextPath}/book/seatchoice" + query;
+	location.href = url;
 }
 
 </script>
@@ -320,7 +324,8 @@ $(function() {
 			$.each(data.listTime, function(index, item){
 				var perfTime = item.perfTime;
 				var actorName = item.actorName;
-				var s = "<div class='abc mb-2'><button type='button' class='btn btn-light time_btn' style='width:240px;'>"
+				var ptNum = item.ptNum;
+				var s = "<div class='abc mb-2' data-ptNum="+ptNum+"><button type='button' class='btn btn-light time_btn' style='width:240px;'>"
 						+ "<span class='time'>" + perfTime + "</span>"
 						+ "<p class='cast'>출연: " + actorName + "</p></button></div>";
 				$(".perfList").append(s);
