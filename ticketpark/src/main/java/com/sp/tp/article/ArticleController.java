@@ -135,9 +135,11 @@ public class ArticleController {
 			@RequestParam String page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
+			HttpSession session,
 			Model model
 			) throws Exception {
 		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		keyword = URLDecoder.decode(keyword, "utf-8");
 		String query = "page=" + page;
 		if (keyword.length() != 0) {
@@ -153,7 +155,13 @@ public class ArticleController {
 		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 		
 		List<Article> listFile = service.listFile(num);
+		Map<String, Object> map = new HashMap<String, Object>();
 		
+		map.put("userId", info.getUserId());
+		map.put("artiNum", num);
+		boolean userArticleLiked = service.userArticleLiked(map);
+		
+		model.addAttribute("userArticleLiked", userArticleLiked);
 		model.addAttribute("dto", dto);
 		model.addAttribute("listFile", listFile);
 		model.addAttribute("page", page);

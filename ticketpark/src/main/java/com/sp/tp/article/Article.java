@@ -22,7 +22,7 @@ public class Article {
 	private List<MultipartFile> selectFile;
 	
 	private int replyCount;
-	private int articleLikeCount;
+	private int articleLikeCount; 
 
 	public int getArticleLikeCount() {
 		return articleLikeCount;

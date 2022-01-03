@@ -68,6 +68,7 @@ $(function(){
 		var query="artiNum="+artiNum+"&userLiked="+userLiked;
 		
 		var fn = function(data){
+			console.log(data);
 			var state = data.state;
 			if(state==="true") {
 				if( userLiked ) {

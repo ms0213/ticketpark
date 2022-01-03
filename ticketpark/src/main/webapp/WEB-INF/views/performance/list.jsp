@@ -16,7 +16,7 @@ input[name=keyDate]::placeholder {
 
 
 input[name=keyDate] {
-	border-bottom: solid rgba(0,0,0,.42);
+	border-bottom: solid 1px;
 }
 
 
@@ -24,7 +24,7 @@ input[name=keyAddr] {
 	border-top: none;
 	border-left: none;
 	border-right: none;
-	border-bottom: solid rgba(0,0,0,.42);
+	border-bottom: solid 1px;
 }
 
 .form_colum {
@@ -157,22 +157,22 @@ $("body").on("change", "#condiGenre", function(){
 				<div class="col-6 text-center" style="display: flex; min-width: 75%;">
 					<form class="row row-form" name="searchForm" method="post">
 						<div class="form-row" >
-							<div class="form_colum">
+							<div class="form_colum"  style="width: 150px;">
 								<input type="text" name="keyAddr" value="${keyAddr}" placeholder="지역" class="form-select">
 							</div>
-							<div class="form_colum">
+							<div class="form_colum"  style="width: 150px;">
 								<c:if test="${not empty listGenre}">
-									<select name="condiGenre" class="form-select" id="condiGenre" style="border-top: none; border-left: none; border-right: none; border-bottom: solid rgba(0,0,0,.42);">
-											<option value="" style="text-align: center;">::: 장르 :::</option>
+									<select name="condiGenre" class="form-select" id="condiGenre" style="border-top: none; border-left: none; border-right: none; border-bottom: solid 1px; rgba(0,0,0,.42) !important;  padding-left: 5px;" >
+											<option value="" style="border-bottom: solid 1px; rgba(0,0,0,.42);"> 장르 </option>
 										<c:forEach var="vo" items="${listGenre}">
-											<option value="${vo.genreNum}" ${vo.genreNum == keyGenre ? "selected='selected'" : ""}  style="text-align: center;">${vo.genre}</option>
+											<option value="${vo.genreNum}" ${vo.genreNum == keyGenre ? "selected='selected'" : ""}>${vo.genre}</option>
 										</c:forEach>
 									</select>
 								</c:if>
 							</div>
 							
-							<div class="form_colum">
-								<input type="text" name="keyDate" value="${keyDate}" id="dateSelect" placeholder="날짜" style="margin-top: 10px;">
+							<div class="form_colum"  style="width: 150px;">
+								<input type="text" name="keyDate" value="${keyDate}" id="dateSelect" placeholder="날짜" style="margin-top: 10px; font-family: 'tp'; font-size: 14px; padding-bottom: 8px;">
 							</div>
 							<div class="form_btn">
 								<button type="button" class="btn btn-light" onclick="searchList()" style="margin-top: 10px;">
@@ -194,7 +194,7 @@ $("body").on("change", "#condiGenre", function(){
 	         <div class="row">
 			 	<c:forEach var="dto" items="${list}" varStatus="status">
 			 		<div class="item">
-			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}&category=${category}" title="${dto.subject}">
+			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}" title="${dto.subject}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
 			 			</a>
