@@ -3,8 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     <tr>
-   		<td>Poster</td>
-		<td><img src="${pageContext.request.contextPath}/uploads/performance/${dto.saveFilename}"></td>
+		<td colspan="2"><img src="${pageContext.request.contextPath}/uploads/performance/${dto.saveFilename}"></td>
 	</tr>
 	<tr>
 		<td>공연장 이름</td>			
@@ -24,7 +23,7 @@
 	</tr>
 	<tr>
 		<td>공연 시간</td>
-		<td>3시</td>
+		<td>${dto.performanceTime}시</td>
 	</tr>
 	<tr>
 		<td>예약 좌석</td>

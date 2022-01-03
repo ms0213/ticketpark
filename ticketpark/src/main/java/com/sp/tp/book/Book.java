@@ -11,7 +11,7 @@ public class Book {
 	private String state;
 	
 	private int b2Num;
-	private int sdNum;
+	private int ptNum;
 	private String seat_num;
 	private int seat_price;
 	
@@ -34,6 +34,12 @@ public class Book {
 	
 	
 
+	public int getPtNum() {
+		return ptNum;
+	}
+	public void setPtNum(int ptNum) {
+		this.ptNum = ptNum;
+	}
 	public String gethName() {
 		return hName;
 	}
@@ -151,12 +157,7 @@ public class Book {
 	public void setB2Num(int b2Num) {
 		this.b2Num = b2Num;
 	}
-	public int getSdNum() {
-		return sdNum;
-	}
-	public void setSdNum(int sdNum) {
-		this.sdNum = sdNum;
-	}
+
 	public String getSeat_num() {
 		return seat_num;
 	}

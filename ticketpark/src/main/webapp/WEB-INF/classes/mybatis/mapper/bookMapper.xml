@@ -44,11 +44,11 @@
 		SELECT hallName hName, t.tNum tNum, t.name tName, seat_num
 	    FROM book b
 	    JOIN book2 b2 ON b.bNum = b2.bNum
-	    JOIN performanceTime pt ON pt.ptNum = b.ptNum
+	    JOIN performanceTime pt ON pt.ptNum = b2.ptNum
 		JOIN schedule s ON s.perf_date = pt.perf_date
 	    JOIN performance p ON p.perfNum = s.perfNum2
-	    JOIN theater t ON t.tNum = p.tNum
-	    JOIN hall h ON h.hNum = t.hallNo
+        JOIN hall h ON s.hNum = h.hNum
+        JOIN theater t ON pt.tNum = t.tNum
 	    WHERE userId = #{userId} AND b.bNum = #{bNum}
 	</select>
 	

@@ -235,8 +235,8 @@ $(function() {
 										<td>${dto.perf_date}<br>${dto.amount}매</td>
 										<td>${dto.cancel_date}</td>
 										<td>${dto.state}</td>
-										<td><button type="button" class="btn btn-success btn-outline-secondary"
-											onclick="location.href='${pageContext.request.contextPath}/article?perfNum=${dto.perfNum}';">Go!</button></td>
+										<td><button type="button" class="btn btn-success"
+											onclick="location.href='${pageContext.request.contextPath}/performance/article?perfNum=${dto.perfNum}&page=1&category=${dto.category}';">Go!</button></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -323,7 +323,7 @@ $(function() {
         </button>
       </div>
       <div class="modal-body">
-	        <table class="modal-list"style="width: 100%; border-spacing: 1px; background: #ccc;"></table>
+	        <table class="modal-list"style="width: 100%; border-spacing: 1px; "></table>
       </div>
     </div>
   </div>
