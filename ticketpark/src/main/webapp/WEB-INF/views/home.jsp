@@ -187,10 +187,11 @@ $(function(){
 			<div class="single_event_slider">
 				<a class="link" href="${pageContext.request.contextPath}/performance/article?perfNum=${vo.perfNum}&page=1&category=${vo.category}" title="${vo.subject}">
 				<img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}"
-					class="d-block" alt="${vo.subject}">
+					class="d-block" alt="${vo.subject}" style="width: 244.825px; height: 326.425px;">
 				</a>
 				<p class="po-title">${vo.subject}</p>
-				<p class="po-title-date">${vo.startDate}-${vo.endDate}</p>
+				<p class="po-title-date">${vo.hallName}</p>
+				<p class="po-title-date">${vo.startDate}~${vo.endDate}</p>
 			</div>
 		</c:forEach>
 	</div>

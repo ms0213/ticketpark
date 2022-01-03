@@ -197,8 +197,10 @@ $("body").on("change", "#condiGenre", function(){
 			 			<a class="link" href="${articleUrl}&perfNum=${dto.perfNum}" title="${dto.subject}">
 			 				<img class="img" src="${pageContext.request.contextPath}/uploads/performance/${dto.postFileName}">
 			 				<span class="subject">${dto.subject}</span>
+			 				
 			 			</a>
 			 			<div class="box_info">
+			 				<p class="day"  style="text-align: center;">${dto.hallName}</p>
 			 				<p class="day" style="text-align: center;"><span>${dto.startDate} ~ ${dto.endDate} </span> </p>
 			 			</div>
 					</div>
