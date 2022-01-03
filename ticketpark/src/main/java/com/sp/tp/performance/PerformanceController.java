@@ -39,6 +39,8 @@ public class PerformanceController {
 			@RequestParam(defaultValue = "") String condiGenre,
 			@RequestParam(defaultValue = "") String keyDate,
 			@RequestParam(defaultValue = "") String keyGenre,
+			@RequestParam(defaultValue = "") String condiAddr,
+			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam(defaultValue = "all") String category,
 			HttpServletRequest req,
 			Model model) throws Exception {
@@ -52,15 +54,16 @@ public class PerformanceController {
 
 		if (req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
 			keyGenre = URLDecoder.decode(keyGenre, "utf-8");
-			
+			keyAddr = URLDecoder.decode(keyAddr, "utf-8");
 		}
 
 		// 전체 페이지 수
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("condiDate", condiDate);
 		map.put("condiGenre", condiGenre);
+		map.put("condiAddr", condiAddr);
 		map.put("keyDate", keyDate);
-		
+		map.put("keyAddr", keyAddr);
 		map.put("keyGenre", keyGenre);
 		map.put("category", category);
 
@@ -86,9 +89,9 @@ public class PerformanceController {
 		if(keyGenre.length()!=0) {
 			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
 		}
-		
-
-		
+		if(keyAddr.length()!=0) {
+			query += "&condiAddr="+condiAddr+"&keyAddr="+keyAddr;
+		}
 		if(keyDate.length()!=0) {
 			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
 		}
@@ -115,6 +118,8 @@ public class PerformanceController {
 
 		model.addAttribute("condiDate", condiDate);
 		model.addAttribute("condiGenre", condiGenre);
+		model.addAttribute("condiAddr", condiAddr);
+		model.addAttribute("keyAddr", keyAddr);
 		model.addAttribute("keyDate", keyDate);
 		model.addAttribute("keyGenre", keyGenre);
 		
@@ -202,13 +207,15 @@ public class PerformanceController {
 			@RequestParam(defaultValue = "") String condiGenre,
 			@RequestParam(defaultValue = "") String keyDate,
 			@RequestParam(defaultValue = "") String keyGenre,
+			@RequestParam(defaultValue = "") String condiAddr,
+			@RequestParam(defaultValue = "") String keyAddr,
 			@RequestParam String category,
 			HttpSession session,
 			Model model) throws Exception {
 
 		
 		keyGenre = URLDecoder.decode(keyGenre, "utf-8");
-		
+		keyAddr = URLDecoder.decode(keyAddr, "utf-8");
 
 		String query = "page=" + page;
 		query += "&category=" + category;
@@ -216,8 +223,9 @@ public class PerformanceController {
 		if(keyGenre.length()!=0) {
 			query+="&condiGenre="+condiGenre+"&keyGenre="+keyGenre;
 		}
-		
-		
+		if(keyAddr.length()!=0) {
+			query+="&condiAddr="+condiAddr+"&keyAddr="+keyAddr;
+		}
 		if(keyDate.length()!=0) {
 			query += "&condiDate="+condiDate+"&keyDate=" + keyDate;
 		}

@@ -57,12 +57,16 @@
 		</if>
 	</sql>
 	
-	<!-- 공연 개수(메인) -->
+	<!-- 공연 개수 -->
 	<select id="dataCount" parameterType="map" resultType="Integer">
-		SELECT NVL(COUNT(*), 0)
-		FROM performance p, genre g, category c
-		WHERE g.gnum=p.gmnum AND c.cnum=g.cnum 
-		
+		SELECT NVL(COUNT(*),0) FROM (
+		    SELECT DISTINCT p.perfNum, subject, po.saveFilename postFileName, g.genre,
+		        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		        TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.addr, h.hallName
+		    FROM performance p, genre g, category c, poster po, schedule s, hall h
+		    WHERE g.gnum=p.gmnum AND c.cnum=g.cnum
+		        AND p.perfNum = po.perfNum AND poster_main = 1 AND p.perfNum=s.perfNum2
+		        AND h.hNum=s.hNum
 			<if test="category != null and category != ''">
 	            AND <include refid="category-list"/>
 	        </if>
@@ -74,22 +78,23 @@
 			<if test=" keyGenre!=null and keyGenre!=''">
 				AND g.gnum = #{keyGenre}
 			</if>
-
-			
+			<if test=" keyAddr!=null and keyAddr!='' ">
+				AND INSTR(addr, #{keyAddr}) &gt; 0
+			</if>
+		)
 	</select>
 	
-	<!-- 공연리스트(메인) -->
+	<!-- 공연리스트 -->
 	<select id="listPerformance" parameterType="map" resultType="com.sp.tp.performance.Performance">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT p.perfNum, subject, po.saveFilename postFileName, g.genre,
-		        	TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
-		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate
-		        FROM performance p, genre g, category c, poster po
-		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum AND 
-		        	SYSDATE &gt;= startDate AND SYSDATE &lt;= endDate
-		            AND p.perfNum = po.perfNum AND poster_main = 1 
-					
+		        SELECT DISTINCT p.perfNum, subject, po.saveFilename postFileName, g.genre,
+		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate, 
+		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, h.addr, h.hallName
+		        FROM performance p, genre g, category c, poster po, schedule s, hall h
+		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum
+		            AND p.perfNum = po.perfNum AND poster_main = 1 AND p.perfNum=s.perfNum2
+		            AND h.hNum=s.hNum
 						<if test="category != null and category != ''">
 							AND <include refid="category-list"/>
 						</if>
@@ -101,8 +106,10 @@
 						<if test=" keyGenre!=null and keyGenre!=''">
 							AND g.gnum = #{keyGenre}
 						</if>
-						
-	        	ORDER BY perfNum DESC
+						<if test=" keyAddr!=null and keyAddr!='' ">
+							AND INSTR(addr, #{keyAddr}) &gt; 0
+						</if>
+        		ORDER BY perfNum DESC
 			)  tb WHERE ROWNUM &lt;= #{end}
 	    ) WHERE rnum &gt;= #{start}
 	</select>
