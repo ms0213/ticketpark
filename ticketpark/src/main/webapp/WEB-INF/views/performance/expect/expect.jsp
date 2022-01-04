@@ -4,18 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
-.body-main {
-
-	margin: 0 auto;
-}
-
 .text-primary {
     color: #23A41A!important;
     font-size:15px;
+ 
  }
+
  
 .expect-form textarea { width: 100%; height: 80px; resize: none; }
-
+.expect-list, .mt-4 {width: 80%; margin: 0 auto;}
 .expect-list tr:nth-child(3n+1) { border: 1px solid #FFFFFF; background: #f8f9fa; }
 
 .expect-list .deleteExpect, .expect-list .notifyExpect, .updateExpect, .deleteExpect { cursor: pointer; }
@@ -30,10 +27,6 @@ textarea::placeholder{
 
 <div class="container">
 	<div class="body-container">	
-		<div class="body-title">
-			
-		</div>
-		
 		<div class="body-main">
 
 			<form name="expectForm" method="post">
@@ -52,7 +45,7 @@ textarea::placeholder{
 			</form>
 
 			<div id="listExpect">
-				<div class='mt-4 mb-1'>
+				<div class='mt-4 mb-1' align='left' >
 					<span class='expect-count fw-bold text-primary' data-pageNo="1" data-totalPage="1">총 0개의 기대평이 등록되었습니다.</span>
 				</div>
 				

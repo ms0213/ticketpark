@@ -383,7 +383,7 @@ function printExpect(data) {
 	$("#listExpect").show();
 	$(".expect-count").html("총 " + dataCount + "개의 기대평이 등록되었습니다.");
 	
-	$(".more-box").hide();
+	$(".expert-more-box").hide();
 	if(dataCount == 0) {
 		$(".expect-list-body").empty();
 		return;
@@ -402,7 +402,7 @@ function printExpect(data) {
 		var reg_date = data.list[idx].reg_date;
 
 		out += "<tr>";
-		out += "    <td width='50%'><i class='bi bi-person-circle text-muted'></i> <span>" + userName + "</span></td>";
+		out += "    <td width='50%' align='left'><i class='bi bi-person-circle text-muted'></i> <span>" + userName + "</span></td>";
 		out += "    <td width='50%' align='right'>" + reg_date;
 		if(uid === userId || permission === "true") {
 			out += "   | <span class='updateExpect' data-num='" + num + "'>수정</span>";
@@ -411,7 +411,7 @@ function printExpect(data) {
 		out += "    </td>";
 		out += "</tr>";
 		out += "<tr>";
-		out += "    <td colspan='2' valign='top'>" + content + "</td>"; 
+		out += "    <td colspan='2' valign='top' align='left'>" + content + "</td>"; 
 		out += "</tr>";
 		out += "<tr style='display:none;'>";
 		out += "	<td colspan='2'><textarea class='form-control'>";
@@ -459,7 +459,7 @@ $(function(){
 			return false;
 		}
 		
-		if( ! confirm('게시글을 삭제 하시겠습니까 ? ')) {
+		if( ! confirm('기대평을 삭제 하시겠습니까 ? ')) {
 			return false;
 		}
 		
@@ -507,7 +507,7 @@ $(function(){
 				return false;
 			}
 			
-			var url = "${pageContext.request.contextPath}/performance/expect/update";
+			var url = "${pageContext.request.contextPath}/performance/expect/updateExpect";
 			var query = "num="+num+"&content="+encodeURIComponent(content);
 
 			var fn = function(data) {
@@ -638,7 +638,7 @@ $(function(){
 			return false;
 		}
 		
-		if( ! confirm('후기를 삭제하시겠습니까 ? ')) {
+		if( ! confirm('리뷰를 삭제하시겠습니까 ? ')) {
 			return false;
 		}
 		
