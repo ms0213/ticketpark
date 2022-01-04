@@ -80,7 +80,7 @@ public class ReviewServiceImpl implements ReviewService {
 	public void updateRate(int sum, int count, int perfNum) throws Exception {
 		double rating = 0;
 		try {
-			rating = sum/count;
+			rating = (double)sum/count;
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("rate", rating);
 			map.put("perfNum", perfNum);

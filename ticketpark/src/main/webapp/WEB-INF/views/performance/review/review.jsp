@@ -57,8 +57,8 @@ $(function(){
 
 function listPage(page) {
 	var url = "${pageContext.request.contextPath}/performance/review/list";
-	var perfNum="${dto.perfNum}";
-	var query = "pageNo=" + page+"&perfNum=62";
+	//var perfNum=$("#perfNum").val();
+	var query = "pageNo=" + page+"&perfNum="+${perfNum};
 	
 	var fn = function(data) {
 		printReview(data);
@@ -128,26 +128,21 @@ function printReview(data) {
 
 }
 
-$(function() {
-	$("[type='radio']").change(function() {
-		var star = $(this).attr('value');
-		console.log(star);
-	});
-});
-
 $(function(){
 	$(".btnSend").click(function(){
-		var content = $("#content").val().trim();
+		
+		var content = $("#reviewcontent").val().trim();
+		//var perfNum=$("#perfNum").val();
 		if(! content) {
-			$("#content").focus();
+			$("#reviewcontent").focus();
 			return false;
 		}
 		
 		var url = "${pageContext.request.contextPath}/performance/review/insertReview";
-		var query = "content=" + encodeURIComponent(content);
+		var query = "content=" + encodeURIComponent(content)+"&rate="+star+"&perfNum="+${perfNum};
 		
 		var fn = function(data) {
-			$("#content").val("");
+			$("#reviewcontent").val("");
 			$(".review-list-body").empty();
 			listPage(1);
 		};
@@ -176,7 +171,7 @@ $(function(){
 		
 		var num = $(this).attr("data-num");
 		var url = "${pageContext.request.contextPath}/performance/review/deleteReview";
-		var query = "num=" + num;
+		var query = "num=" + num+"&perfNum="+${perfNum};
 		var fn = function(data) {
 			$(".review-list-body").empty();
 			listPage(1);
@@ -222,7 +217,7 @@ $(function(){
 			var query = "num="+num+"&content="+encodeURIComponent(content);
 
 			var fn = function(data) {
-				$("#content").val("");
+				$("#reviewcontent").val("");
 				$(".review-list-body").empty();
 				listPage(1);
 			};
@@ -237,6 +232,17 @@ $(function(){
 	});
 });
 
+$('.user-rating span').click(function(e){
+      $(this).parent().children('span').removeClass('on');
+      
+      $(this).addClass('on').prevAll('span').addClass('on');    
+});
+
+var star="";
+function setStar(point) {
+	star=point;
+	console.log(star);
+};
 </script>
 
 
@@ -249,27 +255,8 @@ $(function(){
 	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: #2b2a29;
 }
-.user-rating:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.user-rating:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:30px;
-    color:#ccc;
-}
-.user-rating:not(:checked) > label:before {
-	-webkit-text-stroke-width: 1px;
-	-webkit-text-stroke-color: #2b2a29;
-}
-.user-rating > input:checked ~ label {
-	-webkit-text-fill-color: gold;
-}
-
+.star{font-size: 25px;}
+.on{-webkit-text-fill-color: gold;}
 </style>
 
 <div class="container">
@@ -282,17 +269,17 @@ $(function(){
 						<span class="fw-bold"></span>
 					</div>
 					<div class="p-1">
-						<textarea name="content" id="content" class="form-control" placeholder="${empty sessionScope.member ? '로그인 후 등록 가능합니다.':'해당 공연과 무관한 댓글, 악플은 사전통보 없이 삭제될 수 있습니다.'}"></textarea>
+						<textarea name="reviewcontent" id="reviewcontent" class="form-control" placeholder="${empty sessionScope.member ? '로그인 후 등록 가능합니다.':'해당 공연과 무관한 댓글, 악플은 사전통보 없이 삭제될 수 있습니다.'}"></textarea>
 					</div>
 					<br>
 					<div>
 						<div style="float: left;">
 							  <div class="user-rating">
-							      <input type="radio" id="r5" name="rating" value="5" checked="checked"/><label for="r5"><i class='icofont-star'></i></label>
-							      <input type="radio" id="r4" name="rating" value="4" /><label for="r4"><i class='icofont-star'></i></label>
-							      <input type="radio" id="r3" name="rating" value="3" /><label for="r3"><i class='icofont-star'></i></label>
-							      <input type="radio" id="r2" name="rating" value="2" /><label for="r2"><i class='icofont-star'></i></label>
-							      <input type="radio" id="r1" name="rating" value="1" /><label for="r1"><i class='icofont-star'></i></label>
+							      <span class="star" onClick="setStar(1)"><i class='icofont-star'></i></span>
+							      <span class="star" onClick="setStar(2)"><i class='icofont-star'></i></span>
+							      <span class="star" onClick="setStar(3)"><i class='icofont-star'></i></span>
+							      <span class="star" onClick="setStar(4)"><i class='icofont-star'></i></span>
+							      <span class="star" onClick="setStar(5)"><i class='icofont-star'></i></span>
 							  </div>
 						</div>
 						<div align="right">

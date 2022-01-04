@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,9 @@ public class ReviewController {
 	private MyUtil myUtil;
 
 	@RequestMapping(value = "review")
-	public String reviewList() throws Exception{
+	public String reviewList(int perfNum, Model model) throws Exception{
+		model.addAttribute("perfNum", perfNum);
+		
 		return "performance/review/review";
 	}
 	
@@ -74,6 +77,12 @@ public class ReviewController {
 		try {
 			dto.setUserId(info.getUserId());
 			service.insertReview(dto);
+			
+			int sum = 0;
+			sum = service.sumRate(dto.getPerfNum());
+			int count = 0;
+			count = service.dataCount(dto.getPerfNum());
+			service.updateRate(sum, count, dto.getPerfNum());
 		} catch (Exception e) {
 			state = "false";
 		}
@@ -103,7 +112,9 @@ public class ReviewController {
 	
 	@RequestMapping(value = "deleteReview", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> reviewDelete(@RequestParam int num, HttpSession session) throws Exception{
+	public Map<String, Object> reviewDelete(@RequestParam int num, 
+			int perfNum
+			,HttpSession session) throws Exception{
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String state = "true";
@@ -113,6 +124,12 @@ public class ReviewController {
 			map.put("membership", info.getMembership());
 			map.put("userId", info.getUserId());
 			service.deleteReview(map);
+			
+			int sum = 0;
+			sum = service.sumRate(perfNum);
+			int count = 0;
+			count = service.dataCount(perfNum);
+			service.updateRate(sum, count, perfNum);
 		} catch (Exception e) {
 			state = "false";
 		}

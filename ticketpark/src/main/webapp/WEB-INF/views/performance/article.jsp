@@ -344,7 +344,7 @@ $(function() {
 
 $(function(){
 	$("body").on("click","#review-tab", function() {
-        $('#review').load('${pageContext.request.contextPath}/performance/review/review');
+        $('#review').load('${pageContext.request.contextPath}/performance/review/review?perfNum=${dto.perfNum}');
 	});
 
 });
