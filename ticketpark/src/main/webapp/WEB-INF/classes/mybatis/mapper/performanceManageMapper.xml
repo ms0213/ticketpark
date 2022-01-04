@@ -75,26 +75,26 @@
 	
 	<!-- 공연 등록 -->
 	<insert id="insertPerformance" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		INSERT INTO performance (perfNum, subject, content, gmnum, tnum, rnum, rating, price, time, startDate, endDate)
-			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{theaterNum},#{rateNum}, #{rating}, #{price}, #{showTime}, #{startDate}, #{endDate})
+		INSERT INTO performance (perfNum, subject, content, gmnum, rnum, rating, price, time, startDate, endDate)
+			VALUES (#{perfNum}, #{subject}, #{content}, #{genreNum}, #{rateNum}, #{rating}, #{price}, #{showTime}, #{startDate}, #{endDate})
 	</insert>
 	
 	<!-- 공연날짜등록 -->
 	<insert id="insertperfDate" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		INSERT INTO schedule (perf_date, perfNum2)
-		VALUES (#{perfDate}, #{perfNum})
+		INSERT INTO schedule (perf_date, perfNum2, hNum)
+			VALUES (#{perfDate}, #{perfNum}, #{hallNum})
 	</insert>
 	
 	<!-- 공연시간등록 -->
 	<insert id="insertperfTime" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		INSERT INTO performanceTime (ptNum, performanceTime, perf_Date, perfNum2)
-		VALUES (#{ptNum}, #{perfTime}, #{perfDate}, #{perfNum})
+		INSERT INTO performanceTime (ptNum, performanceTime, perf_Date, perfNum2, tNum)
+			VALUES (#{ptNum}, #{perfTime}, #{perfDate}, #{perfNum}, #{theaterNum})
 	</insert>
 	
 	<!-- 출연진 등록 -->
 	<insert id="insertCast" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
 		INSERT INTO cast (castNum, actorNum, ptNum)
-		VALUES (cast_seq.NEXTVAL, #{actorNum}, #{ptNum})
+			VALUES (cast_seq.NEXTVAL, #{actorNum}, #{ptNum})
 	</insert>
 	
 	<!-- 파일 -->
@@ -113,7 +113,7 @@
 	<select id="readPerformance" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
 		 SELECT p.perfNum, subject, po.saveFilename postFileName, rating, price,  r.rnum rateNum, g.gnum genreNum,
 	        TO_CHAR(startDate, 'YYYY-MM-DD') startDate, TO_CHAR(endDate, 'YYYY-MM-DD') endDate, p.time showTime,
-	        genre, category, time, rate, p.content, actorName, c.cNum categoryNum
+	        genre, category, time, rate, p.content, actorName, c.cNum categoryNum, postNum
 	    FROM performance p, genre g, poster po, category c, rate r, 
             (SELECT p.perfNum, LISTAGG(a.name,',') WITHIN GROUP(ORDER BY a.name) AS actorName
             FROM performance p, actor a
@@ -145,6 +145,12 @@
 		GROUP BY performanceTime
 	</select>
 	
+	<select id="listDate" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT perf_date perfDate, perfNum2 perfNum, hNum hallNum
+		FROM schedule
+		WHERE perfNum2 = #{perfNum}
+	</select>
+	
 	<!-- 카테고리 -->
 	<select id="listCategory" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
 		SELECT cNum categoryNum, category
@@ -167,18 +173,27 @@
 		FROM hall
 	</select>
 	
-	<select id="listTheater" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		SELECT tNum theaterNum, Name theater
-		FROM theater
-		WHERE hallNo = #{hallNum}
+	<select id="listTheater" parameterType="map" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		SELECT tNum theaterNum, hallNo hallNum, name theater
+		FROM theater 
+		WHERE hallno IN 
+		    (SELECT hnum 
+		    FROM schedule 
+		    WHERE perfNum2= ${perfNum} AND perf_date = #{perfDate})
 	</select>
 	
 	<!-- 공연 수정 -->
 	<update id="updatePerformance" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		UPDATE performance SET subject=#{subject}, content=#{content}, gmNum=#{gmNum}, tNum=#{tNum}, rNum=#{rNum}, 
+		UPDATE performance SET subject=#{subject}, content=#{content}, gmNum=#{genreNum}, rNum=#{rateNum}, 
 			rating=#{rating}, price=#{price}, time=#{showTime}, startDate = #{startDate}, endDate = #{endDate}
 		WHERE perfNum = #{perfNum}
 	</update>
 	
-
+	<update id="updatePoster" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		UPDATE poster SET saveFileName = #{postFileName} WHERE postNum = #{postNum}
+	</update>
+	
+	<delete id="deleteActor" parameterType="map">
+		DELETE FROM actor WHERE actorNum = #{actorNum}
+	</delete>
 </mapper>

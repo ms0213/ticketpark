@@ -157,20 +157,6 @@ function sendOk() {
         return;
     }
     
-    str = f.hallNum.value.trim();
-    if(!str) {
-        alert("공연장을 선택하세요. ");
-        f.hallNum.focus();
-        return;
-    }
-    
-    str = f.theaterNum.value.trim();
-    if(!str) {
-        alert("상영관을 선택하세요. ");
-        f.theaterNum.focus();
-        return;
-    }
-    
     str = f.rateNum.value.trim();
     if(!str) {
         alert("관람연령을 선택하세요. ");
@@ -192,6 +178,7 @@ function sendOk() {
         return;
     }
     
+    <c:if test="${mode=='perfAdd'}">
 	var b = true;
     $("input[name=actorsName]").each(function(index) {
     	if(! $(this).val()) {
@@ -214,7 +201,7 @@ function sendOk() {
 		alert("출연진정보를 정확히 입력 하세요");
 		return;
 	}
-    
+    </c:if>
     str = window.editor.getData().trim();
     if(! str) {
         alert("내용을 입력하세요. ");
@@ -366,6 +353,7 @@ $(function(){
 		var p=$(this).parent().parent().find("p:first").clone();
 		$(p).find("input").each(function(){
 			$(this).val("");
+			$(this).attr("disabled", false);
 			$(p).find(".actor-img").css("background-image", "url(/tp/resources/images1/add_photo.png)");
 		});
 		
@@ -427,15 +415,15 @@ $(function() {
 
 <c:if test="${mode=='update'}">
 $(function(){
-	$(".delete-img").click(function(){
-		if(! confirm("이미지를 삭제 하시겠습니까 ?")) {
+	$(".actorRemoveBtn").click(function(){
+		if(! confirm("출연진을 삭제 하시겠습니까 ?")) {
 			return false;
 		}
-		var $img = $(this);
-		var fileNum = $img.attr("data-fileNum");
-		var url="${pageContext.request.contextPath}/admin/performanceManage/deleteFile";
-		$.post(url, {fileNum:fileNum}, function(data){
-			$img.remove();
+		var $actor = $(this);
+		var actorNum = $actor.attr("data-actorNum");
+		var url="${pageContext.request.contextPath}/admin/performanceManage/deleteActor";
+		$.post(url, {actorNum:actorNum}, function(data){
+			$actor.remove();
 		}, "json");
 	});
 });
@@ -491,30 +479,6 @@ $(function(){
 					</tr>
 					
 					<tr>
-						<td class="table-light col-sm-2" scope="row">공연 장소</td>
-						<td>
-							<div class="row">
-								<div class="col-sm-5 pe-1">
-									<select name="hallNum" class="selectField">
-										<option value="">:: 공연장 선택 ::</option>
-										<c:forEach var="vo" items="${hallList}">
-											<option value="${vo.hallNum}" ${dto.hallNum==vo.hallNum?"selected='selected'":""}>${vo.hallName}</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="col-sm-3 ps-1">
-									<select name="theaterNum" class="selectField">
-										<option value="">:: 상영관 선택 ::</option>
-										<c:forEach var="vo" items="${theaterList}">
-											<option value="${vo.theaterNum}" ${dto.theaterNum==vo.theaterNum? "selected='selected'":""}>${vo.theater}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-						</td>
-					</tr>
-					
-					<tr>
 						<td class="table-light col-sm-2" scope="row">공연정보</td>
 						<td>
 							<div class="row">
@@ -543,7 +507,7 @@ $(function(){
 							<c:choose>
 								<c:when test="${mode == 'perfAdd'}">
 									<p style="margin: 12px;">
-										<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${vo.actorName}">
+										<input type="text" value="${dto.actorNum}" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${vo.actorName}">
 										<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${vo.roleName}">
 										<img class="actor-img">
 										<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control">
@@ -554,12 +518,13 @@ $(function(){
 								<c:when test="${mode == 'update'}">
 									<c:forEach var="vo" items="${actorList}">
 										<p style="margin: 12px;">
-											<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" value="${vo.actorName}">
-											<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${vo.roleName}">
+											<input type="text" name="actorsName" class="boxTF" style="width: 25%;" placeholder="출연진 이름" 
+												value="${vo.actorName}" disabled="disabled">
+											<input type="text" name="rolesName" class="boxTF" style="width: 25%;" placeholder="배역 이름" value="${vo.roleName}"disabled="disabled">
 											
 											<img class="actor-img" style="background-image: url('${pageContext.request.contextPath}/uploads/performance/${vo.actorFileName}');">
-											<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control">
-											<span class="actorRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
+											<input type="file" name="actorsFile" accept="image/*" style="display: none;" class="form-control" disabled="disabled">
+											<span class="actorRemoveBtn" data-actorNum="${vo.actorNum}" style="float: center; line-height: 38px; margin-left: 15px;"><i class="far fa-minus-square"></i></span>
 										</p>
 									</c:forEach>
 								</c:when>
@@ -595,9 +560,10 @@ $(function(){
 						<td class="text-center">
 							<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
 							<button type="reset" class="btn btn-light">다시입력</button>
-							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfList';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfList?page=${page}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 							<c:if test="${mode=='update'}">
 								<input type="hidden" name="perfNum" value="${dto.perfNum}">
+								<input type="hidden" name="postNum" value="${dto.postNum}">
 								<input type="hidden" name="postFileName" value="${dto.postFileName}">
 								<input type="hidden" name="actorFileName" value="${dto.actorFileName}">
 							</c:if>

@@ -74,7 +74,7 @@ function detailedPerformance(perfNum) {
 		  modal: true,
 		  buttons: {
 		       " 수정 " : function() {
-		    	  location.href = "${pageContext.request.contextPath}/admin/performanceManage/update?perfNum=" + perfNum;
+		    	  location.href = "${pageContext.request.contextPath}/admin/performanceManage/update?perfNum=" + perfNum + "&page=" + ${page};
 		       },
 		       " 삭제 " : function() {
 		    	   deleteOk(perfNum);
@@ -130,7 +130,7 @@ function deleteOk(perfNum) {
 	
 	<div class="body-container">
 	    <div class="body-title">
-			<h2><i class="icofont-users"></i> 공연 관리 </h2>
+			<h2> 공연 관리 </h2>
 	    </div>
 	    <table class="table" style="margin-bottom: 0px;">
 			<tr>
@@ -153,7 +153,8 @@ function deleteOk(perfNum) {
 						<th style="width: 35%;">공연 제목</th>
 						<th style="width: 30%;">공연기간</th>
 						<th style="width: 10%;">카테고리</th>
-						<th style="width: 15%;">일정등록</th>
+						<th style="width: 15%;">공연날짜등록</th>
+						<th style="width: 15%;">공연시간등록</th>
 					</tr>
 				</thead>
 				
@@ -164,7 +165,8 @@ function deleteOk(perfNum) {
 							<td style="cursor: pointer;" onclick="detailedPerformance('${dto.perfNum}')">${dto.subject}</td>
 							<td>${dto.startDate} ~ ${dto.endDate}</td>
 							<td>${dto.category}</td>
-							<td><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/addSchedule?perfNum=${dto.perfNum}';">일정등록</button></td>
+							<td><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/addDate?perfNum=${dto.perfNum}&page=${page}';">공연날짜등록</button></td>
+							<td><button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/addTime?perfNum=${dto.perfNum}&page=${page}';">공연시간등록</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -186,7 +188,7 @@ function deleteOk(perfNum) {
 							</select>
 						</div>
 						<input type="hidden" name="category" value="${category}">
-						<input type="hidden" name="page" value="1">
+						<input type="hidden" name="page" value="${page}">
 						<div class="col-auto p-1">
 							<input type="text" name="keyword" value="${keyword}" class="form-control">
 						</div>
@@ -196,7 +198,7 @@ function deleteOk(perfNum) {
 					</form>
 				</div>
 				<div class="col text-end" align="right">
-					<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfAdd';">공연등록</button>
+					<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfAdd?page=${page}';">공연등록</button>
 				</div>
 			</div>
 	    </div>

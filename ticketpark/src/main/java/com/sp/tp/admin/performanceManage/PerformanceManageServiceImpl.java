@@ -148,7 +148,7 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 		}
 		return listTheater;
 	}
-
+	
 	@Override
 	public PerformanceManage readPerformance(int perfNum) {
 		PerformanceManage dto = null;
@@ -201,6 +201,18 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	}
 	
 	@Override
+	public List<PerformanceManage> listDate(int perfNum) {
+		List<PerformanceManage> listDate = null;
+		
+		try {
+			listDate = dao.selectList("performanceManage.listDate", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listDate;
+	}
+	
+	@Override
 	public void insertActor(PerformanceManage dto) throws Exception {
 		try {
 			dao.insertData("performanceManage.insertActor", dto);
@@ -214,14 +226,13 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	public void insertPerfDate(PerformanceManage dto) throws Exception {
 		
 		try {
-			dao.insertData("performanceManage.insertperfDate", dto);
+			for(int i=0; i < dto.getPerfsDate().size(); i++) {
+				dto.setPerfDate(dto.getPerfsDate().get(i));
+				dao.insertData("performanceManage.insertperfDate", dto);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
-		}
-		for(int i = 0; i < dto.getPerfsTime().size(); i++) {
-			dto.setPerfTime(dto.getPerfsTime().get(i));
-			insertPerfTime(dto);
 		}
 	}
 	
@@ -230,7 +241,10 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 		int seq = dao.selectOne("performanceManage.ptSeq");
 		dto.setPtNum(seq);
 		try {
-			dao.insertData("performanceManage.insertperfTime", dto);
+			for(int i = 0; i < dto.getPerfsTime().size(); i++) {
+				dto.setPerfTime(dto.getPerfsTime().get(i));
+				dao.insertData("performanceManage.insertperfTime", dto);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -251,26 +265,65 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 			e.printStackTrace();
 			throw e;
 		}
-		
 	}
 	
 	@Override
-	public void updatePerformance(PerformanceManage dto) throws Exception {
+	public void deleteActor(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("performanceManage.deleteActor", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
+	public void updatePerformance(PerformanceManage dto, String path) throws Exception {
 		try {
 			dao.updateData("performanceManage.updatePerformance", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
+		
+		// 출연진 insert
+		for(int i = 0; i < dto.getActorsName().size(); i++) {
+			dto.setActorName(dto.getActorsName().get(i));
+			dto.setRoleName(dto.getRolesName().get(i));
+			dto.setActorNum(dao.selectOne("performanceManage.actorSeq"));
+			
+			MultipartFile mf = dto.getActorsFile().get(i);
+			String actorFileName = fileManager.doFileUpload(mf, path);
+			if(actorFileName == null) {
+				continue;
+			}
+			dto.setActorFileName(actorFileName);
+			
+			insertActor(dto);
+		}
+		
+		// 포스터 update
+		updatePoster(dto, path);
 	}
 	
 	@Override
-	public void updateActor(PerformanceManage dto) throws Exception {
+	public void updatePoster(PerformanceManage dto, String path) throws Exception {
 		try {
-			dao.updateData("performanceManage.updateActor", dto);
+			String saveFilename = fileManager.doFileUpload(dto.getPostFile(), path);
+			
+			if (saveFilename != null) {
+				// 이전 파일 지우기
+				if (dto.getPostFileName().length() != 0) {
+					fileManager.doFileDelete(dto.getPostFileName(), path);
+				}
+				dto.setPostFileName(saveFilename);
+			}
+			
+			dao.updateData("performanceManage.updatePoster", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
+	
 }
