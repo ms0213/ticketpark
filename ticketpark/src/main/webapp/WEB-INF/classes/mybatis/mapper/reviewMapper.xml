@@ -3,4 +3,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="review">
 	
+	<insert id="insertReview" parameterType="com.sp.tp.review.Review">
+		INSERT INTO review (num, userId, perfNum, content, rate, reg_date)
+		VALUES (review_seq.NEXTVAL, #{userId}, #{perfNum}, #{content}, #{rate}, SYSDATE)
+	</insert>
+	
+	<select id="dataCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) FROM review WHERE perfNum=#{perfNum}
+	</select>
+	
+	<select id="listReview" parameterType="map" resultType="com.sp.tp.review.Review">
+		SELECT * FROM (
+			SELECT ROWNUM rnum, tb.* FROM (
+				SELECT num, r.perfNum, r.userId, userName, r.content, TO_CHAR(r.reg_date, 'YYYY-MM-DD') reg_date, r.rate
+				FROM review r
+				JOIN member1 m ON r.userId=m.userId
+				JOIN performance p ON r.perfNum=p.perfNum
+				WHERE r.perfNum = #{perfNum}
+				ORDER BY num DESC
+			) tb WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start}
+	</select>
+	
+	<delete id="deleteReview" parameterType="map">
+		DELETE review WHERE num=#{num}
+			<if test="membership &lt; 51">
+				AND userId=#{userId}
+			</if>
+	</delete>
+	
+	<update id="updateReview" parameterType="com.sp.tp.review.Review">
+		UPDATE review SET content=#{content}
+		WHERE num=#{num}
+	</update>
+	
+	<select id="sumRate" parameterType="Integer" resultType="Integer">
+		SELECT SUM(rate) FROM review WHERE perfNum=#{perfNum}
+	</select>
+	
+	<update id="updateRate" parameterType="map">
+		UPDATE performance SET rating=#{rate} WHERE perfNum=#{perfNum}
+	</update>
+	
 </mapper>

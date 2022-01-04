@@ -256,7 +256,6 @@ $(document).ready(function(){
 	});
 });
 
-
 </script>
 
 <script type="text/javascript">
@@ -341,6 +340,13 @@ $(function() {
 		$('div').removeClass('bcd');
 		$(this).parent().addClass('bcd');			
 	});
+});
+
+$(function(){
+	$("body").on("click","#review-tab", function() {
+        $('#review').load('${pageContext.request.contextPath}/performance/review/review');
+	});
+
 });
 </script>
 
