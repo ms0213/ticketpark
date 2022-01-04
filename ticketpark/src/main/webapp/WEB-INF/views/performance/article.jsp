@@ -345,7 +345,7 @@ $(function() {
 $(function(){
 	$("body").on("click","#review-tab", function() {
         $('#review').load('${pageContext.request.contextPath}/performance/review/review?perfNum=${dto.perfNum}');
-        listPage(1);
+        reviewlistPage(1);
 	});
 });
 
@@ -529,7 +529,7 @@ $(function(){
 
 <!-- 리뷰 -->
 <script type="text/javascript">
-function listPage(page) {
+function reviewlistPage(page) {
 	var url = "${pageContext.request.contextPath}/performance/review/list";
 	//var perfNum=$("#perfNum").val();
 	var query = "pageNo=" + page+"&perfNum="+${dto.perfNum};
@@ -603,7 +603,7 @@ function printReview(data) {
 }
 
 $(function(){
-	$("body").on("click", ".btnSend", function(){
+	$("body").on("click", ".review-btnSend", function(){
 		var content = $("#reviewcontent").val().trim();
 		//var perfNum=$("#perfNum").val();
 		if(! content) {
@@ -617,7 +617,7 @@ $(function(){
 		var fn = function(data) {
 			$("#reviewcontent").val("");
 			$(".review-list-body").empty();
-			listPage(1);
+			reviewlistPage(1);
 		};
 		
 		ajaxFun(url, "post", query, "json", fn);
@@ -647,7 +647,7 @@ $(function(){
 		var query = "num=" + num+"&perfNum="+${dto.perfNum};
 		var fn = function(data) {
 			$(".review-list-body").empty();
-			listPage(1);
+			reviewlistPage(1);
 		};
 		ajaxFun(url, "post", query, "json", fn);
 		
@@ -662,7 +662,7 @@ $(function(){
 		
 		if(pageNo < total_page) {
 			pageNo++;
-			listPage(pageNo);
+			reviewlistPage(pageNo);
 		}
 	});
 });
@@ -692,7 +692,7 @@ $(function(){
 			var fn = function(data) {
 				$("#reviewcontent").val("");
 				$(".review-list-body").empty();
-				listPage(1);
+				reviewlistPage(1);
 			};
 			
 			ajaxFun(url, "post", query, "json", fn);

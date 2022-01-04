@@ -61,7 +61,7 @@ textarea::placeholder{
 							  </div>
 						</div>
 						<div align="right">
-							<button type="button" class="btnSend btn btn-outline-success" ${empty sessionScope.member ? "disabled='disabled'":""}> 등록하기 <i class="bi bi-check2"></i> </button>
+							<button type="button" class="review-btnSend btn btn-outline-success" ${empty sessionScope.member ? "disabled='disabled'":""}> 등록하기 <i class="bi bi-check2"></i> </button>
 						</div>
 					</div>
 				</div>
