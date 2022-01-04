@@ -18,11 +18,21 @@ public class Article {
 	private String atName;	// 컬럼 유형 이름
 	
 	private int fileNum;
+	private int fileCount;
 	private String saveFilename;
 	private List<MultipartFile> selectFile;
 	
 	private int replyCount;
 	private int articleLikeCount; 
+	
+	
+	public int getFileCount() {
+		return fileCount;
+	}
+
+	public void setFileCount(int fileCount) {
+		this.fileCount = fileCount;
+	}
 
 	public int getArticleLikeCount() {
 		return articleLikeCount;

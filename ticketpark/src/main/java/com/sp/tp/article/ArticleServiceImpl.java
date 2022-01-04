@@ -90,18 +90,6 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public Article preReadArticle(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Article nextReadArticle(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void updateArticle(Article dto, String pathname) throws Exception {
 		try {
 			dao.updateData("article.updateArticle", dto);
