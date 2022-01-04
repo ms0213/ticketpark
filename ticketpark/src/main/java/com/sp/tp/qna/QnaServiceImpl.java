@@ -1,7 +1,9 @@
 package com.sp.tp.qna;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,32 +24,33 @@ public class QnaServiceImpl implements QnaService {
 			throw e;
 		}
 	}
-	
+
 	@Override
 	public List<Reply> listReply(Map<String, Object> map) {
 		List<Reply> list = null;
-		
+
 		try {
 			list = dao.selectList("qna.listReply", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
 
 	@Override
 	public int replyCount(Map<String, Object> map) {
 		int result = 0;
-		
+
 		try {
 			result = dao.selectOne("qna.replyCount", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
+
 	@Override
 	public void deleteReply(Map<String, Object> map) throws Exception {
 		try {
@@ -61,29 +64,28 @@ public class QnaServiceImpl implements QnaService {
 	@Override
 	public List<Reply> listReplyAnswer(int answer) {
 		List<Reply> list = null;
-		
+
 		try {
 			list = dao.selectList("qna.listReplyAnswer", answer);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
 	@Override
 	public int replyAnswerCount(int answer) {
 		int result = 0;
-		
+
 		try {
 			result = dao.selectOne("qna.replyAnswerCount", answer);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
-	
 
 	@Override
 	public int dataCount(Map<String, Object> map) {
@@ -100,28 +102,42 @@ public class QnaServiceImpl implements QnaService {
 
 	@Override
 	public void insertReplyLike(Map<String, Object> map) throws Exception {
+
 		try {
-			dao.insertData("qna.insertReplyLike", map);
+
+			Map<String, Object> countMap = dao.selectOne("qna.checkReplyLike", map);
+
+			
+			if (((BigDecimal) countMap.get("COUNT")).intValue() > 0) {
+				dao.deleteData("qna.deleteReplyLike", map);
+			} else {
+				dao.insertData("qna.insertReplyLike", map);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
+
+		// for (Entry<String, Object> entrySet : map.entrySet()) {
+		// System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
+		// }
 	}
 
 	@Override
 	public Map<String, Object> replyLikeCount(Map<String, Object> map) {
 		Map<String, Object> countMap = null;
-		
+
 		try {
 			countMap = dao.selectOne("qna.replyLikeCount", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return countMap;
 
 	}
-	
+
 	@Override
 	public void deleteBoardLike(Map<String, Object> map) throws Exception {
 		try {
@@ -131,5 +147,5 @@ public class QnaServiceImpl implements QnaService {
 			throw e;
 		}
 	}
-	
+
 }

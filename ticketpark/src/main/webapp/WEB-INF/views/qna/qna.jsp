@@ -170,6 +170,8 @@ $(function(){
 	});
 });
 
+
+
 // 댓글별 답글 리스트
 function listReplyAnswer(answer) {
 	var url = "${pageContext.request.contextPath}/qna/listReplyAnswer";

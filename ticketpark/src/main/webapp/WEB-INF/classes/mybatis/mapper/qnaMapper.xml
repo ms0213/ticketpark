@@ -78,8 +78,13 @@
 		FROM qnaLike WHERE replyNum = #{replyNum}
 	</select>
 	
+	<!-- 좋아요 / 싫어요 체크 -->
+	<select id="checkReplyLike" parameterType="map" resultType="map">
+		SELECT COUNT(*) count FROM QNALIKE WHERE REPLYNUM = #{replyNum} AND USERID = #{userId} AND REPLYLIKE=#{replyLike}
+	</select>
+	
 	<!-- 게시 글 좋아요 삭제 -->
-	<delete id="deleteBoardLike" parameterType="map">
+	<delete id="deleteReplyLike" parameterType="map">
 		DELETE FROM qnaLike WHERE replyNum = #{replyNum} AND userId = #{userId}
 	</delete>
 	

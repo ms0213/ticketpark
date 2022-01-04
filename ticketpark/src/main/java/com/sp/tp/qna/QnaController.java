@@ -170,7 +170,8 @@ public class QnaController {
 			model.put("state", state);
 			return model;
 		}
-
+		
+		
 		// 댓글의 좋아요/싫어요 개수 : AJAX-JSON
 		@RequestMapping(value = "countReplyLike", method = RequestMethod.POST)
 		@ResponseBody

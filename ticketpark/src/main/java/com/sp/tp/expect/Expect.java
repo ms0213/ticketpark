@@ -6,6 +6,7 @@ public class Expect {
 	private String userName;
 	private String content;
 	private String reg_date;
+	private int perfNum;
 	
 	public int getNum() {
 		return num;
@@ -37,4 +38,11 @@ public class Expect {
 	public void setReg_date(String reg_date) {
 		this.reg_date = reg_date;
 	}
+	public int getPerfNum() {
+		return perfNum;
+	}
+	public void setPerfNum(int perfNum) {
+		this.perfNum = perfNum;
+	}
+	
 }

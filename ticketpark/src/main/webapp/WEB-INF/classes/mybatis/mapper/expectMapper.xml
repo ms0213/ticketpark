@@ -3,20 +3,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="expect">
 	<insert id="insertExpect" parameterType="com.sp.tp.expect.Expect">
-		INSERT INTO expect (num, userId, content, reg_date)
-		VALUES (expect_seq.NEXTVAL, #{userId}, #{content}, SYSDATE)
+		INSERT INTO expect (num, userId, perfNum, content, reg_date)
+		VALUES (expect_seq.NEXTVAL, #{userId}, #{perfNum}, #{content}, SYSDATE)
 	</insert>
 	
-	<select id="dataCount" resultType="Integer">
-		SELECT NVL(COUNT(*), 0) FROM expect
+	<select id="dataCount" parameterType="Integer"  resultType="Integer">
+		SELECT COUNT(*) FROM expect WHERE perfNum=#{perfNum}
 	</select>
 	
 	<select id="listExpect" parameterType="map" resultType="com.sp.tp.expect.Expect">
 		SELECT * FROM (
 			SELECT ROWNUM rnum, tb.* FROM (
-				SELECT num, e.userId, userName, e.content, TO_CHAR(e.reg_date, 'YYYY-MM-DD') reg_date
+				SELECT num, e.perfNum, e.userId, userName, e.content, TO_CHAR(e.reg_date, 'YYYY-MM-DD') reg_date
 				FROM expect e
 				JOIN member1 m ON e.userId=m.userId
+				JOIN performance p ON e.perfNum=p.perfNum
+				WHERE e.perfNum = #{perfNum}
 				ORDER BY num DESC
 			) tb WHERE ROWNUM &lt;= #{end}
 		) WHERE rnum &gt;= #{start}

@@ -37,11 +37,11 @@ public class ExpectServiceImpl implements ExpectService {
 	}
 
 	@Override
-	public int dataCount() {
+	public int dataCount(int perfNum) {
 		int result = 0;
 
 		try {
-			result = dao.selectOne("expect.dataCount");
+			result = dao.selectOne("expect.dataCount", perfNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

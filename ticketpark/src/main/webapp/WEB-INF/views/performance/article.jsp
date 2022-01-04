@@ -256,9 +256,6 @@ $(document).ready(function(){
 	});
 });
 
-</script>
-
-<script type="text/javascript">
 function ajaxFun(url, method, query, dataType, fn) {
 	$.ajax({
 		type:method,
@@ -275,7 +272,10 @@ function ajaxFun(url, method, query, dataType, fn) {
 		}
 	});
 }
+</script>
 
+<script type="text/javascript">
+// 찜 --------------------
 $(function() {
 	$("body").on("click", ".choiceBtn", function() {
 		var $i = $(this).find("i");
@@ -345,13 +345,380 @@ $(function() {
 $(function(){
 	$("body").on("click","#review-tab", function() {
         $('#review').load('${pageContext.request.contextPath}/performance/review/review?perfNum=${dto.perfNum}');
+        listPage(1);
 	});
+});
 
+$(function(){
+	$("body").on("click","#expect-tab", function() {
+        $('#expect').load('${pageContext.request.contextPath}/performance/expect/expect?perfNum=${dto.perfNum}');
+        expertListPage(1);
+	});
 });
 </script>
 
+<!-- 기대평 -->
+<script type="text/javascript">
+function expertListPage(page) {
+	var url = "${pageContext.request.contextPath}/performance/expect/list";
+	var query = "pageNo=" + page+"&perfNum="+${dto.perfNum};
+	
+	var fn = function(data) {
+		printExpect(data);
+	};
+	ajaxFun(url, "get", query, "json", fn);
+}
 
+function printExpect(data) {
+	var uid = "${sessionScope.member.userId}";
+	var permission = "${sessionScope.member.membership > 50 ? 'true':'false'}";
+	
+	var dataCount = data.dataCount;
+	var pageNo = data.pageNo;
+	var total_page = data.total_page;
+	
+	$(".expect-count").attr("data-pageNo", pageNo);
+	$(".expect-count").attr("data-totalPage", total_page);
+	
+	$("#listExpect").show();
+	$(".expect-count").html("총 " + dataCount + "개의 기대평이 등록되었습니다.");
+	
+	$(".more-box").hide();
+	if(dataCount == 0) {
+		$(".expect-list-body").empty();
+		return;
+	}
+	
+	if(pageNo < total_page) {
+		$(".expert-more-box").show();
+	}
+	
+	var out = "";
+	for(var idx = 0; idx < data.list.length; idx++) {
+		var num = data.list[idx].num;
+		var userId = data.list[idx].userId;
+		var userName = data.list[idx].userName;
+		var content = data.list[idx].content;
+		var reg_date = data.list[idx].reg_date;
 
+		out += "<tr>";
+		out += "    <td width='50%'><i class='bi bi-person-circle text-muted'></i> <span>" + userName + "</span></td>";
+		out += "    <td width='50%' align='right'>" + reg_date;
+		if(uid === userId || permission === "true") {
+			out += "   | <span class='updateExpect' data-num='" + num + "'>수정</span>";
+			out += "   | <span class='deleteExpect' data-num='" + num + "'>삭제</span>";
+		}
+		out += "    </td>";
+		out += "</tr>";
+		out += "<tr>";
+		out += "    <td colspan='2' valign='top'>" + content + "</td>"; 
+		out += "</tr>";
+		out += "<tr style='display:none;'>";
+		out += "	<td colspan='2'><textarea class='form-control'>";
+		out +=  content;
+		out += "</textarea></td>"
+		out += "</tr>";
+		
+	}
+
+	$(".expect-list-body").append(out);
+}
+
+$(function(){
+	$("body").on("click", ".expert-btnSend", function(){
+		var content = $("#expectcontent").val().trim();
+		if(! content) {
+			$("#expectcontent").focus();
+			return false;
+		}
+		
+		var url = "${pageContext.request.contextPath}/performance/expect/insertExpect";
+		var query = "content=" + encodeURIComponent(content)+"&perfNum="+${dto.perfNum};
+		
+		var fn = function(data) {
+			$("#expectcontent").val("");
+			$(".expect-list-body").empty();
+			expertListPage(1);
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+		
+	});
+});
+
+$(function(){
+	$("body").on("click", ".deleteExpect", function(){
+		var $span = $(this).parent("td").find(".updateExpect");
+		
+		if($(this).text()==="취소") {
+			$span.text("수정");
+			$(this).text("삭제");
+			$(this).closest("tr").next().show();
+			$(this).closest("tr").next().next().hide();
+			
+			return false;
+		}
+		
+		if( ! confirm('게시글을 삭제 하시겠습니까 ? ')) {
+			return false;
+		}
+		
+		var num = $(this).attr("data-num");
+		var url = "${pageContext.request.contextPath}/performance/expect/deleteExpect";
+		var query = "num=" + num+"&perfNum="+${dto.perfNum};
+		var fn = function(data) {
+			$(".expect-list-body").empty();
+			expertListPage(1);
+		};
+		ajaxFun(url, "post", query, "json", fn);
+		
+	});
+});
+
+// 더보기
+$(function(){
+	$("body").on("click", ".expert-more-box .expert-more", function(){
+		var pageNo = $(".expect-count").attr("data-pageNo");
+		var total_page = $(".expect-count").attr("data-totalPage");
+		
+		if(pageNo < total_page) {
+			pageNo++;
+			expertListPage(pageNo);
+		}
+	});
+});
+
+$(function(){
+	$("body").on("click", ".updateExpect", function(){
+		var num = $(this).attr("data-num");
+		var title = $(this).text();
+		var $span = $(this).parent("td").find(".deleteExpect");
+		
+		if(title==="수정") {
+			$(this).text("저장");
+			$span.text("취소");
+			$(this).closest("tr").next().show();
+			$(this).closest("tr").next().next().show();
+		
+		} 
+		else {
+			var content = $(this).closest("tr").next().next().find("textarea").val().trim();
+			if(! content) {
+				return false;
+			}
+			
+			var url = "${pageContext.request.contextPath}/performance/expect/update";
+			var query = "num="+num+"&content="+encodeURIComponent(content);
+
+			var fn = function(data) {
+				$("#expectcontent").val("");
+				$(".expect-list-body").empty();
+				expertListPage(1);
+			};
+			
+			ajaxFun(url, "post", query, "json", fn);
+			
+			$(this).text("수정");
+			$span.text("삭제");
+			$(this).closest("tr").next().show();
+			$(this).closest("tr").next().next().hide();			
+		}
+	});
+});
+</script>
+
+<!-- 리뷰 -->
+<script type="text/javascript">
+function listPage(page) {
+	var url = "${pageContext.request.contextPath}/performance/review/list";
+	//var perfNum=$("#perfNum").val();
+	var query = "pageNo=" + page+"&perfNum="+${dto.perfNum};
+	
+	var fn = function(data) {
+		printReview(data);
+	};
+	ajaxFun(url, "get", query, "json", fn);
+}
+
+function printReview(data) {
+	var uid = "${sessionScope.member.userId}";
+	var permission = "${sessionScope.member.membership > 50 ? 'true':'false'}";
+	
+	var dataCount = data.dataCount;
+	var pageNo = data.pageNo;
+	var total_page = data.total_page;
+	
+	$(".review-count").attr("data-pageNo", pageNo);
+	$(".review-count").attr("data-totalPage", total_page);
+	
+	$("#listReview").show();
+	$(".review-count").html("총 " + dataCount + "개의 후기가 등록되었습니다.");
+	
+	$(".more-box").hide();
+	if(dataCount == 0) {
+		$(".review-list-body").empty();
+		return;
+	}
+	
+	if(pageNo < total_page) {
+		$(".more-box").show();
+	}
+	
+	var out = "";
+	for(var idx = 0; idx < data.list.length; idx++) {
+		var num = data.list[idx].num;
+		var userId = data.list[idx].userId;
+		var userName = data.list[idx].userName;
+		var userRate = data.list[idx].rate*20;
+		var content = data.list[idx].content;
+		var reg_date = data.list[idx].reg_date;
+
+		out += "<tr>";
+		out += "    <td width='50%' align='left'><i class='bi bi-person-circle text-muted'></i> <span>" + userName + "</span></td>";
+		out += "    <td width='50%' align='right'>" + reg_date;
+		if(uid === userId || permission === "true") {
+			out += "   | <span class='updateReview' data-num='" + num + "'>수정</span>";
+			out += "   | <span class='deleteReview' data-num='" + num + "'>삭제</span>";
+		}
+		out += "    </td>";
+		out += "</tr>";
+		out += "<tr>";
+		out += "    <td valign='top' align='left'>" + content + "</td>"; 
+		out += "    <td valign='top' align='right'>"; 
+		out += "	<div class='star-ratings mb-3 ml-3' style='float: right;'>";
+		out += "	<div class='star-ratings-fill space-x-2 text-lg' style=' width: "+userRate+"% '>";
+		out += "	<span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span></div>";
+		out += "	<div class='star-ratings-base space-x-2 text-lg'><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span><span><i class='icofont-star'></i></span></div></div>";
+		out += "    </td>"; 
+		out += "</tr>";
+		out += "<tr style='display:none;'>";
+		out += "	<td colspan='2'><textarea class='form-control'>";
+		out +=  content;
+		out += "</textarea></td>"
+		out += "</tr>";
+		
+	}
+	
+	$(".review-list-body").append(out);
+}
+
+$(function(){
+	$("body").on("click", ".btnSend", function(){
+		var content = $("#reviewcontent").val().trim();
+		//var perfNum=$("#perfNum").val();
+		if(! content) {
+			$("#reviewcontent").focus();
+			return false;
+		}
+		
+		var url = "${pageContext.request.contextPath}/performance/review/insertReview";
+		var query = "content=" + encodeURIComponent(content)+"&rate="+star+"&perfNum="+${dto.perfNum};
+		
+		var fn = function(data) {
+			$("#reviewcontent").val("");
+			$(".review-list-body").empty();
+			listPage(1);
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+		
+	});
+});
+
+$(function(){
+	$("body").on("click", ".deleteReview", function(){
+		var $span = $(this).parent("td").find(".updateReview");
+		
+		if($(this).text()==="취소") {
+			$span.text("수정");
+			$(this).text("삭제");
+			$(this).closest("tr").next().show();
+			$(this).closest("tr").next().next().hide();
+			
+			return false;
+		}
+		
+		if( ! confirm('후기를 삭제하시겠습니까 ? ')) {
+			return false;
+		}
+		
+		var num = $(this).attr("data-num");
+		var url = "${pageContext.request.contextPath}/performance/review/deleteReview";
+		var query = "num=" + num+"&perfNum="+${dto.perfNum};
+		var fn = function(data) {
+			$(".review-list-body").empty();
+			listPage(1);
+		};
+		ajaxFun(url, "post", query, "json", fn);
+		
+	});
+});
+
+//더보기
+$(function(){
+	$("body").on("click", ".more-box .more", function(){
+		var pageNo = $(".review-count").attr("data-pageNo");
+		var total_page = $(".review-count").attr("data-totalPage");
+		
+		if(pageNo < total_page) {
+			pageNo++;
+			listPage(pageNo);
+		}
+	});
+});
+
+$(function(){
+	$("body").on("click", ".updateReview", function(){
+		var num = $(this).attr("data-num");
+		var title = $(this).text();
+		var $span = $(this).parent("td").find(".deleteReview");
+		
+		if(title==="수정") {
+			$(this).text("저장");
+			$span.text("취소");
+			$(this).closest("tr").next().show();
+			$(this).closest("tr").next().next().show();
+		
+		} 
+		else {
+			var content = $(this).closest("tr").next().next().find("textarea").val().trim();
+			if(! content) {
+				return false;
+			}
+			
+			var url = "${pageContext.request.contextPath}/performance/review/updateReview";
+			var query = "num="+num+"&content="+encodeURIComponent(content);
+
+			var fn = function(data) {
+				$("#reviewcontent").val("");
+				$(".review-list-body").empty();
+				listPage(1);
+			};
+			
+			ajaxFun(url, "post", query, "json", fn);
+			
+			$(this).text("수정");
+			$span.text("삭제");
+			$(this).closest("tr").next().show();
+			$(this).closest("tr").next().next().hide();			
+		}
+	});
+});
+
+$(function(){
+	$("body").on("click", ".user-rating span", function(e){
+	      $(this).parent().children('span').removeClass('on');
+	      
+	      $(this).addClass('on').prevAll('span').addClass('on');    
+	});	
+});
+
+var star="";
+function setStar(point) {
+	star=point;
+	console.log(star);
+};
+</script>
 
 <div class="container">
 	<div class="body-container">
