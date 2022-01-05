@@ -190,6 +190,10 @@ $(function(){
 										<option value="navy" style="background:navy;" ${dto.color=="navy"?"selected='selected'":""}>남색</option>
 										<option value="gray" style="background:gray;" ${dto.color=="gray"?"selected='selected'":""}>회색</option>
 										<option value="black" style="background:black;" ${dto.color=="black"?"selected='selected'":""}>검정</option>
+										<option value="pink" style="background:pink;" ${dto.color=="pink"?"selected='selected'":""}>분홍</option>
+										<option value="sea" style="background:#6EE3F7;" ${dto.color=="#6EE3F7"?"selected='selected'":""}>바다</option>
+										<option value="grass" style="background:'#86E57F';" ${dto.color=="#6EE3F7"?"selected='selected'":""}>풀</option>
+									
 									</select>
 								</div>
 							</div>

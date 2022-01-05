@@ -88,11 +88,11 @@ public class QnaServiceImpl implements QnaService {
 	}
 
 	@Override
-	public int dataCount(Map<String, Object> map) {
+	public int dataCount(int perfNum) {
 		int result = 0;
 
 		try {
-			result = dao.selectOne("qna.dataCount", map);
+			result = dao.selectOne("qna.dataCount", perfNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,10 +118,6 @@ public class QnaServiceImpl implements QnaService {
 			e.printStackTrace();
 			throw e;
 		}
-
-		// for (Entry<String, Object> entrySet : map.entrySet()) {
-		// System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
-		// }
 	}
 
 	@Override

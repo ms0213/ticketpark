@@ -12,7 +12,7 @@ public interface QnaService {
 	public List<Reply> listReplyAnswer(int answer);
 	public int replyAnswerCount(int answer);
 	
-	public int dataCount(Map<String, Object> map);
+	public int dataCount(int perfNum);
 	
 	public void insertReplyLike(Map<String, Object> map) throws Exception;
 	public Map<String, Object> replyLikeCount(Map<String, Object> map);
