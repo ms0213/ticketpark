@@ -42,6 +42,7 @@
    
 }
 
+
 </style>
 
 
@@ -64,7 +65,7 @@
 					
 					<table class="table table-borderless reply-form">
 						<tr>
-							<td align='right'>
+							<td>
 								<textarea class='form-control' name="qnacontent" id="qnacontent" placeholder=" &nbsp;게시판 운영 규정에 어긋난다고 판단되는 글은 사전 통보없이 삭제 처리될 수 있습니다."></textarea>
 							</td>
 						

@@ -76,7 +76,7 @@ public class QnaController {
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
 
-		return "qna/listReply";
+		return "performance/qna/listReply";
 
 		}
 	
@@ -126,7 +126,7 @@ public class QnaController {
 			}
 
 			model.addAttribute("listReplyAnswer", listReplyAnswer);
-			return "qna/listReplyAnswer";
+			return "performance/qna/listReplyAnswer";
 		}
 
 		// 댓글의 답글 개수 : AJAX-JSON

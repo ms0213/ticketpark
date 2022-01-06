@@ -129,6 +129,8 @@
 .bcd .time_btn{color: #212529;
     background-color: #e2e6ea;
     border-color: #dae0e5;}
+    
+
 </style>
 
 <script type="text/javascript">
@@ -738,6 +740,7 @@ function qnaListPage(page) {
 	var selector = "#listReply";
 	
 	var fn = function(data){
+
 		$(selector).html(data);
 	};
 	ajaxFun(url, "get", query, "html", fn);
@@ -841,7 +844,7 @@ $(function(){
 function listReplyAnswer(answer) {
 	var url = "${pageContext.request.contextPath}/performance/qna/listReplyAnswer";
 	var query = "answer=" + answer;
-	var selector = "#listReplyAnswer" + answer;
+	var selector = "#listReplyAnswer" + answer ;
 	
 	var fn = function(data){
 		$(selector).html(data);
@@ -890,7 +893,7 @@ $(function(){
 // 댓글별 답글 등록
 $(function(){
 	$("body").on("click", ".btnSendReplyAnswer", function(){
-		var num = "${dto.perfNum}";
+		var perfNum = "${dto.perfNum}";
 		var replyNum = $(this).attr("data-replyNum");
 		var $td = $(this).closest("td");
 		

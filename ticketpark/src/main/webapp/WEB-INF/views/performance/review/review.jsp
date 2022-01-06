@@ -68,7 +68,7 @@ textarea::placeholder{
 			</form>
 
 			<div id="listReview">
-				<div class='mt-4 mb-1'>
+				<div class='mt-4 mb-1' align='left'>
 					<span class='review-count fw-bold text-primary' data-pageNo="1" data-totalPage="1">총 0개의 후기가 등록되었습니다.</span>
 				</div>
 				

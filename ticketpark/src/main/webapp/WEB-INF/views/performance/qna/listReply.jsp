@@ -9,7 +9,7 @@
 }
 
 .num {
-	color: #1eb19e;
+	color: #62C15B;
 }
 
 .listReply {
@@ -20,11 +20,15 @@
 .border {
     border: 1px solid #FFFFFF!important;
 }
+
+.reply .reply-info .reply-count {
+	color: #000000;
+}
 </style>
 
 <div class='listReply'>
 
-<div class='reply-info'>
+<div class='reply-info' align='left'>
 	<span class='reply-count' style="font-weight:bold; font-size:16px">총 <span class="num">${replyCount}</span>개의 문의글이 있습니다.</span>
 
 </div><br>
@@ -32,7 +36,7 @@
 <table class='table table-borderless'>
 	<c:forEach var="vo" items="${listReply}">
 		<tr class='border bg-light'>
-			<td width='50%'>
+			<td width='50%' align='left'>
 				<i class="bi bi-person-circle text-muted"></i> <span class="bold">${vo.userName}</span>
 			</td>
 			<td width='50%' align='right'>
@@ -45,12 +49,12 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan='2' valign='top'>${vo.content}</td>
+			<td align='left' colspan='2' valign='top'>${vo.content}</td>
 		</tr>
 
 		<tr>
-			<td>
-				<button type='button' class='btn btn-outline-success btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
+			<td align='left'>
+				<button type='button' class='btn btn-outline-secondary btnReplyAnswerLayout' data-replyNum='${vo.replyNum}'>답글 <span id="answerCount${vo.replyNum}">${vo.answerCount}</span></button>
 			</td>
 			<td align='right'>
 				<button type='button' class='btn btn-light btnSendReplyLike' data-replyNum='${vo.replyNum}' data-replyLike='1' title="좋아요"><i class="bi bi-hand-thumbs-up"></i> <span>${vo.likeCount}</span></button>
@@ -66,7 +70,7 @@
 		                <div class='col'><textarea class='form-control'></textarea></div>
 		            </div>
 		             <div class='row p-2'>
-		             	<div class="col text-end">
+		             	<div class="col text-end" align='right'>
 		                	<button type='button' class='btn btn-light btnSendReplyAnswer' data-replyNum='${vo.replyNum}'>답글 등록</button>
 		                </div>
 		            </div>

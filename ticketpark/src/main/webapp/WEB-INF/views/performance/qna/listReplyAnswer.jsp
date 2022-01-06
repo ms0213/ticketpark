@@ -6,7 +6,7 @@
 <c:forEach var="vo" items="${listReplyAnswer}">
 	<div class='border-bottom mb-2'>
 		<div class='row py-1'>
-			<div class='col-6'><i class="bi bi-person-circle text-muted"></i> <span class="bold">${vo.userName}</span></div>
+			<div class='col-6' align='left'><i class="bi bi-person-circle text-muted"></i> <span class="bold">${vo.userName}</span></div>
 			<div class='col text-end' align="right">
 				<span class="text-muted">${vo.reg_date}</span> |
 				<c:choose>
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 
-		<div class='row px-2 pb-2'>
+		<div class='row px-2 pb-2' align='left'>
 			<div class='col'>${vo.content}</div>
 		</div>
 	</div>
