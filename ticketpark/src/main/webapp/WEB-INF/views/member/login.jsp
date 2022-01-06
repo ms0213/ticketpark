@@ -49,7 +49,7 @@ function sendLogin() {
                             </div>
                         </div>
                         <div class="col-12">
-                            <button type="button" class="btn btn-primary float-end" onclick="sendLogin();">&nbsp;Login&nbsp;<i class="bi bi-check2"></i></button>
+                            <button type="button" class="btn btn-success" style="float:right;" onclick="sendLogin();">&nbsp;Login&nbsp;</i></button>
                         </div>
                     </form>
                     <hr class="mt-4">

@@ -224,8 +224,8 @@ $(function(){
 }
 
 .row .g-0 {
-	border-bottom: 1px solid #ccc;
-	width: 60%;
+
+
 }
 
 .click {
@@ -240,6 +240,10 @@ $(function(){
 .table td {
 	vertical-align: middle;
 }
+.rightdiv { }
+.videodiv { }
+.articlediv { width: 60%; }
+.rankdiv { }
 </style>
 	<!--top place start-->
     <section class="event_part" style="padding: 50px 0; min-height: 600px;">
@@ -374,8 +378,8 @@ $(function(){
     <section class="top_place section_padding">
         <div class="container">
            
-            <div class="row">
-            <div class="articlediv">
+            <div class="row justify-content-center">
+            <div class="articlediv mr-3">
                 <c:forEach var="dto" items="${listArticle}">
                 	<div class="row g-0" onclick="location.href='${pageContext.request.contextPath}/article/article?page=1&num=${dto.artiNum}';">
 						<div class="col-md-4 mt-4">
@@ -404,6 +408,7 @@ $(function(){
 					</c:forEach>
 					</div>
 					
+					<div class="rightdiv ml-5">
 					<div class="rankdiv">
                     <div class="booking_menu">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -422,7 +427,7 @@ $(function(){
 								<div class="bookRank">
 									<table class="table table-hover board-list">
 										<c:forEach var="eo" items="${bookRank}">
-											<tr class="click" onclick="location.href='${pageContext.request.contextPath}?page=1&perfNum=${eo.perfNum}&category=all'">
+											<tr class="click" onclick="location.href='${pageContext.request.contextPath}/performance/article?page=1&perfNum=${eo.perfNum}&category=all'">
 											<td>
 												${eo.rnum}
 											</td>
@@ -442,7 +447,7 @@ $(function(){
                                	<div class="ratingRank">
 									<table class="table table-hover board-list">
 										<c:forEach var="eo" items="${ratingRank}">
-											<tr class="click" onclick="location.href='${pageContext.request.contextPath}?page=1&perfNum=${eo.perfNum}&category=all'">
+											<tr class="click" onclick="location.href='${pageContext.request.contextPath}/performance/article?page=1&perfNum=${eo.perfNum}&category=all'">
 											<td>
 												${eo.rnum}
 											</td>
@@ -466,6 +471,7 @@ $(function(){
 		
 					
 					<div class="videodiv">
+					<h4 style="padding-top: 70px;">영상클립<a style="float: right;" href="${pageContext.request.contextPath}/video/list">더보기</a></h4>
 					<c:forEach var="xo" items="${listVideo}" varStatus="status">
 				 		<div class="col-md-4 col-lg-3 p-3 item">
 				 			<div class="card" style="width: 18rem;">
@@ -477,6 +483,7 @@ $(function(){
 							</div>
 				 		</div>
 			 		</c:forEach>
+			 		</div>
 			 		</div>
             </div>
         </div>
