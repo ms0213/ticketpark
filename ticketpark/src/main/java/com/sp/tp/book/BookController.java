@@ -102,21 +102,41 @@ public class BookController {
 			Model model) {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		Member dto = new Member();
+		List<Book> list = new ArrayList<Book>();
 		try {
 			dto = service.readMember(info.getUserId());
+			list = service.readCoupon(info.getUserId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("list", list);
 		model.addAttribute("userName", dto.getUserName());
 		model.addAttribute("tel", dto.getTel());
 		model.addAttribute("email", dto.getEmail());
 		model.addAttribute("birth", dto.getBirth());
+		model.addAttribute("userId", info.getUserId());
 		
 		return ".book.identification";
 	}
 	
 	@RequestMapping(value = "identification", method = RequestMethod.POST)
-	public String identificationOk() {
+	public String identificationOk(
+			final RedirectAttributes reAttr,
+			Model model,
+			@RequestParam String userId
+			) {
+		try {
+		} catch (Exception e) {
+			try {
+				Book dto = new Book();
+				dto = service.readBook(userId);
+				service.deleteBook2(dto.getbNum());
+				service.deleteBook(dto.getbNum());
+				reAttr.addFlashAttribute("message", "결제에 실패하였습니다.");
+				return "redirect:/book/complete";				
+			} catch (Exception e2) {
+			}
+		}
 		return "redirect:/book/payment";
 	}
 	

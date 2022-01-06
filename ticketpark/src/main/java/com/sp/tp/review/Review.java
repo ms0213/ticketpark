@@ -6,6 +6,14 @@ public class Review {
 	private String userName;
 	private String content;
 	private Double rate;
+	private String subject;
+	
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
 	public String getUserName() {
 		return userName;
 	}

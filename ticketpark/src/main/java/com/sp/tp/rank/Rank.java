@@ -10,7 +10,14 @@ public class Rank {
 	private String startDate;
 	private String endDate;
 	private String hallName;
+	private String rate;
 	
+	public String getRate() {
+		return rate;
+	}
+	public void setRate(String rate) {
+		this.rate = rate;
+	}
 	public int getPtNum() {
 		return ptNum;
 	}

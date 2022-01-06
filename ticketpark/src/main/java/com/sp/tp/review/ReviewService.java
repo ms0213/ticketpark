@@ -12,4 +12,6 @@ public interface ReviewService {
 	
 	public int sumRate(int perfNum);
 	public void updateRate(int sum, int count, int perfNum) throws Exception;
+	
+	public List<Review> bestReview();
 }

@@ -8,42 +8,35 @@
 		<c:forEach var="vo" items="${list2}">
 			<img src="${pageContext.request.contextPath}/uploads/hall/${vo.hallFile}">
 		</c:forEach>
-		<c:forEach var="dto" items="${list}" varStatus="status">
-			 <div class="card">
-				<div class="card-header" id="heading${status.index}">
-					<h2 class="mb-0">
-						<button class="btn btn-link collapsed" type="button" data-toggle="collapse" aria-expanded="false" data-target="#collapse${status.index}" aria-controls="collapse${status.index}" style="text-decoration: none;">
-          					${dto.name}
-						</button>
-					</h2>
-				</div>
+		
+		<table class="table table-border table-list">
+			<thead>
+				<tr> 
+					<th class="w-auto">상영관 이름</th>
+					<th class="w-auto">좌석 배치도 사진</th>
+					<th class="w-auto">상영관 삭제하기</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<c:forEach var="dto" items="${list}" varStatus="status">
+				<tr> 
+					<td style="text-align: center;">${dto.name}</td>
+					<td style="text-align: center;"><button type="button" class="btn btn-light">보기</button> <button type="button" class="btn btn-light"> ${not empty dto.saveFilename ? "삭제" : "등록"} </button></td>
+					<td style="text-align: center;"><button type="button" class="btn " onclick="deleteTheater('${dto.tNum}');">상영관삭제</button></td>
+				</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		
 
-				<div id="collapse${status.index}" class="collapse" aria-labelledby="heading${status.index}" data-parent="#accordionExample">
-					<div class="card-body">
-						<div class="row border-bottom pb-1"> 상영관 이름 : ${dto.name}</div>
-						<div class="row p-2">
-      					좌석 배치도 사진 |&nbsp;보기 , ${not empty dto.saveFilename ? "삭제" : "등록"}
-      					</div>
-
-						<div class="row py-1">
-							<div class="col text-end">
-								<a href="#" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/theaterManage/update?num=${dto.tNum}';">수정</a>&nbsp;|
-								<a href="#" onclick="deleteTheater('${dto.tNum}');">삭제</a>
-							</div>
-						</div>
-      				</div>
-    			</div>
-    			
-  			</div>
-	
-		</c:forEach>
-		<button type="button" class="btn btn-light" onclick="addtheater();">상영관 추가하기</button>
+		
 	</div>
 
 
 <div class="row py-3">
-	<div class="col">
-    	
+	<div class="col" style="padding-top: 20px; float: right;">
+    	<button type="button" class="btn btn-light" onclick="addtheater();">상영관 추가하기</button>
 		<button type="button" class="btn btn-light" onclick="reloadTheater();">새로고침</button>
 	</div>
 </div>

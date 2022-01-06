@@ -182,17 +182,18 @@
 		SELECT TO_CHAR((TO_DATE(perf_date,'YYYY-MM-DD')),'YYYY-MM-DD') perf_date
 		FROM schedule s
         JOIN performance p ON s.perfNum2 = p.perfNum
-		WHERE s.perfNum2 = #{perfNum}
+		WHERE s.perfNum2 = #{perfNum} AND perf_date &gt;= SYSDATE
 	</select>
 	
 	<!-- 공연 시간 -->
 	<select id="listTime" parameterType="map" resultType="com.sp.tp.performance.PerformanceBook">
-		SELECT pt.ptNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
-		FROM schedule s
-		JOIN performanceTime pt ON s.perfNum2 = pt.perfNum2
-		JOIN cast c ON pt.ptNum = c.ptNum
+		select p.ptNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName 
+		from performanceTime p
+		JOIN schedule s ON p.perf_date = s.perf_date
+		JOIN performance pf ON pf.perfNum = s.perfNum2
+		JOIN cast c ON p.ptNum = c.ptNum
 		JOIN actor a ON a.actorNum = c.actorNum
-		WHERE pt.perf_date = #{perf_date}
-		GROUP BY performanceTime, pt.ptNum
+		where p.perf_date = #{perf_date}
+		GROUP BY performanceTime, p.ptNum
 	</select>
 </mapper>

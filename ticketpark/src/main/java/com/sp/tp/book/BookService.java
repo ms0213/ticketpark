@@ -15,4 +15,7 @@ public interface BookService {
 	public Book readPay(int bNum) throws Exception;
 	public List<Book> readComplete(Map<String, Object> map);
 	public void updateBook(Map<String, Object> map);
+	
+	public List<Book> readCoupon(String userId);
+	
 }

@@ -31,9 +31,22 @@ public class Book {
 	private String hName;
 	private String tName;
 	
-	
+	private int couponNum;
+	private int coupon;
 	
 
+	public int getCouponNum() {
+		return couponNum;
+	}
+	public void setCouponNum(int couponNum) {
+		this.couponNum = couponNum;
+	}
+	public int getCoupon() {
+		return coupon;
+	}
+	public void setCoupon(int coupon) {
+		this.coupon = coupon;
+	}
 	public int getPtNum() {
 		return ptNum;
 	}

@@ -12,6 +12,7 @@ function sendOk() {
 	var strArray = birth.toString().split("-");
 	var a = strArray[0]+strArray[1]+strArray[2];
 	
+	
 	if( str != a ) { 
 		alert("정보가 일치하지 않습니다. ");
 		f.birth.focus();
@@ -74,6 +75,17 @@ function sendCancel() {
 							<p class="form-control-plaintext">${tel}</p>
 						</td>
 					</tr>
+					<tr>
+						<td class="table-light col-sm-2" scope="row">보유쿠폰</td>
+						<td>
+								<select>
+									<option value="0">쿠폰 목록</option>
+									<c:forEach var="dto" items="${list}">
+										<option value="${dto.couponNum}">${dto.coupon}</option>
+									</c:forEach>
+								</select>
+						</td>
+					</tr>
 			
 				</table>
 				
@@ -87,6 +99,7 @@ function sendCancel() {
 					</tr>
 				</table>
 				<input type="hidden" value="${birth}" name="abc">
+				<input type="hidden" value="${userId}"> 
 			</form>
 			
 		</div>

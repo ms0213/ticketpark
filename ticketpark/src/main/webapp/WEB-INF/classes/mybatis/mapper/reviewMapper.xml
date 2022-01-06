@@ -25,6 +25,19 @@
 		) WHERE rnum &gt;= #{start}
 	</select>
 	
+	<select id="bestReview" resultType="com.sp.tp.review.Review">
+		SELECT * FROM (
+			SELECT ROWNUM rnum, tb.* FROM (
+				SELECT r.userId, r.content, r.rate, subject
+				FROM review r
+				JOIN member1 m ON r.userId=m.userId
+				JOIN performance p ON r.perfNum=p.perfNum
+				WHERE rate &gt;= 4
+                ORDER BY num DESC
+			) tb WHERE ROWNUM &lt;= 10
+		) WHERE rnum &gt;= 1
+	</select>
+	
 	<delete id="deleteReview" parameterType="map">
 		DELETE review WHERE num=#{num}
 			<if test="membership &lt; 51">

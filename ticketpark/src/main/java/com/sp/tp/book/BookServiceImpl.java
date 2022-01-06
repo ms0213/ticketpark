@@ -137,6 +137,19 @@ public class BookServiceImpl implements BookService {
 		
 	}
 
+	@Override
+	public List<Book> readCoupon(String userId) {
+		List<Book> list = null;
+		try {
+			list = dao.selectList("book.readCoupon", userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	
+
 
 
 }

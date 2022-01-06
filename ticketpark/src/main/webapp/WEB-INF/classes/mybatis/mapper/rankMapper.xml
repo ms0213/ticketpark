@@ -10,15 +10,15 @@
 		        SELECT b2.ptNum, COUNT(*), subject, rating, 
 		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate,
 		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
-		            po.saveFilename postFilename, h.hallName, p.perfNum
-		        FROM book2 b2, performanceTime pt, schedule s, performance p, poster po, hall h
+		            po.saveFilename postFilename, h.hallName, p.perfNum, rate
+		        FROM book2 b2, performanceTime pt, schedule s, performance p, poster po, hall h, rate r
 		        WHERE b2.ptNum=pt.ptNum AND pt.perf_date=s.perf_date 
 		            AND s.perfNum2=p.perfNum AND po.perfNum=p.perfNum
-		            AND s.hNum=h.hNum
+		            AND s.hNum=h.hNum AND r.rNum = p.rNum
 		        GROUP BY b2.ptNum, subject, rating, 
 		            TO_CHAR(startDate, 'YYYY-MM-DD'),
 		            TO_CHAR(endDate, 'YYYY-MM-DD'), 
-		            po.saveFilename, h.hallName, p.perfNum
+		            po.saveFilename, h.hallName, p.perfNum, rate
 		        ORDER BY COUNT(*) DESC
 			) tb WHERE ROWNUM &lt;= 10
 		) WHERE rnum &gt;= 1

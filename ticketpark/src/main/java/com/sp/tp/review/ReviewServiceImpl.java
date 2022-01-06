@@ -91,6 +91,17 @@ public class ReviewServiceImpl implements ReviewService {
 			throw e;
 		}
 	}
+
+	@Override
+	public List<Review> bestReview() {
+		List<Review> list = null;
+		try {
+			list = dao.selectList("review.bestReview");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 	
 }

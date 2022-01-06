@@ -56,4 +56,13 @@
 		UPDATE book SET price = #{price}, amount = #{amount}, state = #{state}
 		WHERE bNum = #{bNum}
 	</update>
+	
+	<select id="readCoupon" parameterType="String" resultType="com.sp.tp.book.Book">
+		SELECT m.couponNum, coupon
+		FROM myCoupon m
+		JOIN member1 m1 ON m.userId = m1.userId
+		JOIN coupon c ON m.couponNum = c.couponNum
+		WHERE useCoupon = 0 AND startDate &lt; SYSDATE AND endDate &gt; SYSDATE AND m.userId = #{userId}
+	</select>
+	
 </mapper>

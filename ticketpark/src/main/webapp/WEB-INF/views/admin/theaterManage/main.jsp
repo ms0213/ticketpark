@@ -78,7 +78,7 @@ function deleteTheater(tNum) {
 	
 	var query="tNum="+tNum;
 	
-	if(! confirm("위 게시물을 삭제 하시 겠습니까 ? ")) {
+	if(! confirm("위 상영관을 삭제 하시 겠습니까 ? ")) {
 		  return;
 	}
 	
@@ -96,6 +96,10 @@ function addtheater(){
 	location.href = url;
 }
 </script>
+
+<style>
+.collapse {margin-bottom: 10px;}
+</style>
 
 <div class="container">
 	<div class="body-container">	
