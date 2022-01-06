@@ -54,7 +54,9 @@
 }
 .table td {
 	vertical-align: middle;
+	font-size: 16px;
 }
+
 </style>
 
 <div class="container">
@@ -85,10 +87,11 @@
 									<table class="table table-hover board-list">
 										<tr class="table-title">
 											<td style="min-width: 35px;">랭킹</td>
-											<td style="min-width: 300px; text-align: center;">공연명</td>
+											<td style="max-width: 300px; text-align: center;">공연명</td>
 											<td style="text-align: center;">공연기간</td>
 											<td style="text-align: center;">공연장</td>
 											<td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;평점</td>
+											<td>&ensp;&ensp;&ensp;&ensp;&ensp;예매</td>
 										</tr>
 										<c:forEach var="vo" items="${bookRank}">
 											<tr class="click" onclick="location.href='${articleUrl}&perfNum=${vo.perfNum}&category=all'">
@@ -116,6 +119,10 @@
 													</div>
 												</div>
 											</td>
+											<td>
+												<button type="button" class="btn btn-outline-secondary fh rhclrh"
+													onclick="location.href='${articleUrl}&perfNum=${vo.perfNum}&category=all'">예매하기</button>
+											</td>
 											</tr>
 										</c:forEach>
 									</table>
@@ -126,10 +133,11 @@
 									<table class="table table-hover board-list">
 										<tr class="table-title">
 											<td style="min-width: 35px;">랭킹</td>
-											<td style="min-width: 300px; text-align: center;">공연명</td>
+											<td style="max-width: 300px; text-align: center;">공연명</td>
 											<td style="text-align: center;">공연기간</td>
 											<td style="text-align: center;">공연장</td>
 											<td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;평점</td>
+											<td>&ensp;&ensp;&ensp;&ensp;&ensp;예매</td>
 										</tr>
 										<c:forEach var="vo" items="${ratingRank}">
 											<tr class="click" onclick="location.href='${articleUrl}&perfNum=${vo.perfNum}&category=all'">
@@ -156,6 +164,10 @@
 														<span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span><span><i class="icofont-star"></i></span>
 													</div>
 												</div>
+											</td>
+											<td>
+												<button type="button" class="btn btn-outline-secondary fh rhclrh"
+													onclick="location.href='${articleUrl}&perfNum=${vo.perfNum}&category=all'">예매하기</button>
 											</td>
 											</tr>
 										</c:forEach>

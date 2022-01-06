@@ -244,6 +244,43 @@ $(function(){
 .videodiv { }
 .articlediv { width: 60%; }
 .rankdiv { }
+
+.booking_part .nav-link.active {
+    border-bottom: 3px solid rgb(60 148 54) !important;
+}
+
+input::placeholder {
+  color: black !important;
+}
+input[name=keyAddr] {
+	border-color:  rgb(60 148 54);
+	border-width: 1px;
+}
+
+input[name=keyDate] {
+	border-color:  rgb(60 148 54);
+	border-width: 1px;
+}
+
+select[name=condiGenre] {
+	border-color:  rgb(60 148 54);
+	border-style: 1px;
+	color: black !important;
+}
+
+.gj-icon {
+    color: rgb(60 148 54) !important;
+}
+
+.ti-angle-left {
+	color: rgb(60 148 54) !important;
+}
+
+.ti-angle-right {
+	color: rgb(60 148 54) !important; 
+}
+
+
 </style>
 	<!--top place start-->
     <section class="event_part" style="padding: 50px 0; min-height: 600px;">
@@ -253,7 +290,7 @@ $(function(){
 			<div class="single_event_slider">
 				<a class="link" href="${pageContext.request.contextPath}/performance/article?perfNum=${vo.perfNum}&page=1&category=${vo.category}" title="${vo.subject}">
 				<img src="${pageContext.request.contextPath}/uploads/performance/${vo.postFileName}"
-					class="d-block" alt="${vo.subject}" style="width: 244.825px; height: 326.425px;">
+					class="d-block" alt="${vo.subject}" style="width: 244.825px; height: 326.425px; margin: 0 auto;">
 				</a>
 				<p class="po-title">${vo.subject}</p>
 				<p class="po-title-date">${vo.hallName}</p>
@@ -275,13 +312,13 @@ $(function(){
                     <div class="booking_menu">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                            <a class="nav-link active" id="musical-tab" data-toggle="tab" href="#musical" role="tab" aria-controls="musical" aria-selected="true">뮤지컬</a>
+                            <a class="nav-link active" id="musical-tab" data-toggle="tab" href="#musical" role="tab" aria-controls="musical" aria-selected="true" style="color: black;">뮤지컬</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link" id="drama-tab" data-toggle="tab" href="#drama" role="tab" aria-controls="drama" aria-selected="false">연극</a>
+                            <a class="nav-link" id="drama-tab" data-toggle="tab" href="#drama" role="tab" aria-controls="drama" aria-selected="false" style="color: black;">연극</a>
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link" id="concert-tab" data-toggle="tab" href="#concert" role="tab" aria-controls="concert" aria-selected="false">콘서트</a>
+                            <a class="nav-link" id="concert-tab" data-toggle="tab" href="#concert" role="tab" aria-controls="concert" aria-selected="false" style="color: black;">콘서트</a>
                             </li>
                         </ul>
                     </div>
@@ -294,19 +331,19 @@ $(function(){
                                     <form name="musicalForm  pt-15 mx-auto" action="${pageContext.request.contextPath}/performance/list" method="post">
                                         <div class="form-row">
                                             <div class="form_colum">
-                                                <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
+                                                <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역" >
                                             </div>
                                             <div class="form_colum">
-                                                <select class="form-select" name="condiGenre" id="musicalGenre">
+                                                <select class="form-select" name="condiGenre" id="musicalGenre" style="border-color: rgb(60 148 54); border-style: 1px;">
                                                 	<option value="">장르</option>
                                                 </select>
                                             </div>
                                             <div class="form_colum">
-                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="musicalDate" placeholder="날짜">
+                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="musicalDate" placeholder="날짜" style="border-color:  rgb(60 148 54); border-style: 1px;">
                                             </div>
                                             
                                             <div class="form_btn">
-                                                <button type="submit" class="btn_1" style="border: none;">검색하기</button>
+                                                <button type="submit" class="btn_1" style="border: none; background-color: rgb(60 148 54);">검색하기</button>
                                                 <input type="hidden" name="category" value="musical">
 												
 												<input type="hidden" class="musicalparam" name="keyGenre" value="">
@@ -323,16 +360,16 @@ $(function(){
                                                 <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
                                             </div>
                                             <div class="form_colum">
-                                                <select class="form-select" name="condiGenre" id="dramaGenre">
+                                                <select class="form-select" name="condiGenre" id="dramaGenre" style="border-color:  rgb(60 148 54); border-style: 1px;">
                                                 	<option value="">장르</option>
                                                 </select>
                                             </div>
 											<div class="form_colum">
-                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="dramaDate" placeholder="날짜">
+                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="dramaDate" placeholder="날짜" style="border-color:  rgb(60 148 54); border-style: 1px;">
                                             </div>
                                             
                                             <div class="form_btn">
-                                                <button type="submit" class="btn_1" style="border: none;">검색하기</button>
+                                                <button type="submit" class="btn_1" style="border: none;  background-color: rgb(60 148 54);">검색하기</button>
                                                 <input type="hidden" name="category" value="drama">
 												
 												<input type="hidden" class="dramaparam" name="keyGenre" value="">
@@ -349,15 +386,15 @@ $(function(){
                                                 <input class="form-select" type="text" name="keyAddr" value="${keyAddr}" placeholder="지역">
                                             </div>
                                            <div class="form_colum">
-                                                <select class="form-select" name="condiGenre" id="concertGenre">
+                                                <select class="form-select" name="condiGenre" id="concertGenre" style="border-color:  rgb(60 148 54); border-style: 1px;">
                                                 	<option value="">장르</option>
                                                 </select>
                                             </div>
                                             <div class="form_colum">
-                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="concertDate" placeholder="날짜">
+                                                <input type="text" readonly="readonly" name="keyDate" value="${keyDate}" id="concertDate" placeholder="날짜" style="border-color:  rgb(60 148 54); border-style: 1px;">
                                             </div>
                                              <div class="form_btn">
-                                                <button type="submit" class="btn_1" style="border: none;">검색하기</button>
+                                                <button type="submit" class="btn_1" style="border: none; background-color: rgb(60 148 54);">검색하기</button>
                                                 <input type="hidden" name="category" value="concert">
 												
 												<input type="hidden" class="concertparam" name="keyGenre" value="">
