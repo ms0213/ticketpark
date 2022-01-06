@@ -6,6 +6,15 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
 <style type="text/css">
+.event-container {
+    width: 100%;
+    max-width: 1140px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .coupon-div{
 	text-align: center;
 }
@@ -25,7 +34,7 @@ function deleteOk() {
 }
 </script>
 
-<div class="container">
+<div class="event-container">
 	<div class="body-container">	
 		<div class="body-title">
 			<h3>이벤트 </h3>
@@ -44,16 +53,6 @@ function deleteOk() {
 						</td>
 					</tr>
 
-					<tr>
-						<td colspan="2" style="border-bottom: none;">
-							<div class="row row-cols-6 img-box">
-								<c:forEach var="dto" items="${listFile}">
-									<img src="${pageContext.request.contextPath}/uploads/event/${dto.saveFilename}">
-								</c:forEach>
-							</div>
-						</td>
-					</tr>
-											
 					<tr>
 						<td colspan="2">
 							${dto.content}

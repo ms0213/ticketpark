@@ -19,14 +19,22 @@ public interface PerformanceManageSerive {
 	public List<PerformanceManage> listTheater(Map<String, Object> map);
 	public List<PerformanceManage> listActor(int perfNum);
 	public List<PerformanceManage> listDate(int perfNum);
+	public List<PerformanceManage> listCast(int ptNum);
 	
 	public void insertPoster(PerformanceManage dto) throws Exception;
 	public void insertActor(PerformanceManage dto) throws Exception;
 	public void insertPerfDate(PerformanceManage dto) throws Exception;
 	public void insertPerfTime(PerformanceManage dto) throws Exception;
 	public void insertCast(PerformanceManage dto) throws Exception;
+	
 	public void updatePerformance(PerformanceManage dto, String path) throws Exception;
 	public void updatePoster(PerformanceManage dto, String path) throws Exception;
+	public void updateSchedule(PerformanceManage dto) throws Exception;
+	public void updateTime(PerformanceManage dto) throws Exception;
+	
 	public void deleteActor(Map<String, Object> map) throws Exception;
+	public void deleteTime(Map<String, Object> map) throws Exception;
+	public void deleteDate(Map<String, Object> map) throws Exception;
+	public void deletePerformance(int perfNum) throws Exception;
 	
 }

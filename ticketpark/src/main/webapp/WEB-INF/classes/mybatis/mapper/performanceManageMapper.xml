@@ -61,7 +61,7 @@
 		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, rate, rating
 		        FROM performance p, genre g, rate r, category c
 		        WHERE p.gmnum = g.gnum AND c.cNum = g.cNum
-		           AND r.rNum = p.rNum
+		           AND r.rNum = p.rNum AND enabled = 1
 		           	<if test="keyword != null and keyword != ''">
 						AND <include refid="where-list"/>
 					</if>
@@ -139,10 +139,10 @@
 	
 	<!-- 공연 시간 -->
 	<select id="listTime" parameterType="map" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
-		SELECT performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
+		SELECT pt.ptNum, performanceTime perfTime, LISTAGG(name,',') WITHIN GROUP(ORDER BY name) AS actorName
 		FROM cast c, actor a, performanceTime pt
 		WHERE a.actorNum = c.actorNum AND c.ptNum = pt.ptNum and pt.perf_Date = #{perfDate} and pt.perfNum2 = #{perfNum}
-		GROUP BY performanceTime
+		GROUP BY performanceTime, pt.ptNum
 	</select>
 	
 	<select id="listDate" parameterType="Integer" resultType="com.sp.tp.admin.performanceManage.PerformanceManage">
@@ -193,7 +193,29 @@
 		UPDATE poster SET saveFileName = #{postFileName} WHERE postNum = #{postNum}
 	</update>
 	
+	<update id="updateSchedule" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		UPDATE schedule SET perf_date = #{perfDate} 
+		WHERE perf_date = #{selectDate} AND perfNum2 = #{perfNum}
+	</update>
+	
+	<update id="updateTime" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		UPDATE performanceTime SET performanceTime = #{perfTime}
+		WHERE ptNum = #{ptNum}
+	</update>
+	
 	<delete id="deleteActor" parameterType="map">
 		DELETE FROM actor WHERE actorNum = #{actorNum}
 	</delete>
+	
+	<delete id="deleteTime" parameterType="map">
+		DELETE FROM performanceTime WHERE ptNum = #{ptNum}
+	</delete>
+	
+	<delete id="deleteDate" parameterType="map">
+		DELETE FROM schedule WHERE perfNum2 = #{perfNum} AND perf_date = #{perfDate}
+	</delete>
+	
+	<update id="deletePerformance" parameterType="com.sp.tp.admin.performanceManage.PerformanceManage">
+		UPDATE performance SET enabled = 0 WHERE perfNum = #{perfNum}
+	</update>
 </mapper>

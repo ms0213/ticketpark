@@ -55,7 +55,7 @@
 						<include refid="where-list"/>
 					</if>
 				</where>
-				ORDER BY eventNum DESC			
+				ORDER BY endDate DESC	
 			) tb WHERE ROWNUM &lt;= #{end}
 		) WHERE rnum &gt;= #{start}
 	</select>

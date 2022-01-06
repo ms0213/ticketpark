@@ -52,8 +52,23 @@ public class PerformanceManage {
 	private String postFileName;
 	private MultipartFile postFile;
 	
+	private String selectDate;
+	private String selectTime;
 	private int ptNum;
 	
+	
+	public String getSelectTime() {
+		return selectTime;
+	}
+	public void setSelectTime(String selectTime) {
+		this.selectTime = selectTime;
+	}
+	public String getSelectDate() {
+		return selectDate;
+	}
+	public void setSelectDate(String selectDate) {
+		this.selectDate = selectDate;
+	}
 	public String getPerfDateDay() {
 		return perfDateDay;
 	}

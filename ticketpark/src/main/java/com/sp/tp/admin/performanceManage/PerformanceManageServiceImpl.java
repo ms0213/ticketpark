@@ -213,6 +213,18 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	}
 	
 	@Override
+	public List<PerformanceManage> listCast(int ptNum) {
+		List<PerformanceManage> listCast = null;
+		
+		try {
+			listCast = dao.selectList("performanceManage.listCast", ptNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listCast;
+	}
+	
+	@Override
 	public void insertActor(PerformanceManage dto) throws Exception {
 		try {
 			dao.insertData("performanceManage.insertActor", dto);
@@ -278,6 +290,36 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	}
 	
 	@Override
+	public void deleteTime(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("performanceManage.deleteTime", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
+	public void deleteDate(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("performanceManage.deleteDate", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
+	public void deletePerformance(int perfNum) throws Exception {
+		try {
+			dao.updateData("performanceManage.deletePerformance", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
 	public void updatePerformance(PerformanceManage dto, String path) throws Exception {
 		try {
 			dao.updateData("performanceManage.updatePerformance", dto);
@@ -301,9 +343,6 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 			
 			insertActor(dto);
 		}
-		
-		// 포스터 update
-		updatePoster(dto, path);
 	}
 	
 	@Override
@@ -326,4 +365,23 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 		}
 	}
 	
+	@Override
+	public void updateSchedule(PerformanceManage dto) throws Exception {
+		try {
+			dao.updateData("performanceManage.updateSchedule", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
+	public void updateTime(PerformanceManage dto) throws Exception {
+		try {
+			dao.updateData("performanceManage.updateTime", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 }

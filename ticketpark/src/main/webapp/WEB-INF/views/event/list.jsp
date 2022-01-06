@@ -58,6 +58,9 @@
     font-size: 16px;
     line-height: 21px;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .row-form {

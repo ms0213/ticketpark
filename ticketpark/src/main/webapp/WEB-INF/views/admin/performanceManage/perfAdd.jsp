@@ -150,6 +150,12 @@ function sendOk() {
         return;
     }
     
+    if(f.startDate.value.trim() > f.endDate.value.trim()) {
+    	alert("공연날짜를 정확히 입력하세요. ");
+    	f.startDate.focus();
+    	return;
+    }
+    
     str = f.showTime.value.trim();
     if(!str) {
         alert("공연관람시간을 입력하세요. ");

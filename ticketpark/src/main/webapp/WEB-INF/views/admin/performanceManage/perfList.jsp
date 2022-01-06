@@ -73,14 +73,17 @@ function detailedPerformance(perfNum) {
 		  autoOpen: false,
 		  modal: true,
 		  buttons: {
-		       " 수정 " : function() {
-		    	  location.href = "${pageContext.request.contextPath}/admin/performanceManage/update?perfNum=" + perfNum + "&page=" + ${page};
+		       " 공연수정 " : function() {
+		    	  	location.href = "${pageContext.request.contextPath}/admin/performanceManage/update?perfNum=" + perfNum + "&page=" + ${page};
 		       },
+		       " 일정수정 " : function() {
+					location.href = "${pageContext.request.contextPath}/admin/performanceManage/scheduleUpdate?perfNum=" + perfNum + "&page=" + ${page};
+			   },
 		       " 삭제 " : function() {
 		    	   deleteOk(perfNum);
 			   },
 		       " 닫기 " : function() {
-		    	   $(this).dialog("close");
+		    	   	$(this).dialog("close");
 		       }
 		  },
 		  height: 520,
@@ -113,17 +116,153 @@ function scheduleDetailView() {
 	});
 }
 
-function updateOk(perfNum) {
+function dateUpdateView(perfDate) {
+	$("#dateUpdate").dialog({
+		modal: true,
+		buttons: {
+			" 수정완료 " : function() {
+				dateUpdateOk();
+			},
+			" 닫기 " : function() {
+			 $(this).dialog("close");
+			}
+		},
+		height: 200,
+		width: 350,
+		title: '공연날짜 수정',
+		close: function(event, ui) {
+		  $(this).dialog("destroy"); // 이전 대화상자가 남아 있으므로 필요
+		}
+	});
 	
+	$("input[name=selectDate]").attr("value", perfDate);
+	$("#dateUpdateForm input[name=perfDate]").attr("value", perfDate);
+}
+
+function timeUpdateView(ptNum) {
+	$("#timeUpdate").dialog({
+		modal: true,
+		buttons: {
+			" 수정완료 " : function() {
+				timeUpdateOk();
+			},
+			" 닫기 " : function() {
+			 $(this).dialog("close");
+			}
+		},
+		height: 200,
+		width: 350,
+		title: '공연시간 수정',
+		close: function(event, ui) {
+		  $(this).dialog("destroy"); // 이전 대화상자가 남아 있으므로 필요
+		}
+	});
+	$("#timeUpdateForm input[name=ptNum]").attr("value", ptNum);
+}
+
+function castUpdateView(ptNum) {
+	$("#castUpdate").dialog({
+		modal: true,
+		buttons: {
+			" 수정완료 " : function() {
+				castUpdateOk();
+			},
+			" 닫기 " : function() {
+			 $(this).dialog("close");
+			}
+		},
+		height: 300,
+		width: 350,
+		title: '출연진 수정',
+		close: function(event, ui) {
+		  $(this).dialog("destroy"); // 이전 대화상자가 남아 있으므로 필요
+		}
+	});
+}
+
+function dateUpdateOk() {
+	var f= document.dateUpdateForm;
+	
+	var url = "${pageContext.request.contextPath}/admin/performanceManage/dateUpdate";
+	var query = $("#dateUpdateForm").serialize();
+	
+	var fn = function(data) {
+		
+	}
+	ajaxFun(url, "post", query, "json", fn);
+	
+	$('#dateUpdate').dialog("close");
+}
+
+function castUpdateOk() {
+	var f= document.castUpdateForm;
+	
+	var url = "${pageContext.request.contextPath}/admin/performanceManage/castUpdate";
+	var query = $("#castUpdateForm").serialize();
+	
+	var fn = function(data) {
+		
+	}
+	ajaxFun(url, "post", query, "json", fn);
+	
+	$('#castUpdate').dialog("close");
+}
+
+function timeUpdateOk() {
+	var f= document.dateUpdateForm;
+	
+	var url = "${pageContext.request.contextPath}/admin/performanceManage/timeUpdate";
+	var query = $("#timeUpdateForm").serialize();
+	
+	var fn = function(data) {
+		
+	}
+	ajaxFun(url, "post", query, "json", fn);
+	
+	$('#timeUpdate').dialog("close");
 }
 
 function deleteOk(perfNum) {
-	if(confirm("선택한 공연을 삭제 하시겠습니까 ?")) {
-
+	if(! confirm("해당 공연을 삭제하시겠습니까? ")) {
+		return false;
 	}
-	
+	location.href = "${pageContext.request.contextPath}/admin/performanceManage/delete?perfNum=" + perfNum;
 	$('#performance-dialog').dialog("close");
 }
+
+$(function(){
+	$("body").on("click", ".deleteTime_btn", function(){
+		if(! confirm("해당 시간을 삭제 하시겠습니까 ?")) {
+			return false;
+		}
+		
+		var $time = $(this);
+		var ptNum = $time.attr("data-ptNum");
+		var url="${pageContext.request.contextPath}/admin/performanceManage/deleteTime";
+		$.post(url, {ptNum:ptNum}, function(data){
+			alert("dsaf");
+			console.log($("#timeView"+ptNum));
+			$("#timeView"+ptNum).remove();
+		}, "json");
+	});
+});
+
+$(function(){
+	$("body").on("click", ".deleteDate_btn", function(){
+		if(! confirm("해당 날짜를 삭제 하시겠습니까 ?")) {
+			return false;
+		}
+		
+		var $date = $(this);
+		var perfDate = $date.attr("data-perfDate");
+		var perfNum = $("input[name=perfNum]").val();
+		var url="${pageContext.request.contextPath}/admin/performanceManage/deleteDate";
+		$.post(url, {perfNum:perfNum, perfDate:perfDate}, function(data){
+			$date.closest("div").remove();
+			
+		}, "json");
+	});
+});
 </script>
 
 <main>

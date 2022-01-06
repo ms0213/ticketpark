@@ -11,6 +11,15 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
 
 <style type="text/css">
+.event-container {
+    width: 100%;
+    max-width: 1140px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .img-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, 65px);
@@ -51,7 +60,19 @@
     color: white;
     vertical-align: baseline;
 }
+
+.ck.ck-editor {
+	max-width: 97%;
+}
+.ck-editor__editable {
+    min-height: 250px;
+}
+.ck-content .image>figcaption {
+	min-height: 25px;
+}
 </style>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/ckeditor5/ckeditor.js"></script>
 
 <script type="text/javascript">
 
@@ -66,12 +87,13 @@ function sendOk() {
         return;
     }
 
-    str = f.content.value.trim();
-    if(!str) {
+    str = window.editor.getData().trim();
+    if(! str) {
         alert("내용을 입력하세요. ");
-        f.content.focus();
+        window.editor.focus();
         return;
     }
+	f.content.value = str;
 
     var mode = "${mode}";
     if( (mode === "write") && (!f.selectFile.value) ) {
@@ -237,7 +259,7 @@ $(function() {
 
 </script>
 
-<div class="container">
+<div class="event-container">
 	<div class="body-container">	
 		<div class="body-title">
 			<h3>이벤트 </h3>
@@ -253,8 +275,6 @@ $(function() {
 							<input type="text" name="eventName" class="form-control" value="${dto.eventName}">
 						</td>
 					</tr>
-					
-					
 
 					<tr style="height: 55px;">
 						<td class="table-light col-sm-2" scope="row">쿠폰여부</td>
@@ -282,7 +302,8 @@ $(function() {
 					<tr>
 						<td class="table-light col-sm-2" scope="row">내 용</td>
 						<td>
-							<textarea name="content" id="content" class="form-control">${dto.content}</textarea>
+							<div class="editor">${dto.content}</div>
+							<input type="hidden" name="content">
 						</td>
 					</tr>
 					
@@ -360,3 +381,55 @@ $(function() {
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+	ClassicEditor
+	.create( document.querySelector( '.editor' ), {
+		fontFamily: {
+	        options: [
+	            'default',
+	            '맑은 고딕, Malgun Gothic, 돋움, sans-serif',
+	            '나눔고딕, NanumGothic, Arial'
+	        ]
+	    },
+	    fontSize: {
+	        options: [
+	            9, 11, 13, 'default', 17, 19, 21
+	        ]
+	    },
+		toolbar: {
+			items: [
+				'heading','|',
+				'fontFamily','fontSize','bold','italic','fontColor','|',
+				'alignment','bulletedList','numberedList','|',
+				'imageUpload','insertTable','sourceEditing','blockQuote','mediaEmbed','|',
+				'undo','redo','|',
+				'link','outdent','indent','|',
+			]
+		},
+		image: {
+	        toolbar: [
+	            'imageStyle:full',
+	            'imageStyle:side',
+	            '|',
+	            'imageTextAlternative'
+	        ],
+	
+	        // The default value.
+	        styles: [
+	            'full',
+	            'side'
+	        ]
+	    },
+		language: 'ko',
+		ckfinder: {
+	        uploadUrl: '${pageContext.request.contextPath}/image/upload' // 업로드 url (post로 요청 감)
+	    }
+	})
+	.then( editor => {
+		window.editor = editor;
+	})
+	.catch( err => {
+		console.error( err.stack );
+	});
+</script>

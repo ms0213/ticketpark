@@ -15,6 +15,10 @@ ul {
 	margin-top: 1rem;
 }
 
+.boxTF {
+	margin-bottom: 12px;
+}
+
 .addPerfDate, .addPerfTime {
 	position: absolute;
     top: 16px;
@@ -23,7 +27,11 @@ ul {
     cursor: pointer;
 }
 
-.date_btn, .deleteTime_btn, .deleteDate_btn{
+.deleteTime_btn {
+	min-width: 150px;
+}
+
+.date_btn, .deleteTime_btn, .deleteDate_btn, .updateDate_btn, .updateTime_btn {
 	margin-top: 1rem;
 	max-width: 250px;
 }
@@ -63,8 +71,8 @@ ul {
 
 .time {
 	font-size: 17px;
-	text-align: left;
-	line-height: 40px;
+	text-align: center;
+	line-height: 30px;
 	display: block;
 }
 
@@ -132,15 +140,23 @@ $(function(){
 			$.each(data.timeList, function(index, item){
 				var perfTime = item.perfTime
 				var actorName = item.actorName
-				var s = "<div><button type='button'"
-						+ "class='btn btn-light deleteTime_btn'>"
+				var ptNum = item.ptNum
+				var s = "<div id='timeView"+ptNum+"'><button type='button' class='btn btn-light deleteTime_btn'"
+						+ "data-ptNum='" + ptNum + "'>"
 						+ "<span class='time'>" + perfTime + "</span>"
-						+ "<p class='cast'>출연: " + actorName + "</p></button></div>";
+						+ "<p class='cast'>출연: " + actorName + "</p></button><br>"
+						+ "<button type='button' class='btn btn-light updateTime_btn'"
+						+ "onclick='timeUpdateView(" + ptNum + ");' style='margin-left: 10px;'>"
+						+ "<span>시간수정</span></button>"
+						+ "<button type='button' class='btn btn-light updateTime_btn'"
+						+ "onclick='castUpdateView(" + ptNum + ");' style='margin-left: 10px;'>"
+						+ "<span>출연진수정</span></button><hr></div>";
 				$(".cast_time").append(s);
 			});
 		};
 		ajaxFun(url, "get", query, "json", fn);
 	});
+	
 });
 </script>
 <h3 style="font-size: 15px; padding-top: 10px;"><i class="icofont-double-right"></i> 공연 정보</h3>
@@ -186,16 +202,21 @@ $(function(){
 			<div class="select_date">
 				<h5 style="margin-bottom: 0px;">공연날짜</h5>
 			</div>
-			<c:forEach items="${list}" var="dto">
-				<button name="perfDate" type="button" class="btn btn-light date_btn" value="${dto.perfDate}">
-					<span>${dto.perfDateDay}</span>
-				</button>
-				<button type="button" class="btn btn-light deleteDate_btn" style="margin-left: 10px;">
-					<span>삭제</span>
-				</button>
-				<hr style="margin-bottom: 0px;">
-			</c:forEach>
-			<input type="hidden" name="perfNum" value="${dto.perfNum}">
+				<c:forEach items="${list}" var="vo">
+					<div>
+						<button name="perfDate" type="button" class="btn btn-light date_btn" value="${vo.perfDate}">
+							<span>${vo.perfDateDay}</span>
+						</button><br>
+						<button type="button" class="btn btn-light updateDate_btn" onclick="dateUpdateView('${vo.perfDate}');" style="margin-left: 10px;">
+							<span>수정</span>
+						</button>
+						<button type="button" class="btn btn-light deleteDate_btn" data-perfDate="${vo.perfDate}" style="margin-left: 10px;">
+							<span>삭제</span>
+						</button>
+						<hr style="margin-bottom: 0px;">
+					</div>
+				</c:forEach>
+				<input type="hidden" name="perfNum" value="${dto.perfNum}">
 		</div>
 		
 		<div class="time_choice border">
@@ -207,4 +228,28 @@ $(function(){
 			</div>
 		</div>
 	</div>
+</div>
+
+<div id="dateUpdate" style="display: none; padding-top: 20px; text-align: center;">
+	<form name="dateUpdateForm" id="dateUpdateForm" method= "post">
+		<input type="date" name="perfDate" value="">
+		<input type="hidden" name="selectDate" value="">
+		<input type="hidden" name="perfNum" value="${dto.perfNum}">
+	</form>
+</div>
+
+<div id="timeUpdate" style="display: none; padding-top: 20px; text-align: center;">
+	<form name="timeUpdateForm" id="timeUpdateForm" method= "post">
+		<input type="time" name="perfTime" value="">
+		<input type="hidden" name="ptNum" value="">
+	</form>
+</div>
+
+<div id="castUpdate" style="display: none; padding-top: 20px; text-align: center;">
+	<form name="castUpdateForm" id="timeUpdateForm" method= "post">
+		<c:forEach items="${actorList}" var="vo">
+			<input type="text" class="boxTF" name="actorName" value="${vo.actorName}" disabled="disabled">
+		</c:forEach>
+		<input type="hidden" name="ptNum" value="">
+	</form>
 </div>

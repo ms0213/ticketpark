@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,8 @@ public class PerformanceManageController {
 	private MyUtil myUtil;
 	
 	@RequestMapping(value = "perfList")
-	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
+	public String list(
+			@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
 			@RequestParam(defaultValue = "") String category,
@@ -147,7 +149,9 @@ public class PerformanceManageController {
 	}
 	
 	@RequestMapping(value = "perfAdd", method = RequestMethod.POST)
-	public String writeSubmit(PerformanceManage dto, HttpSession session) throws Exception {
+	public String writeSubmit(PerformanceManage dto, 
+			HttpSession session, 
+			Model model) throws Exception {
 		String root = session.getServletContext().getRealPath("/");
 		String path = root + "uploads" + File.separator + "performance";
 
@@ -159,8 +163,14 @@ public class PerformanceManageController {
 
 		try {
 			service.insertPerformance(dto, path);
+		} catch (DuplicateKeyException e) {
+			model.addAttribute("message", "이미 등록된 날짜입니다.");
+			return "redirect:/admin/performanceManage/perfList";
 		} catch (Exception e) {
+			model.addAttribute("message", "공연 등록에 실패하였습니다.");
+			return "redirect:/admin/performanceManage/perfList";
 		}
+		model.addAttribute("message", "공연이 정상적으로 등록되었습니다.");
 
 		return "redirect:/admin/performanceManage/perfList";
 	}
@@ -176,6 +186,7 @@ public class PerformanceManageController {
 		List<PerformanceManage> genreList = service.listGenre(map);
 		
 		Map<String, Object> model = new HashMap<>();
+		
 		model.put("genreList", genreList);
 		
 		return model;
@@ -208,8 +219,10 @@ public class PerformanceManageController {
 		PerformanceManage dto=service.readPerformance(perfNum);
 		
 		List<PerformanceManage> list = service.listSchedule(perfNum);
+		List<PerformanceManage> actorList = service.listActor(perfNum);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("actorList", actorList);
 		model.addAttribute("dto", dto);
 		
 		return "/admin/performanceManage/perfDetail";
@@ -361,12 +374,137 @@ public class PerformanceManageController {
 		String path = root + "uploads" + File.separator + "performance";
 
 		try {
-			service.updatePerformance(dto,path);
+			service.updatePerformance(dto, path);
+			service.updatePoster(dto, path);
 		} catch (Exception e) {
 
 		}
 		return "redirect:/admin/performanceManage/perfList";
 	}
+	
+	@RequestMapping(value="dateUpdate", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateDate(
+			PerformanceManage dto) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			service.updateSchedule(dto);
+		} catch (Exception e) {
+		}
+		
+		map.put("state",true);
+		
+		return map;
+	}
+	
+	@RequestMapping(value="timeUpdate", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateTime(
+			PerformanceManage dto) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			service.updateTime(dto);
+		} catch (Exception e) {
+			
+		}
+		
+		map.put("state",true);
+		
+		return map;
+	}
+	
+	@RequestMapping(value="castUpdate", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateCast(
+			PerformanceManage dto) throws Exception {
+		
+		List<PerformanceManage> castList = service.listCast(dto.getPtNum());
+		
+		try {
+			service.updateTime(dto);
+		} catch (Exception e) {
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("state", true);
+		
+		return map;
+	}
+	
+	
+	@RequestMapping(value = "scheduleUpdate", method = RequestMethod.GET)
+	public String scheduleUpdateForm(@RequestParam int perfNum,
+			@RequestParam String page,
+			HttpSession session,
+			Model model) throws Exception {
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		PerformanceManage dto = service.readPerformance(perfNum);
+		
+		if(dto == null) {
+			return "redirect:/admin/performanceManage/perfList";
+		}
+		
+		List<PerformanceManage> categoryList = service.listCategory();
+		List<PerformanceManage> rateList = service.listRate();
+		List<PerformanceManage> actorList = service.listActor(perfNum);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("categoryNum", dto.getCategoryNum());
+		List<PerformanceManage> genreList = service.listGenre(map);
+		if (info.getMembership() < 51) {
+			return "redirect:/admin/performanceManage/perfList";
+		}
+
+		model.addAttribute("mode", "update");
+		model.addAttribute("dto", dto);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("rateList", rateList);
+		model.addAttribute("actorList", actorList);
+		model.addAttribute("genreList", genreList);
+		
+		return ".admin.performanceManage.perfAdd";
+	}
+	
+	@RequestMapping(value = "scheduleUpdate", method = RequestMethod.POST)
+	public String scheduleUpdateSubmit(PerformanceManage dto, HttpSession session) throws Exception {
+
+		try {
+			//service.updatePerformance(dto);
+			//service.updatePoster(dto);
+		} catch (Exception e) {
+
+		}
+		return "redirect:/admin/performanceManage/perfList";
+	}
+	
+	
+	/*
+	@GetMapping(value = "date")
+	@ResponseBody
+	public Map<String, Object> selectDate(
+			@RequestParam String perfDate,
+			@RequestParam int perfNum) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("perfDate", perfDate);
+		map.put("perfNum", perfNum);
+		
+		String date = service.selectDate(map);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("date", date);
+		
+		return model;
+	}
+	*/
+	
 	
 	@PostMapping(value="deleteActor")
 	@ResponseBody
@@ -379,7 +517,62 @@ public class PerformanceManageController {
 		map.put("actorNum", actorNum);
 		service.deleteActor(map);
 		
-		return null;
+		return map;
 	}
 	
+	@PostMapping(value="deleteTime")
+	@ResponseBody
+	public Map<String, Object> deleteTime(
+			@RequestParam int ptNum,
+			HttpSession session) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("ptNum", ptNum);
+		service.deleteTime(map);
+		map.put("state", true);
+		
+		return map;
+	}
+	
+	@PostMapping(value="deleteDate")
+	@ResponseBody
+	public Map<String, Object> deleteDate(
+			@RequestParam String perfNum,
+			@RequestParam String perfDate,
+			HttpSession session,
+			Model model) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("perfNum", perfNum);
+		map.put("perfDate", perfDate);
+		
+		try {
+			service.deleteDate(map);
+		} catch (Exception e) {
+			
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "delete", method = RequestMethod.GET)
+	public String deletePerformance(
+			@RequestParam int perfNum,
+			HttpSession session) throws Exception {
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		if (info.getMembership() < 51) {
+			return "redirect:/admin/performanceManage/perfList";
+		}
+		
+		try {
+			service.deletePerformance(perfNum);
+		} catch (Exception e) {
+
+		}
+		return "redirect:/admin/performanceManage/perfList";
+	}
 }
