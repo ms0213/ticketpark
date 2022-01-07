@@ -29,7 +29,7 @@
 <div class='listReply'>
 
 <div class='reply-info' align='left'>
-	<span class='reply-count' style="font-weight:bold; font-size:16px">총 <span class="num">${replyCount}</span>개의 문의글이 있습니다.</span>
+	<span class='reply-count' style="font-weight:bold; font-size:16px" data-pageNo='${pageNo}' data-totalPage='${total_page}' >총&nbsp;<span class="num">${replyCount}</span>개의 문의글이 있습니다.</span>
 
 </div><br>
 
@@ -81,6 +81,15 @@
 </table>
 </div>
 
-<div class="page-box">
-	${paging}
-</div>							
+<div class="page row justify-content-center">
+<div class='qna-less-box mt-2 text-end' style="width: 30%;">
+	<span class="qna-less btn btn-outline-success"> <i class="icofont-simple-left"></i>&nbsp;이전&nbsp;</span>
+</div> 
+<div  style="width: 30%;">
+	<p>${pageNo}&nbsp;&nbsp;/&nbsp;&nbsp;${total_page}</p> 
+</div>
+<div class='qna-more-box mt-2 text-end' style="width: 30%;">
+	<span class="qna-more btn btn-outline-success">&nbsp;다음&nbsp;<i class="icofont-simple-right"></i></span>
+</div>
+
+</div>

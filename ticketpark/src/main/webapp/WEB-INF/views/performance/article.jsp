@@ -734,9 +734,14 @@ function setStar(point) {
 <script type="text/javascript">
 //페이징 처리
 
+
+
+
+
+
 function qnaListPage(page) {
 	var url = "${pageContext.request.contextPath}/performance/qna/listReply";
-	var query = "pageNo="+page+"&perfNum="+${dto.perfNum};
+	var query = "perfNum=${dto.perfNum}&pageNo="+page;
 	var selector = "#listReply";
 	
 	var fn = function(data){
@@ -942,6 +947,40 @@ $(function(){
 		ajaxFun(url, "post", query, "json", fn);
 	});
 });
+
+$(function(){
+	$("body").on("click", ".qna-more-box .qna-more", function(){
+	 	var pageNo = $(".reply-count").attr("data-pageNo");
+		var total_page = $(".reply-count").attr("data-totalPage");
+		
+		if(pageNo < total_page) {
+			
+			pageNo++;
+			qnaListPage(pageNo);
+		}
+	});
+});
+
+
+
+$(function(){
+	$("body").on("click", ".qna-less-box .qna-less", function(){
+	 	var pageNo = $(".reply-count").attr("data-pageNo");
+		var total_page = $(".reply-count").attr("data-totalPage");
+		
+		if(pageNo <= total_page) {
+			if(total_page <= 1) {
+				qnaListPage(1);	
+			} else if(pageNo <= 1) {
+				qnaListPage(1);	
+			}
+			pageNo--;
+			qnaListPage(pageNo);
+		}
+		
+	});
+});
+
 </script>
 
 
