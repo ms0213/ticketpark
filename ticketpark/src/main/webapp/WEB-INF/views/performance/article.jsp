@@ -55,12 +55,12 @@
 .sch-list{
 	float: left;
 	border: 1px solid #dee2e6;
-    width: 45%;
+    width: 48%;
     height: 330px;
     margin: 10px 0 10px 20px;
 }
 .bookdiv{clear: both;}
-.perfList{margin: 10px;}
+.perfList{margin: 10px; overflow: auto; height: 80%;}
 
 #calendarLayout {
 	width: 280px;
