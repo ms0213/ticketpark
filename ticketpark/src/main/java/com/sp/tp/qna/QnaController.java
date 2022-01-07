@@ -34,7 +34,6 @@ public class QnaController {
 		return "performance/qna/qna";
 	}
 	
-	
 	// 댓글 리스트 : AJAX-TEXT
 	@RequestMapping(value = "listReply")
 	public String listReply (@RequestParam(value = "pageNo", defaultValue = "1") int current_page
@@ -171,7 +170,6 @@ public class QnaController {
 			model.put("state", state);
 			return model;
 		}
-		
 		
 		// 댓글의 좋아요/싫어요 개수 : AJAX-JSON
 		@RequestMapping(value = "countReplyLike", method = RequestMethod.POST)

@@ -22,8 +22,8 @@ public class Notice {
 	private int fileCount;
 	private String category;
 	
-	// 스프링에서 파일 받기
-	private List<MultipartFile> selectFile; // <input type="file" name="selectFile"
+	
+	private List<MultipartFile> selectFile;
 	private long gap;
 	
 	public int getListNum() {

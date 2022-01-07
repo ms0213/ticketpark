@@ -733,12 +733,6 @@ function setStar(point) {
 <!-- qna -->
 <script type="text/javascript">
 //페이징 처리
-
-
-
-
-
-
 function qnaListPage(page) {
 	var url = "${pageContext.request.contextPath}/performance/qna/listReply";
 	var query = "perfNum=${dto.perfNum}&pageNo="+page;
@@ -750,7 +744,6 @@ function qnaListPage(page) {
 	};
 	ajaxFun(url, "get", query, "html", fn);
 }
-
 
 // 리플 등록
 $(function(){
@@ -806,20 +799,10 @@ $(function(){
 
 // 댓글 좋아요 / 싫어요
 $(function(){
-	// 댓글 좋아요 / 싫어요 등록
 	$("body").on("click", ".btnSendReplyLike", function(){
 		var replyNum = $(this).attr("data-replyNum");
 		var replyLike = $(this).attr("data-replyLike");
 		var $btn = $(this);
-		
-		var msg = "게시물이 마음에 들지 않으십니까 ?";
-		if(replyLike === "1") {
-			msg="게시물에 공감하십니까 ?";
-		}
-		
-		if(! confirm(msg)) {
-			return false;
-		}
 		
 		var url = "${pageContext.request.contextPath}/performance/qna/insertReplyLike";
 		var query = "replyNum=" + replyNum + "&replyLike=" + replyLike;
@@ -833,16 +816,15 @@ $(function(){
 				$btn.parent("td").children().eq(0).find("span").html(likeCount);
 				$btn.parent("td").children().eq(1).find("span").html(disLikeCount);
 			} else if(state === "liked") {
-				alert("게시물 공감 여부는 한번만 가능합니다. !!!");
+				alert("댓글 공감/비공감 여부는 한번만 가능합니다. !!!");
 			} else {
-				alert("게시물 공감 여부 처리가 실패했습니다. !!!");
+				alert("댓글 공감/비공감 여부 처리가 실패했습니다. !!!");
 			}
 		};
 		
 		ajaxFun(url, "post", query, "json", fn);
 	});
 });
-
 
 
 // 댓글별 답글 리스트
@@ -884,11 +866,9 @@ $(function(){
 			$trReplyAnswer.hide();
 		} else {
 			$trReplyAnswer.show();
-            
-			// 답글 리스트
+          
 			listReplyAnswer(replyNum);
 			
-			// 답글 개수
 			countReplyAnswer(replyNum);
 		}
 	});
@@ -962,7 +942,6 @@ $(function(){
 });
 
 
-
 $(function(){
 	$("body").on("click", ".qna-less-box .qna-less", function(){
 	 	var pageNo = $(".reply-count").attr("data-pageNo");
@@ -977,7 +956,6 @@ $(function(){
 			pageNo--;
 			qnaListPage(pageNo);
 		}
-		
 	});
 });
 
