@@ -119,7 +119,7 @@
 		FROM book b
 		JOIN book2 bo ON bo.bNum = b.bNum
 		JOIN performanceTime pt ON pt.ptNum = bo.ptNum
-		JOIN schedule s ON s.perf_date = pt.perf_date
+		JOIN schedule s ON s.perfNum2 = pt.perfNum2
 		JOIN performance p ON p.perfNum = s.perfNum2
 		JOIN poster po ON p.perfNum = po.perfNum
         JOIN genre g ON g.gNum = p.gmNum
