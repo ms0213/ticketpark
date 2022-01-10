@@ -66,7 +66,8 @@
 		    FROM performance p, genre g, category c, poster po, schedule s, hall h
 		    WHERE g.gnum=p.gmnum AND c.cnum=g.cnum
 		        AND p.perfNum = po.perfNum AND poster_main = 1 AND p.perfNum=s.perfNum2
-		        AND h.hNum=s.hNum
+		        AND h.hNum=s.hNum AND enabled = 1
+		        AND SYSDATE &lt;= endDate
 			<if test="category != null and category != ''">
 	            AND <include refid="category-list"/>
 	        </if>
@@ -95,6 +96,7 @@
 		        WHERE g.gnum=p.gmnum AND c.cnum=g.cnum
 		            AND p.perfNum = po.perfNum AND poster_main = 1 AND p.perfNum=s.perfNum2
 		            AND h.hNum=s.hNum AND enabled = 1
+		            AND AND SYSDATE &lt;= endDate
 						<if test="category != null and category != ''">
 							AND <include refid="category-list"/>
 						</if>
