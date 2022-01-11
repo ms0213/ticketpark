@@ -7,7 +7,7 @@
 	<select id="bookRank" resultType="com.sp.tp.rank.Rank">
 		SELECT * FROM (
 		    SELECT ROWNUM rnum, tb.* FROM (
-		        SELECT b2.ptNum, COUNT(*), subject, rating,
+		        SELECT COUNT(*), subject, rating,
 		            TO_CHAR(startDate, 'YYYY-MM-DD') startDate,
 		            TO_CHAR(endDate, 'YYYY-MM-DD') endDate, 
 		            po.saveFilename postFilename, h.hallName, p.perfNum, rate
@@ -15,7 +15,7 @@
 		        WHERE b2.ptNum=pt.ptNum AND pt.perfNum2=s.perfNum2 
 		            AND s.perfNum2=p.perfNum AND po.perfNum=p.perfNum
 		            AND s.hNum=h.hNum AND r.rNum = p.rNum AND p.enabled = 1
-		        GROUP BY b2.ptNum, subject, rating, 
+		        GROUP BY subject, rating, 
 		            TO_CHAR(startDate, 'YYYY-MM-DD'),
 		            TO_CHAR(endDate, 'YYYY-MM-DD'), 
 		            po.saveFilename, h.hallName, p.perfNum, rate
