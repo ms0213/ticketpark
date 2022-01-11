@@ -6,13 +6,6 @@
 <style type="text/css">
 .body-container {
 	max-width: 800px;
-}
-</style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
-
-<style type="text/css">
-
-.body-container {
 	margin: 0 auto 10px;
 }
 
@@ -41,13 +34,11 @@
 	color:#333;
 }
 
-
 .scheduleRemoveBtn {
     cursor: pointer;
     width: 38px;
     text-align: center;
 }
-
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -57,6 +48,10 @@ input[type="number"]::-webkit-inner-spin-button {
 </style>
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css2/boot-board.css" type="text/css">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css1/bootstrap.min.css">
+
 
 <script type="text/javascript">
 function sendOk() {
@@ -166,7 +161,7 @@ $(function(){
 <div class="container">
 	<div class="body-container">	
 		<div class="body-title">
-			<h3> 공연 등록 </h3>
+			<h4>[${dto.subject}] 공연 날짜 등록 </h4>
 		</div>
 		
 		<div class="body-main">
@@ -176,8 +171,8 @@ $(function(){
 						<td class="table-light col-2" scope="row">공연일정</td>
 						<td class="schedule">
 							<div class="row" style="margin-bottom: 10px; padding-top: 4px;">
-								<div class="col-5 pe-0">
-									<input type="date" name="perfsDate" id="form-perfDate" class="boxTF" value="${dto.perfDate}">
+								<div class="col-6 pe-0">
+									<input type="date" name="perfsDate" id="form-perfDate" class="boxTF" min="${dto.startDate}" max="${dto.endDate}" value="${dto.perfDate}">
 									 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="scheduleRemoveBtn" style="float: center; line-height: 38px;"><i class="far fa-minus-square"></i></span>
 								</div>
 							</div>
@@ -188,7 +183,7 @@ $(function(){
 					</tr>
 					<tr>
 						<td>공연장</td>
-						<td>
+						<td colspan="2">
 							<select name="hallNum" class="selectField">
 								<option value="">:: 공연장 선택 ::</option>
 								<c:forEach var="vo" items="${hallList}">

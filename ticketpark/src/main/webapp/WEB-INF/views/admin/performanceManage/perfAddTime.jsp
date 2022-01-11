@@ -6,6 +6,7 @@
 <style type="text/css">
 .body-container {
 	max-width: 800px;
+	margin: 0 auto 10px;
 }
 .selectField {
     border: 1px solid #999;
@@ -149,6 +150,13 @@ function sendOk(){
         return;
     }
     
+    str = f.theaterNum.value.trim();
+    if(!str) {
+        alert("상연관을 입력하세요. ");
+        f.theaterNum.focus();
+        return;
+    }
+    
     /* 
     var b = true;
     $("input[name=perfTime]").each(function(index) {
@@ -189,12 +197,14 @@ function sendOk(){
 	
 	 f.action = "${pageContext.request.contextPath}/admin/performanceManage/${mode}";
 	 f.submit();
-	 
-	 alert("공연시간이 등록되었습니다. ");
+	 alert("시간 등록에 성공하였습니다.")
 }
 </script>
 <div class="container">
-	<div class="body-container">	
+	<div class="body-container">
+	<div class="body-title">
+			<h4> [${dto.subject}] 공연 시간 등록 </h4>
+		</div>
 		<div class="body-main">
 			<iframe id="iframe1" name="iframe1" style="display:none"></iframe>
 			<form name="timeAddForm" method="post" target="iframe1">
@@ -227,16 +237,16 @@ function sendOk(){
 					<table class="table write-form timeCastTable" style="margin: 1.5rem 0 1.5rem 0;">
 						<tr>
 							<td class="table-light col-sm-2" scope="row">공연시간 <br> 및 출연진</td>
-							<td>
+							<td style="width: 10%;">
 								<input type="time" name="perfsTime" id="form-perfTime" class="form-control" value="${dto.perfTime}">
 							</td>
 							
-							<td class="cast" style="width: 26%;">
+							<td class="cast">
 								<p style="margin: 12px 0 12px 0;">
 									<select name="actorsNum" class="selectField">
 										<option value="">:: 출연진 선택 ::</option>
 										<c:forEach var="vo" items="${actorList}">
-											<option value="${vo.actorNum}">${vo.actorName}</option>
+											<option value="${vo.actorNum}">${vo.actorName}(${vo.roleName})</option>
 										</c:forEach>
 									</select>
 									<span class="castRemoveBtn" style="float: center; line-height: 38px; margin-left: 15px; cursor: pointer"><i class="far fa-minus-square"></i></span>
@@ -245,10 +255,10 @@ function sendOk(){
 							<td>
 								<button type="button" class="btn timeRemoveBtn" style="text-align: center;">삭제</button>
 							</td>
-							<td>
+							<td style="width: 13%;">
 								<button type="button" class="btn castAddBtn" style="text-align: center;">출연진<br>추가</button>
 							</td>
-							<td>
+							<td style="width: 15%;">
 								<button type="button" class="btn" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
 							</td>
 						</tr>
@@ -260,7 +270,7 @@ function sendOk(){
 							<c:if test="${mode=='update'}">
 								<button type="button" class="btn btn-dark">수정완료&nbsp;<i class="bi bi-check2"></i></button>
 							</c:if>
-							<button type="button" class="btn btn-light timeAddBtn">공연시간추가</button>
+							<!-- <button type="button" class="btn btn-light timeAddBtn">공연시간추가</button> -->
 							<button type="reset" class="btn btn-light">다시입력</button>
 							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/admin/performanceManage/perfList?page=${page}';">${mode=='update'?'수정취소':'리스트'}&nbsp;<i class="bi bi-x"></i></button>
 							<input type="hidden" name="perfNum" value="${perfNum}">

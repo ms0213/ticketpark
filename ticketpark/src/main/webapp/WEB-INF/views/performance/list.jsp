@@ -184,11 +184,6 @@ $("body").on("change", "#condiGenre", function(){
 						</div>
 					</form>
 				</div>
-				<c:if test="${sessionScope.member.membership>50}">
-					<div class="col" style="text-align: right; margin-right: 40px; max-width: 20%; margin-top: 20px;" >
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/performance/add';">글올리기</button>
-					</div>
-				</c:if>
 			</div>
 	        
 	         <div class="row">

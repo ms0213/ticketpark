@@ -31,7 +31,7 @@ ul {
 	min-width: 150px;
 }
 
-.date_btn, .deleteTime_btn, .deleteDate_btn, .updateDate_btn, .updateTime_btn {
+.date_btn, .deleteTime_btn, .deleteDate_btn, .updateDate_btn, .updateTime_btn, .updateCast_btn {
 	margin-top: 1rem;
 	max-width: 250px;
 }
@@ -141,16 +141,20 @@ $(function(){
 				var perfTime = item.perfTime
 				var actorName = item.actorName
 				var ptNum = item.ptNum
+				/*
+				var s = "<div id='timeView"+ptNum+"'><button type='button' class='btn btn-light deleteTime_btn'"
+						+ "data-ptNum='" + ptNum + "'>"
+						+ "<span class='time'>" + perfTime + "</span>"
+						+ "<p class='cast'>출연: " + actorName + "</p></button></div>";
+				*/
 				var s = "<div id='timeView"+ptNum+"'><button type='button' class='btn btn-light deleteTime_btn'"
 						+ "data-ptNum='" + ptNum + "'>"
 						+ "<span class='time'>" + perfTime + "</span>"
 						+ "<p class='cast'>출연: " + actorName + "</p></button><br>"
 						+ "<button type='button' class='btn btn-light updateTime_btn'"
-						+ "onclick='timeUpdateView(" + ptNum + ");' style='margin-left: 10px;'>"
-						+ "<span>시간수정</span></button>"
-						+ "<button type='button' class='btn btn-light updateTime_btn'"
-						+ "onclick='castUpdateView(" + ptNum + ");' style='margin-left: 10px;'>"
-						+ "<span>출연진수정</span></button><hr></div>";
+						+ " onclick='timeUpdateView(" + ptNum + ");' style='margin-left: 10px;'>"
+						+ "<span>시간수정</span></button><hr></div>";
+				
 				$(".cast_time").append(s);
 			});
 		};
@@ -202,21 +206,21 @@ $(function(){
 			<div class="select_date">
 				<h5 style="margin-bottom: 0px;">공연날짜</h5>
 			</div>
-				<c:forEach items="${list}" var="vo">
-					<div>
-						<button name="perfDate" type="button" class="btn btn-light date_btn" value="${vo.perfDate}">
-							<span>${vo.perfDateDay}</span>
-						</button><br>
-						<button type="button" class="btn btn-light updateDate_btn" onclick="dateUpdateView('${vo.perfDate}');" style="margin-left: 10px;">
-							<span>수정</span>
-						</button>
-						<button type="button" class="btn btn-light deleteDate_btn" data-perfDate="${vo.perfDate}" style="margin-left: 10px;">
-							<span>삭제</span>
-						</button>
-						<hr style="margin-bottom: 0px;">
-					</div>
-				</c:forEach>
-				<input type="hidden" name="perfNum" value="${dto.perfNum}">
+			<c:forEach items="${list}" var="vo">
+				<div id="dateView${vo.perfDate}">
+					<button name="perfDate" type="button" class="btn btn-light date_btn" value="${vo.perfDate}">
+						<span class="date">${vo.perfDateDay}</span>
+					</button><br>
+					<button type="button" class="btn btn-light updateDate_btn" onclick="dateUpdateView('${vo.perfDate}');" style="margin-left: 10px;">
+						<span>수정</span>
+					</button>
+					<button type="button" class="btn btn-light deleteDate_btn" data-perfDate="${vo.perfDate}" style="margin-left: 10px;">
+						<span>삭제</span>
+					</button>
+					<hr style="margin-bottom: 0px;">
+				</div>
+			</c:forEach>
+			<input type="hidden" name="perfNum" value="${dto.perfNum}">
 		</div>
 		
 		<div class="time_choice border">
@@ -232,7 +236,7 @@ $(function(){
 
 <div id="dateUpdate" style="display: none; padding-top: 20px; text-align: center;">
 	<form name="dateUpdateForm" id="dateUpdateForm" method= "post">
-		<input type="date" name="perfDate" value="">
+		<input type="date" name="perfDate" value="" min="${dto.startDate}" max="${dto.endDate}">
 		<input type="hidden" name="selectDate" value="">
 		<input type="hidden" name="perfNum" value="${dto.perfNum}">
 	</form>
@@ -246,9 +250,16 @@ $(function(){
 </div>
 
 <div id="castUpdate" style="display: none; padding-top: 20px; text-align: center;">
-	<form name="castUpdateForm" id="timeUpdateForm" method= "post">
-		<c:forEach items="${actorList}" var="vo">
-			<input type="text" class="boxTF" name="actorName" value="${vo.actorName}" disabled="disabled">
+	<form name="castUpdateForm" id="castUpdateForm" method= "post">
+		<c:forEach items="${roleList}" var="vo">
+			<p>${vo.roleName} : 
+				<select name="actorsNum" class="selectField">
+					<option value="">:: 출연진 선택 ::</option>
+					<c:forEach var="vo2" items="${actorList}">
+						<option value="${vo2.actorNum}">${vo2.actorName}(${vo2.roleName})</option>
+					</c:forEach>
+				</select>
+			</p>
 		</c:forEach>
 		<input type="hidden" name="ptNum" value="">
 	</form>
