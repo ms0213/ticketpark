@@ -260,9 +260,10 @@ public class PerformanceController {
 	
 	@RequestMapping("listTime")
 	@ResponseBody
-	public Map<String, Object> listTime(@RequestParam String perf_date) throws Exception {
+	public Map<String, Object> listTime(@RequestParam String perf_date, @RequestParam int perfNum) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("perf_date", perf_date);
+		map.put("perfNum", perfNum);
 		List<PerformanceBook> listTime = service.listTime(map);
 		
 		Map<String, Object> model = new HashMap<String, Object>();

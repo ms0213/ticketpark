@@ -14,8 +14,8 @@ window.onload =	function requestPay() {
 	    pg: "html5_inicis",
 	    pay_method: "card",
 	    merchant_uid: "ORD20180131-0000011" + new Date().getTime(),
-	    name: f.name.value + f.couponNum.value,
-	    amount: 100,
+	    name: f.name.value,
+	    amount: f.amount.value,
 	    buyer_email: f.email.value,
 	    buyer_name: f.userName.value,
 	    buyer_tel: f.tel.value,
@@ -54,8 +54,7 @@ window.onload =	function requestPay() {
 				<input type="hidden" value="${addr}" name="addr">
 				<input type="hidden" value="${amount}" name="amount">
 				<input type="hidden" value="${name}" name="name">
-				<input type="hidden" value="${bNum}" name="bNum">
-				<input type="hidden" value="${couponNum}" name="couponNum">	
+				<input type="hidden" value="${bNum}" name="bNum">	
 			</form>
 		</div>
 	        

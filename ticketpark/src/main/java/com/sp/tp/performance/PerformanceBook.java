@@ -5,7 +5,14 @@ public class PerformanceBook {
 	private String perf_date;
 	private String perfTime;
 	private String actorName;
+	private int perfNum;
 	
+	public int getPerfNum() {
+		return perfNum;
+	}
+	public void setPerfNum(int perfNum) {
+		this.perfNum = perfNum;
+	}
 	public String getPerf_date() {
 		return perf_date;
 	}

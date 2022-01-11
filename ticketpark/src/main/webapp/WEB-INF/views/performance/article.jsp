@@ -177,9 +177,11 @@ function calendar(y, m) {
 	var lastDay = (new Date(y, m, 0)).getDate();
     
     var listperf_date = new Array();
+    var listperfNum = new Array();
     
     <c:forEach items="${listSchedule}" var="item1">
     listperf_date.push("${item1.perf_date}");
+    listperfNum.push("${item1.perfNum}");
     </c:forEach>
 	console.log(listperf_date);
     
@@ -194,15 +196,17 @@ function calendar(y, m) {
 		var red = "";
 		var ptNum = 0;
 		var perf_date = "";
+		var perfNum = 0;
 	    for(var j = 0; j < listperf_date.length; j++) {
 			if(pickdayFormat == listperf_date[j]) {
 				perf_date = listperf_date[j];
+				perfNum = listperfNum[j]; 
 				red = "date-red";
 			}
-
 		}
 	    
-	    out+="<td class=' date "+red+"' data-perf_date='"+perf_date+"' >"+i+"</td>";
+	    
+	    out+="<td class=' date "+red+"' data-perf_date='"+perf_date+"' data-perfNum='"+perfNum+"' >"+i+"</td>";
 		if(i != lastDay && ++w%7==0) {
 			row++;
 			out+="</tr><tr>";
@@ -315,11 +319,12 @@ $(function() {
 $(function() {
 	$("body").on("click",".date-red", function() {
 		var perf_date = $(this).attr("data-perf_date");
+		var perfNum = $(this).attr("data-perfNum");
 		$(".perfList").find("#selectPlz").remove();
 		$(".perfList").find("div").remove().end();
 		
 		var url = "${pageContext.request.contextPath}/performance/listTime";
-		var query = "perf_date="+perf_date;
+		var query = "perf_date="+perf_date+"&perfNum="+perfNum;
 		
 		var fn = function(data) {
 			$.each(data.listTime, function(index, item){

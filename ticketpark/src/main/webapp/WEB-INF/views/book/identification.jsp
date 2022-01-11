@@ -99,7 +99,7 @@ function sendCancel() {
 					</tr>
 				</table>
 				<input type="hidden" value="${birth}" name="abc">
-				<input type="hidden" value="${userId}"> 
+				<input type="hidden" value="${userId}" name="userId"> 
 			</form>
 			
 		</div>
