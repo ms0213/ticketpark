@@ -45,7 +45,7 @@
 	    FROM book b
 	    JOIN book2 b2 ON b.bNum = b2.bNum
 	    JOIN performanceTime pt ON pt.ptNum = b2.ptNum
-		JOIN schedule s ON s.perf_date = pt.perf_date
+		JOIN schedule s ON s.perf_date = pt.perf_date AND s.perfnum2 = pt.perfnum2
 	    JOIN performance p ON p.perfNum = s.perfNum2
         JOIN hall h ON s.hNum = h.hNum
         JOIN theater t ON pt.tNum = t.tNum
