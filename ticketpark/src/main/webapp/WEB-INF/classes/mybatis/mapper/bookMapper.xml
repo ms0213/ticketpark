@@ -34,7 +34,7 @@
 		SELECT SUM(seat_price) amount, subject
 		FROM book2 b
 		JOIN performanceTime pt ON pt.ptNum = b.ptNum
-		JOIN schedule s ON s.perfNum2 = pt.perfnum2
+		JOIN schedule s ON s.perfNum2 = pt.perfnum2 AND s.perf_date = pt.perf_date
 		JOIN performance p ON p.perfNum = s.perfNum2
 		WHERE bNum = #{bNum}
 		GROUP BY subject

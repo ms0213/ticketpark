@@ -29,6 +29,8 @@ window.onload =	function requestPay() {
 	    } else {
 	    	var msg = '결제에 실패하였습니다.';
 	    	msg += '\n실패사유 : ' + rsp.error_msg;
+	    	f.action="${pageContext.request.contextPath}/book/bookCancel";
+	    	f.submit();
 	    }
 	    alert(msg);
 	  });
