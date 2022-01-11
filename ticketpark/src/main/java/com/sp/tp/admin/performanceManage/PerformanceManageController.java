@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -163,12 +162,8 @@ public class PerformanceManageController {
 
 		try {
 			service.insertPerformance(dto, path);
-		} catch (DuplicateKeyException e) {
-			model.addAttribute("message", "이미 등록된 날짜입니다.");
-			return "redirect:/admin/performanceManage/perfList";
 		} catch (Exception e) {
-			model.addAttribute("message", "공연 등록에 실패하였습니다.");
-			return "redirect:/admin/performanceManage/perfList";
+			e.printStackTrace();
 		}
 		model.addAttribute("message", "공연이 정상적으로 등록되었습니다.");
 
@@ -219,10 +214,13 @@ public class PerformanceManageController {
 		PerformanceManage dto=service.readPerformance(perfNum);
 		
 		List<PerformanceManage> list = service.listSchedule(perfNum);
+		List<PerformanceManage> roleList = service.listRole(perfNum);
 		List<PerformanceManage> actorList = service.listActor(perfNum);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("roleList", roleList);
 		model.addAttribute("actorList", actorList);
+		
 		model.addAttribute("dto", dto);
 		
 		return "/admin/performanceManage/perfDetail";
@@ -255,12 +253,14 @@ public class PerformanceManageController {
 		
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
+		PerformanceManage dto = service.readPerformance(perfNum);
 		List<PerformanceManage> hallList = service.listHall();
 		
 		if (info.getMembership() < 51) {
 			return "redirect:/";
 		}
 		
+		model.addAttribute("dto", dto);
 		model.addAttribute("page", page);
 		model.addAttribute("mode", "addDate");
 		model.addAttribute("perfNum", perfNum);
@@ -288,7 +288,6 @@ public class PerformanceManageController {
 		return "redirect:/admin/performanceManage/perfList?page=" + page;
 	}
 	
-	
 	@RequestMapping(value = "addTime", method = RequestMethod.GET)
 	public String addTimeForm(Model model, 
 			HttpSession session,
@@ -297,6 +296,7 @@ public class PerformanceManageController {
 		
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
+		PerformanceManage dto = service.readPerformance(perfNum);
 		List<PerformanceManage> dateList = service.listDate(perfNum);
 		List<PerformanceManage> actorList = service.listActor(perfNum);
 		
@@ -304,6 +304,7 @@ public class PerformanceManageController {
 			return "redirect:/";
 		}
 		
+		model.addAttribute("dto", dto);
 		model.addAttribute("page", page);
 		model.addAttribute("mode", "addTime");
 		model.addAttribute("dateList", dateList);
@@ -330,6 +331,70 @@ public class PerformanceManageController {
 		}
 		
 		return "redirect:/admin/performanceManage/addTime";
+	}
+	
+	/*
+	@RequestMapping(value = "addTime", method = RequestMethod.GET)
+	public String addTimeForm(Model model, 
+			HttpSession session,
+			@RequestParam String page,
+			@RequestParam int perfNum) throws Exception {
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		PerformanceManage dto = service.readPerformance(perfNum);
+		List<PerformanceManage> dateList = service.listDate(perfNum);
+		List<PerformanceManage> roleList = service.listRole(perfNum);
+		
+		if (info.getMembership() < 51) {
+			return "redirect:/";
+		}
+		
+		model.addAttribute("dto", dto);
+		model.addAttribute("page", page);
+		model.addAttribute("mode", "addTime");
+		model.addAttribute("dateList", dateList);
+		model.addAttribute("roleList", roleList);
+		model.addAttribute("perfNum", perfNum);
+		
+		return ".admin.performanceManage.perfAddTime";
+	}
+	
+	@RequestMapping(value = "addTime", method = RequestMethod.POST)
+	public String addTimeSubmit(PerformanceManage dto, HttpSession session) throws Exception {
+
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if (info.getMembership() < 51) {
+			return "redirect:/";
+		}
+
+		try {
+			service.insertPerfTime(dto);
+			
+		} catch (Exception e) {
+		}
+		
+		return "redirect:/admin/performanceManage/addTime";
+	}
+	*/
+	
+	@GetMapping(value = "cast")
+	@ResponseBody
+	public Map<String, Object> castList(
+			@RequestParam String roleName,
+			@RequestParam int perfNum) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("roleName", roleName);
+		map.put("perfNum", perfNum);
+		
+		List<PerformanceManage> castList = service.listCast(map);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("castList", castList);
+		
+		return model;
 	}
 
 	@RequestMapping(value = "update", method = RequestMethod.GET)
@@ -417,25 +482,25 @@ public class PerformanceManageController {
 		return map;
 	}
 	
+	
 	@RequestMapping(value="castUpdate", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> updateCast(
 			PerformanceManage dto) throws Exception {
 		
-		List<PerformanceManage> castList = service.listCast(dto.getPtNum());
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			service.updateTime(dto);
+			service.updateCast(dto);
 		} catch (Exception e) {
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("state", true);
 		
 		return map;
 	}
 	
-	
+	/*
 	@RequestMapping(value = "scheduleUpdate", method = RequestMethod.GET)
 	public String scheduleUpdateForm(@RequestParam int perfNum,
 			@RequestParam String page,
@@ -450,27 +515,25 @@ public class PerformanceManageController {
 			return "redirect:/admin/performanceManage/perfList";
 		}
 		
-		List<PerformanceManage> categoryList = service.listCategory();
-		List<PerformanceManage> rateList = service.listRate();
+		List<PerformanceManage> dateList = service.listDate(perfNum);
 		List<PerformanceManage> actorList = service.listActor(perfNum);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("categoryNum", dto.getCategoryNum());
 		List<PerformanceManage> genreList = service.listGenre(map);
+		
 		if (info.getMembership() < 51) {
 			return "redirect:/admin/performanceManage/perfList";
 		}
 
-		model.addAttribute("mode", "update");
 		model.addAttribute("dto", dto);
-		model.addAttribute("categoryList", categoryList);
-		model.addAttribute("rateList", rateList);
 		model.addAttribute("actorList", actorList);
-		model.addAttribute("genreList", genreList);
+		model.addAttribute("dateList", dateList);
 		
-		return ".admin.performanceManage.perfAdd";
+		return ".admin.performanceManage.scheduleUpdate";
 	}
+
 	
 	@RequestMapping(value = "scheduleUpdate", method = RequestMethod.POST)
 	public String scheduleUpdateSubmit(PerformanceManage dto, HttpSession session) throws Exception {
@@ -483,7 +546,7 @@ public class PerformanceManageController {
 		}
 		return "redirect:/admin/performanceManage/perfList";
 	}
-	
+	*/
 	
 	/*
 	@GetMapping(value = "date")
@@ -560,6 +623,7 @@ public class PerformanceManageController {
 	@RequestMapping(value = "delete", method = RequestMethod.GET)
 	public String deletePerformance(
 			@RequestParam int perfNum,
+			@RequestParam int page,
 			HttpSession session) throws Exception {
 		
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -573,6 +637,6 @@ public class PerformanceManageController {
 		} catch (Exception e) {
 
 		}
-		return "redirect:/admin/performanceManage/perfList";
+		return "redirect:/admin/performanceManage/perfList?page=" + page;
 	}
 }

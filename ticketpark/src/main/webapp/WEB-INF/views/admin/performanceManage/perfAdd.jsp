@@ -478,9 +478,9 @@ $(function(){
 					<tr>
 						<td class="table-light col-sm-2" scope="row">공연기간</td>
 						<td>
-							<input type="date" name="startDate" id="startDate" class="boxTF" style="width: 35%;" value="${dto.startDate}"> ~ 
-							<input type="date" name="endDate" id="endDate" class="boxTF" style="width: 35%;" value="${dto.endDate}">
-							<input type="number" name="showTime" id="showTime" class="boxTF" style="width: 15%;" placeholder="관람시간" value="${dto.showTime}">
+							<input type="date" name="startDate" id="startDate" class="boxTF" style="width: 30%;" value="${dto.startDate}"> ~ 
+							<input type="date" name="endDate" id="endDate" class="boxTF" style="width: 30%;" value="${dto.endDate}">&nbsp;&nbsp;&nbsp;
+							관람시간&nbsp;&nbsp;<input type="number" name="showTime" id="showTime" class="boxTF" style="width: 15%;" value="${dto.showTime}">
 						</td>
 					</tr>
 					
@@ -488,7 +488,7 @@ $(function(){
 						<td class="table-light col-sm-2" scope="row">공연정보</td>
 						<td>
 							<div class="row">
-								<div class="col-sm-3 pe-1">
+								<div class="col-sm-4 pe-1">
 									<select name="rateNum" class="selectField">
 										<option value="">:: 관람연령 선택 ::</option>
 										<c:forEach var="vo" items="${rateList}">
@@ -497,10 +497,10 @@ $(function(){
 									</select>
 								</div>
 								<div class="col-sm-4 ps-1">
-									<input type="number" name="price" id="price" class="boxTF" placeholder="가격" value="${dto.price}">
+									<p>가격&nbsp;&nbsp;<input type="number" name="price" id="price" class="boxTF"	 value="${dto.price}" style="width: 60%;"></p>
 								</div>
 								<div class="col-sm-4 ps-1">
-									<input type="number" name="rating" id="rating" class="boxTF" placeholder="평점" value="${dto.rating}">
+									<p>평점&nbsp;&nbsp; <input type="number" name="rating" id="rating" class="boxTF" value="${dto.rating}" style="width: 40%;"></p>
 								</div>
 							</div>
 						</td>

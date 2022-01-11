@@ -188,6 +188,29 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 	}
 	
 	@Override
+	public List<PerformanceManage> listCast(Map<String, Object> map) {
+		List<PerformanceManage> listCast = null;
+		try {
+			listCast = dao.selectList("performanceManage.listCast", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listCast;
+	}
+	
+	@Override
+	public List<PerformanceManage> listRole(int perfNum) {
+		List<PerformanceManage> listRole = null;
+		
+		try {
+			listRole = dao.selectList("performanceManage.listRole", perfNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listRole;
+	}
+	
+	@Override
 	public List<PerformanceManage> listActor(int perfNum) {
 		List<PerformanceManage> listActor = null;
 		
@@ -383,5 +406,19 @@ public class PerformanceManageServiceImpl implements PerformanceManageSerive {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+	
+	@Override
+	public void updateCast(PerformanceManage dto) throws Exception {
+		try {
+			for(int i=0; i < dto.getActorsNum().size(); i++) {
+				dto.setActorNum(dto.getActorsNum().get(i));
+				dao.updateData("performanceManage.updateCast", dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
 	}
 }

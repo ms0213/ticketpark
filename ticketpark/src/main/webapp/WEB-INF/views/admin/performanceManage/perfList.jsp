@@ -76,9 +76,6 @@ function detailedPerformance(perfNum) {
 		       " 공연수정 " : function() {
 		    	  	location.href = "${pageContext.request.contextPath}/admin/performanceManage/update?perfNum=" + perfNum + "&page=" + ${page};
 		       },
-		       " 일정수정 " : function() {
-					location.href = "${pageContext.request.contextPath}/admin/performanceManage/scheduleUpdate?perfNum=" + perfNum + "&page=" + ${page};
-			   },
 		       " 삭제 " : function() {
 		    	   deleteOk(perfNum);
 			   },
@@ -121,7 +118,7 @@ function dateUpdateView(perfDate) {
 		modal: true,
 		buttons: {
 			" 수정완료 " : function() {
-				dateUpdateOk();
+				dateUpdateOk(perfDate);
 			},
 			" 닫기 " : function() {
 			 $(this).dialog("close");
@@ -139,15 +136,16 @@ function dateUpdateView(perfDate) {
 	$("#dateUpdateForm input[name=perfDate]").attr("value", perfDate);
 }
 
+
 function timeUpdateView(ptNum) {
 	$("#timeUpdate").dialog({
 		modal: true,
 		buttons: {
 			" 수정완료 " : function() {
-				timeUpdateOk();
+				timeUpdateOk(ptNum);
 			},
 			" 닫기 " : function() {
-			 $(this).dialog("close");
+			 	$(this).dialog("close");
 			}
 		},
 		height: 200,
@@ -157,8 +155,20 @@ function timeUpdateView(ptNum) {
 		  $(this).dialog("destroy"); // 이전 대화상자가 남아 있으므로 필요
 		}
 	});
-	$("#timeUpdateForm input[name=ptNum]").attr("value", ptNum);
+	$("input[name=ptNum]").attr("value", ptNum);
 }
+
+/*
+$(function(){
+	$("body").on("click",".updateDate_btn", function(){
+		var $updateDate = $(this);
+		var perfDate = ("button[name=perfDate]").val();
+		var perfNum = $(this).closest("input[name=perfNum]").val();
+		var url="${pageContext.request.contextPath}/admin/performanceManage/dateUpdate";
+		
+	});
+});
+
 
 function castUpdateView(ptNum) {
 	$("#castUpdate").dialog({
@@ -178,20 +188,31 @@ function castUpdateView(ptNum) {
 		  $(this).dialog("destroy"); // 이전 대화상자가 남아 있으므로 필요
 		}
 	});
+	$("input[name=ptNum]").attr("value", ptNum);
 }
-
-function dateUpdateOk() {
+*/
+function dateUpdateOk(perfDate) {
 	var f= document.dateUpdateForm;
 	
 	var url = "${pageContext.request.contextPath}/admin/performanceManage/dateUpdate";
 	var query = $("#dateUpdateForm").serialize();
-	
+	var updateDate = $("#dateUpdateForm input[name=perfDate]").val();
 	var fn = function(data) {
 		
 	}
-	ajaxFun(url, "post", query, "json", fn);
+	var arr = updateDate.split('-');
+	var year = arr[0];
+	var month = arr[1];
+	var date = arr[2];
 	
-	$('#dateUpdate').dialog("close");
+	var week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+	var date = new Date(Number(year), Number(month)-1, Number(date));
+
+	var updateDateDay = (arr[0] + '년 ' + arr[1] + '월 ' + arr[2] + '일 ' + week[date.getDay()]);
+	
+	ajaxFun(url, "post", query, "json", fn);
+	$("#dateView" + perfDate).find('.date').text(updateDateDay);
+	$('#dateUpdate').dialog("destroy");
 }
 
 function castUpdateOk() {
@@ -208,17 +229,18 @@ function castUpdateOk() {
 	$('#castUpdate').dialog("close");
 }
 
-function timeUpdateOk() {
-	var f= document.dateUpdateForm;
+function timeUpdateOk(ptNum) {
+	var f= document.timeUpdateForm;
 	
 	var url = "${pageContext.request.contextPath}/admin/performanceManage/timeUpdate";
 	var query = $("#timeUpdateForm").serialize();
+	var perfTime = $("#timeUpdateForm input[name=perfTime]").val();
 	
 	var fn = function(data) {
 		
 	}
 	ajaxFun(url, "post", query, "json", fn);
-	
+	$("#timeView" + ptNum).find('.time').text(perfTime);
 	$('#timeUpdate').dialog("close");
 }
 
@@ -226,7 +248,7 @@ function deleteOk(perfNum) {
 	if(! confirm("해당 공연을 삭제하시겠습니까? ")) {
 		return false;
 	}
-	location.href = "${pageContext.request.contextPath}/admin/performanceManage/delete?perfNum=" + perfNum;
+	location.href = "${pageContext.request.contextPath}/admin/performanceManage/delete?perfNum=" + perfNum + "&page=" + ${page};
 	$('#performance-dialog').dialog("close");
 }
 
@@ -240,8 +262,6 @@ $(function(){
 		var ptNum = $time.attr("data-ptNum");
 		var url="${pageContext.request.contextPath}/admin/performanceManage/deleteTime";
 		$.post(url, {ptNum:ptNum}, function(data){
-			alert("dsaf");
-			console.log($("#timeView"+ptNum));
 			$("#timeView"+ptNum).remove();
 		}, "json");
 	});
@@ -257,9 +277,9 @@ $(function(){
 		var perfDate = $date.attr("data-perfDate");
 		var perfNum = $("input[name=perfNum]").val();
 		var url="${pageContext.request.contextPath}/admin/performanceManage/deleteDate";
+		
 		$.post(url, {perfNum:perfNum, perfDate:perfDate}, function(data){
 			$date.closest("div").remove();
-			
 		}, "json");
 	});
 });
